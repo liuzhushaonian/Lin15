@@ -2,8 +2,7 @@ package com.xp.legend.lin15.hooks;
 
 import android.app.AndroidAppHelper;
 import android.content.Intent;
-import android.view.View;
-import android.widget.Toast;
+
 
 import com.xp.legend.lin15.utils.ReceiverAction;
 
@@ -57,13 +56,9 @@ public class StatusBarExpandHook implements IXposedHookLoadPackage {
 
                 }
 
-//                intent.putExtra("expanded",b);
-
                 AndroidAppHelper.currentApplication().sendBroadcast(intent);
 
-                XposedBridge.log("lll----->>"+b);
 
-//                Toast.makeText(AndroidAppHelper.currentApplication(), ""+b, Toast.LENGTH_SHORT).show();
 
             }
         });

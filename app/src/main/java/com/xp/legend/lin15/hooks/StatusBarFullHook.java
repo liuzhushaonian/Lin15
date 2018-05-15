@@ -8,7 +8,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -57,9 +57,6 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                 fullView= (View) param.thisObject;
 
-                XposedBridge.log("lll---->>>"+fullView.getBackground());
-
-//                view.setBackgroundColor(Color.RED);
 
                 if (fullReceiver==null){
                     fullReceiver=new FullReceiver();
@@ -278,19 +275,6 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
                 fullView.getBackground().setAlpha(0);
             }
         }
-
-//        String header=sharedPreferences.getString("header_view","");
-//
-//        String full=sharedPreferences.getString(FULL,"");
-//
-//        if (full.isEmpty()){//判断头部是否也设置了图片，如果是，则继续，如果没有，则返回，不需要跟随改变透明度
-//            return;
-//        }
-
-
-
-
-
     }
 
     private void deleteBg(){
@@ -306,11 +290,6 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
             }
 
         }
-
-
-//        fullView.setBackgroundColor(Color.WHITE);
-
-//        fullView.getBackground().setAlpha(255);//恢复透明度
 
         sharedPreferences.edit().remove(FULL).apply();
         sharedPreferences.edit().remove("full_color").apply();
@@ -334,8 +313,6 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
         if (color==-1){
             return;
         }
-
-        XposedBridge.log("lll--color2-->>>"+color);
 
         fullView.setBackgroundColor(color);
         fullView.getBackground().setAlpha(alphaValue);

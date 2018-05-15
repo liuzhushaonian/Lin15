@@ -8,15 +8,14 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Toast;
 
-import com.xp.legend.lin15.R;
 import com.xp.legend.lin15.bean.Rect;
 import com.xp.legend.lin15.utils.ReceiverAction;
 
@@ -64,10 +63,6 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
                 alpha_value=sharedPreferences.getInt(ALPHA,255);
 
                 drawable=AndroidAppHelper.currentApplication().getResources().getIdentifier("qs_background_primary","drawable",lpparam.packageName);
-
-                XposedBridge.log("lll-drawable-->>"+drawable);
-
-
 
 
                 if (!s.isEmpty()){
@@ -141,22 +136,7 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
                     break;
                 case ReceiverAction.HEADER_SEND_EXPANDED:
-//                    int b=intent.getIntExtra("expanded",-1);
-//
-//                    if (b==-1){
-//                        XposedBridge.log("lll---应该是-1--->>"+b);
-//                        return;
-//                    }
 
-//                    if (b==1){
-//
-//                        XposedBridge.log("lll---应该是展开--->>"+b);
-//
-//                        headerView.getBackground().setAlpha(0);
-//                    }else if (b==0){
-//                        XposedBridge.log("lll---应该是关闭--->>"+b);
-//                        headerView.getBackground().setAlpha(255);
-//                    }
                     break;
                 case ReceiverAction.HEADER_SEND_FLOAT://根据下拉程度设置头部透明度
 
@@ -299,13 +279,11 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
         if (color>0||!s.isEmpty()){
 
-
-
             if (getDefaultDrawable()!=null) {
                 headerView.setBackground(null);
                 headerView.setBackground(getDefaultDrawable());
 
-                Toast.makeText(AndroidAppHelper.currentApplication(),"背景已恢复默认",Toast.LENGTH_SHORT).show();
+                Toast.makeText(AndroidAppHelper.currentApplication(),"背景已清除",Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -332,8 +310,6 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
         if (c==-1){
             return;
         }
-
-        XposedBridge.log("lll--color->>"+c);
 
         headerView.setBackgroundColor(c);
         headerView.getBackground().setAlpha(alpha_value);
