@@ -27,4 +27,6 @@ public class ReceiverAction {
 
     public static final String FULL_SEND_COLOR="com.legend.xp.full.hook.send.color";
 
+    public static final String DATA_SETTING="com.legend.xp.data.setting";
+
 }

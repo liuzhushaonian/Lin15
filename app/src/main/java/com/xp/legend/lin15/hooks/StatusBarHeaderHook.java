@@ -53,6 +53,8 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
 
+                XposedBridge.log("lin15----->>in the header");
+
                 sharedPreferences=AndroidAppHelper.currentApplication().getSharedPreferences(ReceiverAction.SS,Context.MODE_PRIVATE);
                 headerView = (View) param.thisObject;
 
@@ -84,6 +86,8 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
                 registerBroadcast();
 
+                XposedBridge.log("lin15----->>in the header end");
+
             }
         });
 
@@ -91,6 +95,10 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
     }
 
     private void registerBroadcast() {
+
+        if (hookReceiver!=null){//防止重复注册
+            return;
+        }
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ReceiverAction.HEADER_SEND_ALBUM);
@@ -102,6 +110,8 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
         intentFilter.addAction(ReceiverAction.HEADER_DELETE_ALBUM);
         hookReceiver = new HookReceiver();
         AndroidAppHelper.currentApplication().registerReceiver(hookReceiver, intentFilter);
+
+        XposedBridge.log("lin15----->>register the hookReceiver");
 
 
     }
@@ -177,6 +187,7 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
             headerView.setBackground(new BitmapDrawable(context.getResources(),bitmap));
             headerView.getBackground().setAlpha(alpha_value);//设置上透明度
             sharedPreferences.edit().putString(header,s).apply();//保存
+            Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -315,6 +326,8 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
         headerView.getBackground().setAlpha(alpha_value);
 
         sharedPreferences.edit().putInt("header_color",c).apply();//保存颜色
+
+        Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
 
     }
 }

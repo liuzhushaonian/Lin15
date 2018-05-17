@@ -10,10 +10,18 @@
     <string name="mode_foot">底部</string>
     <string name="mode_full">全部</string>
     <string name="resume">复原</string>
+    <string name="cancel_the_data">取消关闭移动数据确认</string>
 
     <string name="string_about">
 
         额，这里是lin15的说明书。\n
+
+        对了，评论区很多人提到无法设置图片，或是整个快速设置面板变成透明，可否将xposed里的日志发给我一份，在xposed侧边栏有个日志选项，把它保存并发送到我的邮箱即可。\n
+
+        邮箱：liuzhu234@gmail.com\n
+
+        发邮箱请一定写上问题内容！\n
+
         姑且说一句，各位好，这是我第二次上传APP了，虽然这一次的目标人群非常小。\n
         这是lineageOS15.1调♂教的小工具，目前完成的功能只有设置下拉菜单的背景，在阅读了SystemUi近三天的源码后才完成的一点点小功能。\n
         其实之前也有类似的工具，早在我使用CM13那时，就一直很喜欢那种下拉菜单设置背景图的操作，可以说是大大增加了手机的美感。\n
@@ -30,9 +38,7 @@
 
         唉！好像不是说明书啊……\n
 
-        对了，评论区很多人提到无法设置图片，或是整个快速设置面板变成透明，可否将xposed里的日志发给我一份，在xposed侧边栏有个日志选项，把它保存并发送到我的邮箱即可。\n
 
-        邮箱：liuzhu234@gmail.com\n
 
     </string>
 </resources>

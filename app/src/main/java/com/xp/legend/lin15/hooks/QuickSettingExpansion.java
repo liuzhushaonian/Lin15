@@ -8,6 +8,7 @@ import com.xp.legend.lin15.utils.ReceiverAction;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -37,6 +38,8 @@ public class QuickSettingExpansion implements IXposedHookLoadPackage {
                 intent.putExtra("float",f);
 
                 AndroidAppHelper.currentApplication().sendBroadcast(intent);
+
+//                XposedBridge.log("lin15--->>>set the float");
 
             }
         });

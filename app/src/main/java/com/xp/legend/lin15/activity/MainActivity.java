@@ -12,10 +12,12 @@ import android.support.v7.widget.Toolbar;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +26,13 @@ import com.dingmouren.colorpicker.OnColorPickerListener;
 import com.xp.legend.lin15.R;
 import com.xp.legend.lin15.bean.Rect;
 import com.xp.legend.lin15.hooks.StatusBarHeaderHook;
+import com.xp.legend.lin15.interfaces.IMainActivity;
+import com.xp.legend.lin15.presenters.MainPresenter;
 import com.xp.legend.lin15.utils.ReceiverAction;
 
 import de.robv.android.xposed.XposedBridge;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IMainActivity{
 
     private ImageView imageView1,imageView2;
     private InfoReceiver infoReceiver;
@@ -40,6 +44,8 @@ public class MainActivity extends BaseActivity {
     private TextView alphaInfo;
     private Toolbar toolbar;
     private TextView about;
+    private Switch data;
+    private MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,8 @@ public class MainActivity extends BaseActivity {
         register();
 
         initToolbar();
+
+        presenter=new MainPresenter(this);
     }
 
     @Override
@@ -85,6 +93,9 @@ public class MainActivity extends BaseActivity {
             alphaInfo.setText("透明度 "+p+"%");
         }
 
+        boolean b=sharedPreferences.getBoolean("data",false);
+        data.setChecked(b);
+
     }
 
     @Override
@@ -92,6 +103,11 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         if (infoReceiver!=null){
             unregisterReceiver(infoReceiver);
+        }
+
+        if (this.presenter!=null){
+            presenter.unregister();
+            presenter=null;
         }
 
     }
@@ -105,6 +121,7 @@ public class MainActivity extends BaseActivity {
         alphaInfo=findViewById(R.id.textView_alpha);
         toolbar=findViewById(R.id.main_toolbar);
         about=findViewById(R.id.about_text);
+        data=findViewById(R.id.switch_cancel_data);
     }
 
     private void initToolbar(){
@@ -212,6 +229,11 @@ public class MainActivity extends BaseActivity {
 
         });
 
+        data.setOnCheckedChangeListener((compoundButton, b) -> {
+            presenter.sendDataControl(b,this);
+            sharedPreferences.edit().putBoolean("data",b).apply();
+        });
+
     }
 
 
@@ -304,6 +326,15 @@ public class MainActivity extends BaseActivity {
         registerReceiver(infoReceiver,intentFilter);
 
 
+
+    }
+
+    /**
+     * 设置流量关闭
+     * @param b
+     */
+    @Override
+    public void sendDataControl(boolean b) {
 
     }
 

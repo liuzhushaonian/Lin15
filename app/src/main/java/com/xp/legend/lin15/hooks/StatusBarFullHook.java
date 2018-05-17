@@ -57,6 +57,8 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                 fullView= (View) param.thisObject;
 
+                XposedBridge.log("lin15--->>>in the full hook");
+
 
                 if (fullReceiver==null){
                     fullReceiver=new FullReceiver();
@@ -69,6 +71,8 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
                     intentFilter.addAction(ReceiverAction.FULL_SEND_COLOR);
 
                     AndroidAppHelper.currentApplication().registerReceiver(fullReceiver,intentFilter);
+
+                    XposedBridge.log("lin15--->>>register fullReceiver");
                 }
 
 
@@ -97,6 +101,7 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                 defaultDrawable=AndroidAppHelper.currentApplication().getResources().getIdentifier("qs_background_primary","drawable",lpparam.packageName);
 
+                XposedBridge.log("lin15--->>>in full end");
             }
         });
     }
@@ -173,6 +178,8 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
             fullView.setBackground(new BitmapDrawable(context.getResources(),bitmap));
             fullView.getBackground().setAlpha(alphaValue);
             sharedPreferences.edit().putString(FULL,s).apply();//保存
+
+            Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -317,6 +324,8 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
         fullView.setBackgroundColor(color);
         fullView.getBackground().setAlpha(alphaValue);
         sharedPreferences.edit().putInt("full_color",color).apply();//保存
+
+        Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
     }
 
 }

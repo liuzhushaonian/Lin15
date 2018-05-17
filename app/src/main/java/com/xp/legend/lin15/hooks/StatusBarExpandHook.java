@@ -31,15 +31,10 @@ public class StatusBarExpandHook implements IXposedHookLoadPackage {
 
 
 
-//                View view= (View) param.thisObject;
 
-
-//
                 boolean b= (boolean) XposedHelpers.getObjectField(param.thisObject,"mExpanded");
 
                 if (expanded==b){
-
-
 
                     return;
                 }
@@ -58,7 +53,7 @@ public class StatusBarExpandHook implements IXposedHookLoadPackage {
 
                 AndroidAppHelper.currentApplication().sendBroadcast(intent);
 
-
+                XposedBridge.log("lin15--->>>get the expanded");
 
             }
         });
