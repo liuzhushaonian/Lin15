@@ -3,3 +3,4 @@ com.xp.legend.lin15.hooks.StatusBarFullHook
 com.xp.legend.lin15.hooks.StatusBarExpandHook
 com.xp.legend.lin15.hooks.QuickSettingExpansion
 com.xp.legend.lin15.hooks.DataSaverHook
+com.xp.legend.lin15.hooks.SettingsActivityHook

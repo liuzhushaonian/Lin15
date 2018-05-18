@@ -29,6 +29,6 @@ public class MainPresenter {
 
         context.sendBroadcast(intent);
 
-        Toast.makeText(context, "发送成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "发送成功", Toast.LENGTH_SHORT).show();
     }
 }

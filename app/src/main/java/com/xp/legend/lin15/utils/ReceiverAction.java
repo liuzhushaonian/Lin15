@@ -29,4 +29,6 @@ public class ReceiverAction {
 
     public static final String DATA_SETTING="com.legend.xp.data.setting";
 
+    public static final String Setting_register="com.legend.xp.setting.register";
+
 }
