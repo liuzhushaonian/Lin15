@@ -47,6 +47,8 @@ public class MainActivity extends BaseActivity implements IMainActivity{
     private Switch data;
     private MainPresenter presenter;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
