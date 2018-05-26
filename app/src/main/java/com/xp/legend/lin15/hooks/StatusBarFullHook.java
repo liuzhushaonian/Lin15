@@ -95,6 +95,10 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                         s=s.replace("-content","");
                         s="content:"+s;
+                    }else {//兼容旧版本
+
+                        s="file:///"+s;
+
                     }
 
                     Uri uri= Uri.parse(s);
@@ -109,7 +113,9 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                     fullView.setBackgroundColor(color);
                     fullView.getBackground().setAlpha(alphaValue);
-                }else if (fullView.getBackground()==null){
+                }
+
+                else if (fullView.getBackground()==null){
 
                     fullView.setBackground(getDefaultDrawable());
                 }
@@ -246,6 +252,7 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
      */
     private void setAlpha(Intent intent){
 
+
         int value=intent.getIntExtra("alpha",-1);
 
         if (value<0){
@@ -256,11 +263,7 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
         sharedPreferences.edit().putInt(ALPHA,alphaValue).apply();//保存
 
-        String s=sharedPreferences.getString(FULL,"");
 
-        if (s.isEmpty()||fullView==null||fullView.getBackground()==null){
-            return;
-        }
 
         fullView.getBackground().setAlpha(alphaValue);//更新
 
@@ -286,6 +289,9 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
         String s=sharedPreferences.getString(FULL,"");
 
         int color=sharedPreferences.getInt("full_color",-1);
+
+
+
 
         if (!s.isEmpty()||color!=-1){
 

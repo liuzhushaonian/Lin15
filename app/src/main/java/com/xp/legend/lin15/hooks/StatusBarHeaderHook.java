@@ -53,6 +53,9 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
 
+
+
+
                 sharedPreferences=AndroidAppHelper.currentApplication().getSharedPreferences(ReceiverAction.SS,Context.MODE_PRIVATE);
                 headerView = (View) param.thisObject;
 
@@ -68,8 +71,6 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
 //                    s="file:///"+s;
 
-                    XposedBridge.log("lll-222--->>"+s);
-
                     if (s.endsWith("-file")){
 
                         s=s.replace("-file","");
@@ -80,6 +81,9 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
                         s=s.replace("-content","");
                         s="content:"+s;
+                    }else {
+
+                        s="file:///"+s;
                     }
 
                     Uri uri= Uri.parse(s);
@@ -94,18 +98,17 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
                 }else if (color!=-1){
 
-
-
                     headerView.setBackgroundColor(color);
                     headerView.getBackground().setAlpha(alpha_value);
 
-                }else if (headerView.getBackground()==null){//如果获取到背景为null则设置上默认的背景
+                }
+
+                else if (headerView.getBackground()==null){//如果获取到背景为null则设置上默认的背景
 
                     headerView.setBackground(getDefaultDrawable());
 
                 }
 
-                XposedBridge.log("lll--bg--->>"+headerView.getBackground());
 
                 registerBroadcast();
 
@@ -263,8 +266,19 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
     private void changeHeaderAlpha(Intent intent){
 
 //        String s=sharedPreferences.getString(header,"");
+//
+//        String fu=sharedPreferences.getString("full_view","");
+//
+//        int color=sharedPreferences.getInt("header_color",-1);
+//
+//        /**
+//         * 如果全部没有设置，则不需要改透明度
+//         */
+//        if (s.isEmpty()&&color==-1&&fu.isEmpty()){
+//            return;
+//        }
 
-        if (headerView==null||headerView.getBackground()==null){
+        if (headerView==null){
             return;
         }
 
