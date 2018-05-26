@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -269,6 +270,7 @@ public class MainActivity extends BaseActivity implements IMainActivity{
             case 300:
 
                 if (data==null||data.getData()==null){
+
                     return;
                 }
 
@@ -278,7 +280,18 @@ public class MainActivity extends BaseActivity implements IMainActivity{
 
                 String s=data.getData().toString();
 
-                s=s.replace("file:///","");
+                if (s.startsWith("file:///")) {
+
+                    s = s.replace("file:///", "");
+
+                    s=s+"-file";
+                }else if (s.startsWith("content:")){
+
+
+                    s=s.replace("content:","");
+
+                    s=s+"-content";
+                }
 
 
                 intent.putExtra("file",s);
@@ -300,10 +313,23 @@ public class MainActivity extends BaseActivity implements IMainActivity{
 
                 String s1=data.getData().toString();
 
-                s=s1.replace("file:///","");
+//                s=s1.replace("file:///","");
+
+                if (s1.startsWith("file:///")) {
+
+                    s1 = s1.replace("file:///", "");
+
+                    s1=s1+"-file";
+                }else if (s1.startsWith("content:")){
 
 
-                intent1.putExtra("file",s);
+                    s1=s1.replace("content:","");
+
+                    s1=s1+"-content";
+                }
+
+
+                intent1.putExtra("file",s1);
 
                 sendBroadcast(intent1);
 

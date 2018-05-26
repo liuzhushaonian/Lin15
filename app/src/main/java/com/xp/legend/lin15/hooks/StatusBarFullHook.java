@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 
+import com.xp.legend.lin15.R;
 import com.xp.legend.lin15.bean.Rect;
 import com.xp.legend.lin15.utils.ReceiverAction;
 
@@ -57,9 +58,6 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                 fullView= (View) param.thisObject;
 
-                XposedBridge.log("lin15--->>>in the full hook");
-
-
                 if (fullReceiver==null){
                     fullReceiver=new FullReceiver();
                     IntentFilter intentFilter=new IntentFilter();
@@ -72,7 +70,7 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                     AndroidAppHelper.currentApplication().registerReceiver(fullReceiver,intentFilter);
 
-                    XposedBridge.log("lin15--->>>register fullReceiver");
+
                 }
 
 
@@ -86,22 +84,39 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                 if (!s.isEmpty()){
 
-                    s="file:///"+s;
+                    //对s进行转换
+                    if (s.endsWith("-file")){
+
+                        s=s.replace("-file","");
+
+                        s="file:///"+s;
+
+                    }else if (s.endsWith("-content")){
+
+                        s=s.replace("-content","");
+                        s="content:"+s;
+                    }
 
                     Uri uri= Uri.parse(s);
 
                     Bitmap bitmap= BitmapFactory.decodeStream(AndroidAppHelper.currentApplication().getContentResolver().openInputStream(uri));
-                    fullView.setBackground(new BitmapDrawable(AndroidAppHelper.currentApplication().getResources(),bitmap));
-                    fullView.getBackground().setAlpha(alphaValue);//设置颜色
+
+                    if (bitmap!=null) {
+                        fullView.setBackground(new BitmapDrawable(AndroidAppHelper.currentApplication().getResources(), bitmap));
+                        fullView.getBackground().setAlpha(alphaValue);//设置颜色
+                    }
                 }else if (color!=-1){
 
                     fullView.setBackgroundColor(color);
                     fullView.getBackground().setAlpha(alphaValue);
+                }else if (fullView.getBackground()==null){
+
+                    fullView.setBackground(getDefaultDrawable());
                 }
 
                 defaultDrawable=AndroidAppHelper.currentApplication().getResources().getIdentifier("qs_background_primary","drawable",lpparam.packageName);
 
-                XposedBridge.log("lin15--->>>in full end");
+
             }
         });
     }
@@ -160,15 +175,34 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
     private void setFullImage(Intent intent,Context context){
 
-        if (fullView==null||fullView.getBackground()==null){
-            return;
-        }
 
         String s=intent.getStringExtra("file");
 
 
+        if (s==null){
+            return;
+        }
 
-        Uri uri= Uri.parse("file:///"+s);
+        if (!s.isEmpty()){
+
+            sharedPreferences.edit().putString(FULL,s).apply();//保存
+        }
+
+
+        if (s.endsWith("-file")){
+
+            s=s.replace("-file","");
+
+            s="file:///"+s;
+
+        }else if (s.endsWith("-content")){
+
+            s=s.replace("-content","");
+            s="content:"+s;
+        }
+
+
+        Uri uri= Uri.parse(s);
 
         if (uri==null){
             return;
@@ -177,8 +211,6 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
             Bitmap bitmap= BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
             fullView.setBackground(new BitmapDrawable(context.getResources(),bitmap));
             fullView.getBackground().setAlpha(alphaValue);
-            sharedPreferences.edit().putString(FULL,s).apply();//保存
-
             Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

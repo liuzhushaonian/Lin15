@@ -53,8 +53,6 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
 
-                XposedBridge.log("lin15----->>in the header");
-
                 sharedPreferences=AndroidAppHelper.currentApplication().getSharedPreferences(ReceiverAction.SS,Context.MODE_PRIVATE);
                 headerView = (View) param.thisObject;
 
@@ -66,27 +64,50 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
                 drawable=AndroidAppHelper.currentApplication().getResources().getIdentifier("qs_background_primary","drawable",lpparam.packageName);
 
-
                 if (!s.isEmpty()){
 
-                    s="file:///"+s;
+//                    s="file:///"+s;
+
+                    XposedBridge.log("lll-222--->>"+s);
+
+                    if (s.endsWith("-file")){
+
+                        s=s.replace("-file","");
+
+                        s="file:///"+s;
+
+                    }else if (s.endsWith("-content")){
+
+                        s=s.replace("-content","");
+                        s="content:"+s;
+                    }
 
                     Uri uri= Uri.parse(s);
 
                     Bitmap bitmap= BitmapFactory.decodeStream(AndroidAppHelper.currentApplication().getContentResolver().openInputStream(uri));
-                    headerView.setBackground(new BitmapDrawable(AndroidAppHelper.currentApplication().getResources(),bitmap));
-                    headerView.getBackground().setAlpha(alpha_value);
+
+                    if (bitmap!=null) {
+
+                        headerView.setBackground(new BitmapDrawable(AndroidAppHelper.currentApplication().getResources(), bitmap));
+                        headerView.getBackground().setAlpha(alpha_value);
+                    }
 
                 }else if (color!=-1){
+
+
 
                     headerView.setBackgroundColor(color);
                     headerView.getBackground().setAlpha(alpha_value);
 
+                }else if (headerView.getBackground()==null){//如果获取到背景为null则设置上默认的背景
+
+                    headerView.setBackground(getDefaultDrawable());
+
                 }
 
-                registerBroadcast();
+                XposedBridge.log("lll--bg--->>"+headerView.getBackground());
 
-                XposedBridge.log("lin15----->>in the header end");
+                registerBroadcast();
 
             }
         });
@@ -110,9 +131,6 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
         intentFilter.addAction(ReceiverAction.HEADER_DELETE_ALBUM);
         hookReceiver = new HookReceiver();
         AndroidAppHelper.currentApplication().registerReceiver(hookReceiver, intentFilter);
-
-        XposedBridge.log("lin15----->>register the hookReceiver");
-
 
     }
 
@@ -175,9 +193,31 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
         String s=intent.getStringExtra("file");
 
+        if (s==null){
+            return;
+        }
+
+        if (!s.isEmpty()){
+
+            sharedPreferences.edit().putString(header,s).apply();//保存
+
+        }
 
 
-        Uri uri= Uri.parse("file:///"+s);
+        if (s.endsWith("-file")){
+
+            s=s.replace("-file","");
+
+            s="file:///"+s;
+
+        }else if (s.endsWith("-content")){
+
+            s=s.replace("-content","");
+            s="content:"+s;
+        }
+
+
+        Uri uri= Uri.parse(s);
 
         if (uri==null){
             return;
@@ -186,7 +226,7 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
             Bitmap bitmap= BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
             headerView.setBackground(new BitmapDrawable(context.getResources(),bitmap));
             headerView.getBackground().setAlpha(alpha_value);//设置上透明度
-            sharedPreferences.edit().putString(header,s).apply();//保存
+
             Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -291,7 +331,8 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
         if (color>0||!s.isEmpty()){
 
             if (getDefaultDrawable()!=null) {
-                headerView.setBackground(null);
+
+
                 headerView.setBackground(getDefaultDrawable());
 
                 Toast.makeText(AndroidAppHelper.currentApplication(),"背景已清除",Toast.LENGTH_SHORT).show();

@@ -53,7 +53,7 @@ public class StatusBarExpandHook implements IXposedHookLoadPackage {
 
                 AndroidAppHelper.currentApplication().sendBroadcast(intent);
 
-                XposedBridge.log("lin15--->>>get the expanded");
+//                XposedBridge.log("lin15--->>>get the expanded");
 
             }
         });
