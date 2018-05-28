@@ -41,4 +41,6 @@ public class ReceiverAction {
 
     public static final String SHOW_APPS_BY_ADAPTER="com.legend.xp.adapter.show_apps";
 
+    public static final String SEND_SINGLE_HEIGHT="com.legend.xp.send_single_height";
+
 }
