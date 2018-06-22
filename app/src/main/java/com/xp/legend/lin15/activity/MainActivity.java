@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity implements IMainActivity{
     private MainPresenter presenter;
     private Switch showSystemSwitch;
     private Button changePass;
+    private TextView hongbao;
 
 
 
@@ -182,7 +183,7 @@ public class MainActivity extends BaseActivity implements IMainActivity{
         height5=findViewById(R.id.textView5);
         showSystemSwitch=findViewById(R.id.switch5);
         changePass=findViewById(R.id.button);
-
+        hongbao=findViewById(R.id.hongbao);
     }
 
     private void initToolbar(){
@@ -374,6 +375,11 @@ public class MainActivity extends BaseActivity implements IMainActivity{
         changePass.setOnClickListener(view -> {
             presenter.showChangeDialog(this);
 
+        });
+
+        hongbao.setOnClickListener(view -> {
+
+            presenter.showHongbao(this);
         });
 
     }

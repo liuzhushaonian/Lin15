@@ -26,8 +26,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="说明书"
-                android:paddingEnd="16dp"
+                android:padding="16dp"
                 android:id="@+id/about_text"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/hongbao"
+                android:padding="16dp"
+                android:id="@+id/hongbao"
+
                 />
 
         </FrameLayout>
@@ -328,7 +338,6 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:max="25"
-                    android:min="1"
                     android:padding="16dp"
                     android:progress="25"
                     app:layout_constraintEnd_toEndOf="parent"
