@@ -268,9 +268,7 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
             }
 
-//            fullView.setBackground(new BitmapDrawable(context.getResources(), bitmap));
-//            fullView.getBackground().setAlpha(alphaValue);
-//            Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -345,21 +343,10 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
         if (fullView.getBackground() == null) {
 
-            XposedBridge.log("full--------->>>null");
 
             return;
         }
 
-//        float f = intent.getFloatExtra(Conf.DROP_FLOAT, -0.1f);
-//
-//        if (f == 1) {//完全下拉状态，保存高度
-//            if (height < 0) {
-//
-//                height = fullView.getHeight();
-//
-//                sharedPreferences.edit().putInt(Conf.HEIGHT, height).apply();//保存
-//            }
-//        }
 
         int color = sharedPreferences.getInt(Conf.FULL_COLOR, -1);
 
