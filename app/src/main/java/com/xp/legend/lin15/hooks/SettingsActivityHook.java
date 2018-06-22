@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xp.legend.lin15.utils.Conf;
 import com.xp.legend.lin15.utils.ReceiverAction;
 
 import java.security.MessageDigest;
@@ -67,6 +68,10 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
     private List<PackInfo> hideList = new ArrayList<>();//已隐藏的列表
 
     private PreferenceFragment fragment;
+
+    private boolean isShowSystem=false;
+
+
 
 
     @Override
@@ -110,6 +115,8 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
         });
 
     }
+
+
 
     /**
      * 需要密码或是设置密码
@@ -425,19 +432,35 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
 
                 String[] hides = hide.split("-");
 
+//                isShowSystem=sharedPreferences.getBoolean(Conf.SHOW_SYSTEM,false);
+
 
                 for (String name : hides) {
 
                     for (int o = 0; o < packageInfos.size(); o++) {
 
-                        if (((packageInfos.get(o).applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)) {//只要非系统APP
 
-                            PackageInfo packageInfo = packageInfos.get(o);
+//                        if (isShowSystem){
+//
+//
+//                            PackageInfo packageInfo = packageInfos.get(o);
+//
+//                            if (name.equals(packageInfo.packageName)) {
+//                                packageInfos.remove(packageInfo);
+//                            }
+//
+//                        }else {
 
-                            if (name.equals(packageInfo.packageName)) {//选择非隐藏的应用
-                                packageInfos.remove(packageInfo);
+                            if (((packageInfos.get(o).applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)) {//只要非系统APP
+
+                                PackageInfo packageInfo = packageInfos.get(o);
+
+                                if (name.equals(packageInfo.packageName)) {//选择非隐藏的应用
+                                    packageInfos.remove(packageInfo);
+                                }
                             }
-                        }
+
+//                        }
                     }
                 }
 
@@ -657,6 +680,8 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
 
                         launchApp(info);
 
+
+
                     });
 
 
@@ -815,4 +840,6 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
 
 
     }
+
+
 }

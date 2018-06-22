@@ -2,7 +2,9 @@ package com.xp.legend.lin15.hooks;
 
 import android.app.AndroidAppHelper;
 import android.content.Intent;
+import android.graphics.Color;
 
+import com.xp.legend.lin15.utils.Conf;
 import com.xp.legend.lin15.utils.ReceiverAction;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -35,7 +37,7 @@ public class QuickSettingExpansion implements IXposedHookLoadPackage {
 
                 Intent intent=new Intent(ReceiverAction.HEADER_SEND_FLOAT);
 
-                intent.putExtra("float",f);
+                intent.putExtra(Conf.ALPHA,f);
 
                 AndroidAppHelper.currentApplication().sendBroadcast(intent);
 

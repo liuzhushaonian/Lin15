@@ -43,4 +43,20 @@ public class ReceiverAction {
 
     public static final String SEND_SINGLE_HEIGHT="com.legend.xp.send_single_height";
 
+    public static final String SEND_QUALITY="com.legend.xp.send_quality_to_bg";
+
+    public static final String SEND_GAO_SI="com.legend.xp.send_gao_si";
+
+    public static final String SEND_GAO_VALUE="com.legend.xp.send_gao_value";
+
+    public static final String SEND_SET_FULL="com.legend.xp.send_full_set";
+
+    public static final String SHOW_SYSTEM="com.legend.xp.show_system";
+
+    public static final String GET_PASS="com.legend.xp.get_pass";
+
+    public static final String SEND_PASS_INFO="com.legend.xp.send_pass_info";
+
+    public static final String SEND_NEW_PASS="com.legend.xp.send_new_pass_info";
+
 }

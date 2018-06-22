@@ -8,19 +8,22 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
 import android.widget.Toast;
 
-import com.xp.legend.lin15.R;
 import com.xp.legend.lin15.bean.Rect;
+import com.xp.legend.lin15.utils.Conf;
 import com.xp.legend.lin15.utils.ReceiverAction;
-
+import java.io.File;
 import java.io.FileNotFoundException;
-
+import java.io.FileOutputStream;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -30,119 +33,143 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 /**
  * 全局设置背景
  * 流程：一开始hook方法，获取整个view实例，注册广播，并判断SharedPreferences里是否有图片路径，如果有则设置上，并一起获取透明度并设置，如果没有，则跳过，等待设置
- *
- *
  */
 
 public class StatusBarFullHook implements IXposedHookLoadPackage {
 
-    private static final String METHOD="onFinishInflate";
-    private static final String CLASS2="com.android.systemui.qs.QSContainerImpl";
+    private static final String METHOD = "onFinishInflate";
+    private static final String CLASS2 = "com.android.systemui.qs.QSContainerImpl";
     private View fullView;
     private FullReceiver fullReceiver;
     private SharedPreferences sharedPreferences;
-    private String FULL="full_view";
     private int alphaValue;
-    private String ALPHA="alpha";
-    private int height=-1;
+    private int height = -1;
     private int defaultDrawable;
+    private static final int BEST = 0x0010;
+//    private static final int STANDARD = 0x0020;
+    private static final int LOWEST = 0x0030;
+    private int quality = LOWEST;
+    private boolean isGaoSi=false;
+    private int gaoValue=25;
+
+
+
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        if (!lpparam.packageName.equals("com.android.systemui")){
+        if (!lpparam.packageName.equals("com.android.systemui")) {
             return;
         }
         XposedHelpers.findAndHookMethod(CLASS2, lpparam.classLoader, METHOD, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                fullView= (View) param.thisObject;
+                //注册广播
+                registerBroadcast();
 
-                if (fullReceiver==null){
-                    fullReceiver=new FullReceiver();
-                    IntentFilter intentFilter=new IntentFilter();
-                    intentFilter.addAction(ReceiverAction.FULL_SEND_ALBUM);
-                    intentFilter.addAction(ReceiverAction.FULL_GET_INFO);
-                    intentFilter.addAction(ReceiverAction.HEADER_SEND_ALPHA);
-                    intentFilter.addAction(ReceiverAction.HEADER_SEND_FLOAT);
-                    intentFilter.addAction(ReceiverAction.FULL_DELETE_ALBUM);
-                    intentFilter.addAction(ReceiverAction.FULL_SEND_COLOR);
+                fullView = (View) param.thisObject;//获取实例
 
-                    AndroidAppHelper.currentApplication().registerReceiver(fullReceiver,intentFilter);
+                sharedPreferences = AndroidAppHelper.currentApplication().getSharedPreferences(ReceiverAction.SS, Context.MODE_PRIVATE);
 
+                alphaValue = sharedPreferences.getInt(Conf.ALPHA, 255);
 
-                }
+                int color = sharedPreferences.getInt(Conf.FULL_COLOR, -1);
 
+                defaultDrawable = AndroidAppHelper.currentApplication().getResources().getIdentifier("qs_background_primary", "drawable", lpparam.packageName);
 
-                sharedPreferences=AndroidAppHelper.currentApplication().getSharedPreferences(ReceiverAction.SS,Context.MODE_PRIVATE);
+                quality=sharedPreferences.getInt(Conf.QUALITY,LOWEST);//初始化
 
-                String s=sharedPreferences.getString(FULL,"");
-                alphaValue=sharedPreferences.getInt(ALPHA,255);
+                isGaoSi=sharedPreferences.getBoolean(Conf.GAO_SI,false);
 
-                int color=sharedPreferences.getInt("full_color",-1);
+                gaoValue=sharedPreferences.getInt(Conf.GAO_SI_VALUE,25);
 
-
-                if (!s.isEmpty()){
-
-                    //对s进行转换
-                    if (s.endsWith("-file")){
-
-                        s=s.replace("-file","");
-
-                        s="file:///"+s;
-
-                    }else if (s.endsWith("-content")){
-
-                        s=s.replace("-content","");
-                        s="content:"+s;
-                    }else {//兼容旧版本
-
-                        s="file:///"+s;
-
-                    }
-
-                    Uri uri= Uri.parse(s);
-
-                    Bitmap bitmap= BitmapFactory.decodeStream(AndroidAppHelper.currentApplication().getContentResolver().openInputStream(uri));
-
-                    if (bitmap!=null) {
-                        fullView.setBackground(new BitmapDrawable(AndroidAppHelper.currentApplication().getResources(), bitmap));
-                        fullView.getBackground().setAlpha(alphaValue);//设置颜色
-                    }
-                }else if (color!=-1){
+                if (color != -1) {
 
                     fullView.setBackgroundColor(color);
                     fullView.getBackground().setAlpha(alphaValue);
+
+                } else {
+
+                    setBg();
                 }
 
-                else if (fullView.getBackground()==null){
-
-                    fullView.setBackground(getDefaultDrawable());
-                }
-
-                defaultDrawable=AndroidAppHelper.currentApplication().getResources().getIdentifier("qs_background_primary","drawable",lpparam.packageName);
-
-
+//                if (!s.isEmpty()) {
+////                    //对s进行转换
+////                    if (s.endsWith("-file")){
+////
+////                        s=s.replace("-file","");
+////
+////                        s="file:///"+s;
+////
+////                    }else if (s.endsWith("-content")){
+////
+////                        s=s.replace("-content","");
+////                        s="content:"+s;
+////                    }else {//兼容旧版本
+////
+////                        s="file:///"+s;
+////
+////                    }
+//                    Uri uri = Uri.parse(s);
+//
+//                    Bitmap bitmap = BitmapFactory.decodeStream(AndroidAppHelper.currentApplication().getContentResolver().openInputStream(uri));
+//
+//                    if (bitmap != null) {
+//
+//                        fullView.setBackground(new BitmapDrawable(AndroidAppHelper.currentApplication().getResources(), bitmap));
+//                        fullView.getBackground().setAlpha(alphaValue);//设置颜色
+//                    }
+//                } else if (color != -1) {
+//
+//
+//                }
+//                else if (fullView.getBackground() == null) {
+//
+//                    fullView.setBackground(getDefaultDrawable());
+//                }
             }
         });
     }
 
-    class FullReceiver extends BroadcastReceiver{
+    private void registerBroadcast() {
+
+        if (fullReceiver == null) {
+            fullReceiver = new FullReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(ReceiverAction.FULL_SEND_ALBUM);
+            intentFilter.addAction(ReceiverAction.FULL_GET_INFO);
+            intentFilter.addAction(ReceiverAction.HEADER_SEND_ALPHA);
+            intentFilter.addAction(ReceiverAction.HEADER_SEND_FLOAT);
+            intentFilter.addAction(ReceiverAction.FULL_DELETE_ALBUM);
+            intentFilter.addAction(ReceiverAction.FULL_SEND_COLOR);
+            intentFilter.addAction(ReceiverAction.SEND_QUALITY);
+            intentFilter.addAction(ReceiverAction.SEND_GAO_SI);
+            intentFilter.addAction(ReceiverAction.SEND_GAO_VALUE);
+            intentFilter.addAction(ReceiverAction.SEND_SINGLE_HEIGHT);
+            AndroidAppHelper.currentApplication().registerReceiver(fullReceiver, intentFilter);
+        }
+    }
+
+    class FullReceiver extends BroadcastReceiver {
 
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action=intent.getAction();
+            String action = intent.getAction();
 
-            if (action==null){
+            if (action == null) {
                 return;
             }
 
-            switch (action){
+            if (fullView == null) {
+                return;
+            }
+
+            switch (action) {
 
                 case ReceiverAction.FULL_SEND_ALBUM:
 
-                    setFullImage(intent,context);
+                    setFullImage(intent, context);
 
                     break;
 
@@ -174,50 +201,76 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                     break;
 
+                case ReceiverAction.SEND_QUALITY://接收质量
+
+                    setQuality(intent);
+
+                    break;
+                case ReceiverAction.SEND_GAO_SI://设置是否高斯模糊
+
+                    setGaoSi(intent);
+
+                    break;
+
+                case ReceiverAction.SEND_GAO_VALUE://设置高斯模糊半径
+                    setGaoSiValue(intent);
+
+                    break;
+
+                case ReceiverAction.SEND_SINGLE_HEIGHT:
+
+                    getHeight(intent);
+                    break;
+
+
             }
 
         }
     }
 
-    private void setFullImage(Intent intent,Context context){
+    private void setFullImage(Intent intent, Context context) {
 
 
-        String s=intent.getStringExtra("file");
+        String s = intent.getStringExtra(Conf.FULL_FILE);
 
 
-        if (s==null){
+        if (s == null||s.isEmpty()) {
             return;
         }
 
-        if (!s.isEmpty()){
+        Uri uri = Uri.parse(s);
 
-            sharedPreferences.edit().putString(FULL,s).apply();//保存
-        }
-
-
-        if (s.endsWith("-file")){
-
-            s=s.replace("-file","");
-
-            s="file:///"+s;
-
-        }else if (s.endsWith("-content")){
-
-            s=s.replace("-content","");
-            s="content:"+s;
-        }
-
-
-        Uri uri= Uri.parse(s);
-
-        if (uri==null){
+        if (uri == null) {
             return;
         }
         try {
-            Bitmap bitmap= BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
-            fullView.setBackground(new BitmapDrawable(context.getResources(),bitmap));
-            fullView.getBackground().setAlpha(alphaValue);
-            Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
+            Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
+
+            if (bitmap != null) {
+
+//                Bitmap b=bitmap.copy(Bitmap.Config.ARGB_8888,false);
+
+                String path = context.getFilesDir().getAbsolutePath();
+
+                File file = new File(path + "/" + Conf.FULL_FILE);
+
+                FileOutputStream outputStream = new FileOutputStream(file);
+
+                bitmap.compress(Bitmap.CompressFormat.WEBP, 100, outputStream);
+
+                if (isGaoSi){//高斯模糊方式
+                    setGaoSiImage();
+                }else {//普通方式
+                    setBg();
+                }
+
+                Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
+
+            }
+
+//            fullView.setBackground(new BitmapDrawable(context.getResources(), bitmap));
+//            fullView.getBackground().setAlpha(alphaValue);
+//            Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -226,20 +279,22 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
     /**
      * 发送view的长和宽
+     *
      * @param context
      */
-    private void sendViewInfo(Context context){
+    private void sendViewInfo(Context context) {
 
-        Intent intent=new Intent(ReceiverAction.FULL_SEND_INFO);
+        Intent intent = new Intent(ReceiverAction.FULL_SEND_INFO);
 
-        int w=fullView.getWidth();
+        int w = fullView.getWidth();
 
+        int height=sharedPreferences.getInt(Conf.HEIGHT,-1);
 
-        Rect rect=new Rect();
+        Rect rect = new Rect();
         rect.setHeight(height);
         rect.setWidth(w);
 
-        intent.putExtra("full_info",rect);
+        intent.putExtra(Conf.FULL_INFO, rect);
 
 
         context.sendBroadcast(intent);
@@ -248,21 +303,21 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
     /**
      * 接收透明度
+     *
      * @param intent
      */
-    private void setAlpha(Intent intent){
+    private void setAlpha(Intent intent) {
 
 
-        int value=intent.getIntExtra("alpha",-1);
+        int value = intent.getIntExtra(Conf.ALPHA, -1);
 
-        if (value<0){
+        if (value < 0) {
             return;
         }
 
-        alphaValue=value;//赋值
+        alphaValue = value;//赋值
 
-        sharedPreferences.edit().putInt(ALPHA,alphaValue).apply();//保存
-
+        sharedPreferences.edit().putInt(Conf.ALPHA, alphaValue).apply();//保存
 
 
         fullView.getBackground().setAlpha(alphaValue);//更新
@@ -271,99 +326,368 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
     /**
      * 根据下拉程度改透明度
+     *
      * @param intent
      */
-    private void changeAlpha(Intent intent){
+    private void changeAlpha(Intent intent) {
 
-        float f=intent.getFloatExtra("float",-0.1f);
+        float f = intent.getFloatExtra(Conf.DROP_FLOAT, -0.1f);
 
-        if (f==1){//完全下拉状态，保存高度
-            if (height<0){
+        if (f == 1) {//完全下拉状态，保存高度
+            if (height <= 0) {
 
-                height=fullView.getHeight();
+                height = fullView.getHeight();
 
-                sharedPreferences.edit().putInt("height",height).apply();//保存
+                sharedPreferences.edit().putInt(Conf.HEIGHT, height).apply();//保存
             }
         }
 
-        String s=sharedPreferences.getString(FULL,"");
 
-        int color=sharedPreferences.getInt("full_color",-1);
+        if (fullView.getBackground() == null) {
+
+            XposedBridge.log("full--------->>>null");
+
+            return;
+        }
+
+//        float f = intent.getFloatExtra(Conf.DROP_FLOAT, -0.1f);
+//
+//        if (f == 1) {//完全下拉状态，保存高度
+//            if (height < 0) {
+//
+//                height = fullView.getHeight();
+//
+//                sharedPreferences.edit().putInt(Conf.HEIGHT, height).apply();//保存
+//            }
+//        }
+
+        int color = sharedPreferences.getInt(Conf.FULL_COLOR, -1);
 
 
+        if (getFile().exists() || color != -1) {
 
-
-        if (!s.isEmpty()||color!=-1){
-
-            if (f<0||f>1){
+            if (f < 0 || f > 1) {
                 return;
             }
 
-            float alpha=f*alphaValue;
+            float alpha = f * alphaValue;
 
-            if (alpha>alphaValue){
-                alpha=alphaValue;
+            if (alpha > alphaValue) {
+                alpha = alphaValue;
             }
 
-            if (alpha<0){
-                alpha=0;
+            if (alpha < 0) {
+                alpha = 0;
             }
 
             fullView.getBackground().setAlpha((int) alpha);
 
 
-
-            if (f==1){
+            if (f == 1) {//完全下拉
                 fullView.getBackground().setAlpha(alphaValue);
-            }else if (f==0){
+            } else if (f == 0) {//完全收缩
 
                 fullView.getBackground().setAlpha(0);
             }
         }
     }
 
-    private void deleteBg(){
+    /**
+     * 删除背景
+     */
+    private void deleteBg() {
 
-        String s=sharedPreferences.getString(FULL,"");
-        int color=sharedPreferences.getInt("full_color",-1);
+        int color=sharedPreferences.getInt(Conf.FULL_COLOR,-1);
 
-        if (!s.isEmpty()||color!=-1){
-
-            if (getDefaultDrawable()!=null){
-                fullView.setBackground(getDefaultDrawable());
-                Toast.makeText(AndroidAppHelper.currentApplication(),"背景已清除",Toast.LENGTH_SHORT).show();
-            }
-
+        if (fullView.getBackground()==null){
+            return;
         }
 
-        sharedPreferences.edit().remove(FULL).apply();
-        sharedPreferences.edit().remove("full_color").apply();
+        if (getFile().exists()||color!=-1) {
+            fullView.setBackground(getDefaultDrawable());
 
+            sendSetFull(false);
+
+            Toast.makeText(AndroidAppHelper.currentApplication(), "背景已清除", Toast.LENGTH_SHORT).show();
+        }
+
+        deleteFile();//删除文件
+
+        sharedPreferences.edit().remove(Conf.FULL_COLOR).apply();//删除保存的颜色
 
 
     }
 
-    private Drawable getDefaultDrawable(){
+    private Drawable getDefaultDrawable() {
 
-        if (defaultDrawable==0){
+        if (defaultDrawable == 0) {
             return null;
         }
         return AndroidAppHelper.currentApplication().getDrawable(defaultDrawable);
 
     }
 
-    private void setColor(Intent intent){
+    private void setColor(Intent intent) {
 
-        int color=intent.getIntExtra("color",-1);
-        if (color==-1){
+        int color = intent.getIntExtra(Conf.FULL_COLOR, -1);
+        if (color == -1) {
             return;
         }
 
+        deleteFile();//删除文件
+
         fullView.setBackgroundColor(color);
         fullView.getBackground().setAlpha(alphaValue);
-        sharedPreferences.edit().putInt("full_color",color).apply();//保存
+        sharedPreferences.edit().putInt(Conf.FULL_COLOR, color).apply();//保存
+
+        sendSetFull(true);
 
         Toast.makeText(AndroidAppHelper.currentApplication(), "设置成功", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 设置背景
+     * 寻找背景图，如果不存在，则设置默认背景
+     */
+    private void setBg() {
+
+        if (this.fullView == null) {
+            return;
+        }
+
+        String path = AndroidAppHelper.currentApplication().getFilesDir().getAbsolutePath();
+
+        File file = new File(path + "/" + Conf.FULL_FILE);
+
+        if (file.exists()) {//文件存在
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+            switch (this.quality) {
+                case BEST:
+
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+                    break;
+//                case STANDARD:
+//
+//                    options.inPreferredConfig = Bitmap.Config.RGBA_F16;
+//
+//                    break;
+                case LOWEST:
+
+                    options.inPreferredConfig = Bitmap.Config.RGB_565;
+
+                    break;
+
+                default:
+
+                    options.inPreferredConfig = Bitmap.Config.RGBA_F16;
+
+                    break;
+            }
+
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+            XposedBridge.log("size---full-->>"+bitmap.getByteCount());
+
+            fullView.setBackground(new BitmapDrawable(AndroidAppHelper.currentApplication().getResources(), bitmap));
+
+            fullView.getBackground().setAlpha(alphaValue);
+
+            sendSetFull(true);
+
+        } else {
+
+            fullView.setBackground(getDefaultDrawable());
+            fullView.getBackground().setAlpha(255);//恢复背景透明度
+
+            sendSetFull(false);
+        }
+
+    }
+
+    private int saveBitmap(Bitmap bitmap) {
+
+        String path = AndroidAppHelper.currentApplication().getFilesDir().getAbsolutePath();
+
+        int result = -1;
+
+        File file = new File(path + "/" + Conf.FULL_FILE);
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.WEBP, 100, outputStream);
+
+            result = 1;
+        } catch (FileNotFoundException e) {
+
+            result = -1;
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * 接收质量
+     * @param intent
+     */
+    private void setQuality(Intent intent) {
+
+        this.quality = intent.getIntExtra(Conf.QUALITY, LOWEST);
+
+        setBg();//再次设置背景图
+
+        sharedPreferences.edit().putInt(Conf.QUALITY, quality).apply();
+
+    }
+
+    /**
+     * 删除文件
+     * @return
+     */
+    private boolean deleteFile() {
+
+        String path = AndroidAppHelper.currentApplication().getFilesDir().getAbsolutePath();
+
+        File file = new File(path + "/" + Conf.FULL_FILE);
+
+        return file.delete();
+    }
+
+    /**
+     * 接收是否高斯模糊
+     * @param intent
+     */
+    private void setGaoSi(Intent intent){
+
+        this.isGaoSi=intent.getBooleanExtra(Conf.GAO_SI,false);
+
+        sharedPreferences.edit().putBoolean(Conf.GAO_SI,isGaoSi).apply();
+
+        if (isGaoSi){
+
+            setGaoSiImage();//设置高斯模糊
+
+        }else {
+
+            removeGaosi();//移除高斯模糊
+        }
+
+    }
+
+    /**
+     * 接收高斯模糊半径
+     * @param intent
+     */
+    private void setGaoSiValue(Intent intent){
+
+        this.gaoValue=intent.getIntExtra(Conf.GAO_SI_VALUE,25);
+
+        sharedPreferences.edit().putInt(Conf.GAO_SI_VALUE,gaoValue).apply();
+
+        setGaoSiImage();//设置高斯模糊
+
+    }
+
+    /**
+     * 设置高斯模糊图
+     */
+    private void setGaoSiImage(){
+
+        File file=getFile();
+        if (!file.exists()||fullView==null){//如果文件不存在，则不继续
+            return;
+        }
+
+        Bitmap bitmap=BitmapFactory.decodeFile(file.getAbsolutePath());
+
+        int value=sharedPreferences.getInt(Conf.GAO_SI_VALUE,25);
+
+        bitmap=getBitmap(AndroidAppHelper.currentApplication(),bitmap,value);
+
+        fullView.setBackground(bitmap2Drawable(bitmap));
+
+        sendSetFull(true);
+    }
+
+    /**
+     * 移除高斯模糊效果
+     */
+    private void removeGaosi(){
+
+        setBg();
+    }
+
+    private File getFile(){
+
+        String path=AndroidAppHelper.currentApplication().getFilesDir().getAbsolutePath();
+
+        return new File(path+"/"+Conf.FULL_FILE);
+
+    }
+
+    public static Bitmap getBitmap(Context context, Bitmap source, int radius){
+
+        if (radius<=0){
+            radius=1;
+        }
+
+        if (radius>25){
+            radius=25;
+        }
+
+        Bitmap bitmap=source;
+        RenderScript renderScript=RenderScript.create(context);
+
+        final Allocation input=Allocation.createFromBitmap(renderScript,bitmap);
+
+        final Allocation output=Allocation.createTyped(renderScript,input.getType());
+
+        ScriptIntrinsicBlur scriptIntrinsicBlur=ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+
+        scriptIntrinsicBlur.setInput(input);
+
+        scriptIntrinsicBlur.setRadius(radius);
+
+        scriptIntrinsicBlur.forEach(output);
+
+        output.copyTo(bitmap);
+
+        renderScript.destroy();
+
+        return bitmap;
+    }
+
+    private Drawable bitmap2Drawable(Bitmap bitmap){
+
+        return new BitmapDrawable(AndroidAppHelper.currentApplication().getResources(),bitmap);
+
+    }
+
+    /**
+     * 向头部发出提示
+     * @param b
+     */
+    private void sendSetFull(boolean b){
+
+        Intent intent=new Intent(ReceiverAction.SEND_SET_FULL);
+
+        intent.putExtra(Conf.SET_FULL,b);
+
+        AndroidAppHelper.currentApplication().sendBroadcast(intent);
+    }
+
+    private void getHeight(Intent intent){
+
+        this.height=intent.getIntExtra(Conf.HEIGHT,-1);
+
+        sharedPreferences.edit().putInt(Conf.HEIGHT,height).apply();//保存
+
+        Toast.makeText(AndroidAppHelper.currentApplication(), "已设置自定义高度", Toast.LENGTH_SHORT).show();
+
     }
 
 }

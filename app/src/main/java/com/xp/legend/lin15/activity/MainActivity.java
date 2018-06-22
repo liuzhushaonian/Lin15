@@ -31,6 +31,7 @@ import com.xp.legend.lin15.bean.Rect;
 import com.xp.legend.lin15.hooks.StatusBarHeaderHook;
 import com.xp.legend.lin15.interfaces.IMainActivity;
 import com.xp.legend.lin15.presenters.MainPresenter;
+import com.xp.legend.lin15.utils.Conf;
 import com.xp.legend.lin15.utils.ReceiverAction;
 
 import de.robv.android.xposed.XposedBridge;
@@ -40,15 +41,18 @@ public class MainActivity extends BaseActivity implements IMainActivity{
     private ImageView imageView1,imageView2;
     private InfoReceiver infoReceiver;
     private Rect rect_header,rect_full;
-    private SeekBar alphaSeekBar;
-    private RadioGroup radioGroup;
+    private SeekBar alphaSeekBar,gaosi;
+    private RadioGroup radioGroup,qualityGroup;
     private int MODE=1;
     private int progress=-1;
-    private TextView alphaInfo;
+    private TextView alphaInfo,height5;
     private Toolbar toolbar;
     private TextView about;
-    private Switch data;
+    private Switch data,gaoSwitch;
     private MainPresenter presenter;
+    private Switch showSystemSwitch;
+    private Button changePass;
+
 
 
 
@@ -73,7 +77,7 @@ public class MainActivity extends BaseActivity implements IMainActivity{
 
         int mode=sharedPreferences.getInt("mode",-1);
 
-        if (mode>=0){
+        if (mode>=0){//模式判断，设置图片或是颜色
             MODE=mode;
             switch (mode){
                 case 0:
@@ -101,6 +105,48 @@ public class MainActivity extends BaseActivity implements IMainActivity{
         boolean b=sharedPreferences.getBoolean("data",false);
         data.setChecked(b);
 
+        if (gaosi!=null) {
+
+            int g=sharedPreferences.getInt("gao_progress",25);
+
+            boolean isgao=sharedPreferences.getBoolean(Conf.GAO_SI,false);
+
+            gaoSwitch.setChecked(isgao);//添加是否已经打开
+
+            gaosi.setProgress(g);
+
+
+            int p = gaosi.getProgress();
+
+            String s = "高斯模糊 " + p;
+
+            gaoSwitch.setText(s);
+
+            boolean gao=sharedPreferences.getBoolean(Conf.GAO_SI,false);
+
+            gaosi.setEnabled(gao);
+        }
+
+        int q=sharedPreferences.getInt(Conf.QUALITY,0x0030);
+
+        switch (q){
+            case 0x0010:
+
+                qualityGroup.check(R.id.best);
+
+                break;
+
+            case 0x0030:
+
+                qualityGroup.check(R.id.lower);
+
+                break;
+        }
+
+        boolean showSystem=sharedPreferences.getBoolean("show_system",false);
+
+        showSystemSwitch.setChecked(showSystem);
+
     }
 
     @Override
@@ -127,6 +173,16 @@ public class MainActivity extends BaseActivity implements IMainActivity{
         toolbar=findViewById(R.id.main_toolbar);
         about=findViewById(R.id.about_text);
         data=findViewById(R.id.switch_cancel_data);
+
+        qualityGroup=findViewById(R.id.radioGroup2);
+
+        gaoSwitch=findViewById(R.id.switch1);
+
+        gaosi=findViewById(R.id.seekBar);
+        height5=findViewById(R.id.textView5);
+        showSystemSwitch=findViewById(R.id.switch5);
+        changePass=findViewById(R.id.button);
+
     }
 
     private void initToolbar(){
@@ -185,7 +241,7 @@ public class MainActivity extends BaseActivity implements IMainActivity{
 
 
                 Intent intent=new Intent(ReceiverAction.HEADER_SEND_ALPHA);
-                intent.putExtra("alpha",seekBar.getProgress());
+                intent.putExtra(Conf.ALPHA,seekBar.getProgress());
                 sendBroadcast(intent);
 
                 sharedPreferences.edit().putInt("progress",seekBar.getProgress()).apply();
@@ -234,12 +290,95 @@ public class MainActivity extends BaseActivity implements IMainActivity{
 
         });
 
+        //移动数据
         data.setOnCheckedChangeListener((compoundButton, b) -> {
             presenter.sendDataControl(b,this);
             sharedPreferences.edit().putBoolean("data",b).apply();
         });
 
+        //质量选择
+        qualityGroup.setOnCheckedChangeListener((radioGroup, i) -> {
+
+            int quality=0;
+
+            switch (i){
+                case R.id.best:
+
+                    quality=0x0010;
+                    break;
+
+                case R.id.lower:
+
+                    quality=0x0030;
+                    break;
+            }
+
+            sharedPreferences.edit().putInt(Conf.QUALITY,quality).apply();
+
+            presenter.sendQuality(quality,this);//发送出去
+
+        });
+
+        //是否高斯模糊
+        gaoSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+
+
+
+            gaosi.setEnabled(b);
+
+
+            sharedPreferences.edit().putBoolean(Conf.GAO_SI,b).apply();
+            presenter.sendGao(b,this);
+        });
+
+        gaosi.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                String s="高斯模糊 "+i;
+
+                gaoSwitch.setText(s);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                presenter.sendGaoSiValue(seekBar.getProgress(),MainActivity.this);
+                sharedPreferences.edit().putInt("gao_progress",seekBar.getProgress()).apply();
+            }
+        });
+
+
+        /**
+         * 自定义高度
+         */
+        height5.setOnClickListener(view -> {
+
+            presenter.showEditDialog(this);
+        });
+
+        /**
+         * 显示系统应用
+         */
+        showSystemSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+
+            presenter.sendSystem(b,this);
+
+            sharedPreferences.edit().putBoolean("show_system",b).apply();
+
+        });
+
+        changePass.setOnClickListener(view -> {
+            presenter.showChangeDialog(this);
+
+        });
+
     }
+
+
 
 
 
@@ -282,21 +421,21 @@ public class MainActivity extends BaseActivity implements IMainActivity{
 
                 String s=data.getData().toString();
 
-                if (s.startsWith("file:///")) {
+//                if (s.startsWith("file:///")) {
+//
+//                    s = s.replace("file:///", "");
+//
+//                    s=s+"-file";
+//                }else if (s.startsWith("content:")){
+//
+//
+//                    s=s.replace("content:","");
+//
+//                    s=s+"-content";
+//                }
 
-                    s = s.replace("file:///", "");
 
-                    s=s+"-file";
-                }else if (s.startsWith("content:")){
-
-
-                    s=s.replace("content:","");
-
-                    s=s+"-content";
-                }
-
-
-                intent.putExtra("file",s);
+                intent.putExtra(Conf.HEADER_FILE,s);
 
                 sendBroadcast(intent);
 
@@ -317,21 +456,22 @@ public class MainActivity extends BaseActivity implements IMainActivity{
 
 //                s=s1.replace("file:///","");
 
-                if (s1.startsWith("file:///")) {
+//                if (s1.startsWith("file:///")) {
+//
+//                    s1 = s1.replace("file:///", "");
+//
+//                    s1=s1+"-file";
+//                }else if (s1.startsWith("content:")){
+//
+//
+//                    s1=s1.replace("content:","");
+//
+//                    s1=s1+"-content";
+//                }
 
-                    s1 = s1.replace("file:///", "");
+                Log.d("s1-------->>>",s1);
 
-                    s1=s1+"-file";
-                }else if (s1.startsWith("content:")){
-
-
-                    s1=s1.replace("content:","");
-
-                    s1=s1+"-content";
-                }
-
-
-                intent1.putExtra("file",s1);
+                intent1.putExtra(Conf.FULL_FILE,s1);
 
                 sendBroadcast(intent1);
 
@@ -350,6 +490,7 @@ public class MainActivity extends BaseActivity implements IMainActivity{
         IntentFilter intentFilter=new IntentFilter();
         intentFilter.addAction(ReceiverAction.HEADER_SEND_INFO);
         intentFilter.addAction(ReceiverAction.FULL_SEND_INFO);
+        intentFilter.addAction(ReceiverAction.SEND_PASS_INFO);
 
         infoReceiver=new InfoReceiver();
 
@@ -381,14 +522,14 @@ public class MainActivity extends BaseActivity implements IMainActivity{
             switch (action){
                 case ReceiverAction.HEADER_SEND_INFO://接受图形信息并打开相册进行选择相片
 
-                    rect_header= (Rect) intent.getSerializableExtra("info");
+                    rect_header= (Rect) intent.getSerializableExtra(Conf.HEADER_INFO);
 
                     openAlbum(200);
 
                     break;
                 case ReceiverAction.FULL_SEND_INFO:
 
-                    rect_full= (Rect) intent.getSerializableExtra("full_info");
+                    rect_full= (Rect) intent.getSerializableExtra(Conf.FULL_INFO);
 
                     if (rect_full.getHeight()<0){
 
@@ -398,6 +539,13 @@ public class MainActivity extends BaseActivity implements IMainActivity{
                     }
 
                     openAlbum(100);
+
+                    break;
+
+                case ReceiverAction.SEND_PASS_INFO:
+
+
+                    presenter.getInfo(intent,MainActivity.this);
 
                     break;
             }
@@ -415,7 +563,7 @@ public class MainActivity extends BaseActivity implements IMainActivity{
 
         new ColorPickerDialog(
                 MainActivity.this,
-                getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorPrimary,getTheme()),
                 true,
                 new OnColorPickerListener() {
                     @Override
@@ -432,10 +580,9 @@ public class MainActivity extends BaseActivity implements IMainActivity{
                     public void onColorConfirm(ColorPickerDialog dialog, int color) {
 
                         Intent intent=new Intent(ReceiverAction.HEADER_SEND_COLOR);
-                        intent.putExtra("color",color);
+                        intent.putExtra(Conf.HEADER_COLOR,color);
                         sendBroadcast(intent);
 
-                        Toast.makeText(MainActivity.this, ""+color, Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -447,7 +594,7 @@ public class MainActivity extends BaseActivity implements IMainActivity{
 
         new ColorPickerDialog(
                 MainActivity.this,
-                getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorPrimary,getTheme()),
                 true,
                 new OnColorPickerListener() {
                     @Override
@@ -464,10 +611,8 @@ public class MainActivity extends BaseActivity implements IMainActivity{
                     public void onColorConfirm(ColorPickerDialog dialog, int color) {
 
                         Intent intent=new Intent(ReceiverAction.FULL_SEND_COLOR);
-                        intent.putExtra("color",color);
+                        intent.putExtra(Conf.FULL_COLOR,color);
                         sendBroadcast(intent);
-
-                        Toast.makeText(MainActivity.this, ""+color, Toast.LENGTH_SHORT).show();
 
                     }
                 }
