@@ -99,9 +99,7 @@ public class IconsHandlerHook implements IXposedHookLoadPackage {
 
                 case ReceiverAction.HIDE_APP://隐藏应用
 
-//                    String hide_pack_name=intent.getStringExtra("hide_name");
-//
-//                    hideApps(hide_pack_name);
+
 
                     hideApps(intent);
 

@@ -133,8 +133,6 @@ public class Launcher3Hook implements IXposedHookLoadPackage {
 
         boolean isShowSystem=intent.getBooleanExtra(Conf.SHOW_SYSTEM,false);
 
-        XposedBridge.log("bbbbbb-------->>>>"+isShowSystem);
-
         sharedPreferences.edit().putBoolean(Conf.SHOW_SYSTEM,isShowSystem).apply();//保存
     }
 

@@ -41,7 +41,6 @@ public class QuickSettingExpansion implements IXposedHookLoadPackage {
 
                 AndroidAppHelper.currentApplication().sendBroadcast(intent);
 
-//                XposedBridge.log("lin15--->>>set the float");
 
             }
         });

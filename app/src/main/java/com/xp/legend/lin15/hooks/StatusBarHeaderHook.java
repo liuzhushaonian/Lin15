@@ -104,11 +104,6 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
                 }
 
-//                else if (headerView.getBackground()==null){//如果获取到背景为null则设置上默认的背景
-//
-//                    headerView.setBackground(getDefaultDrawable());
-//
-//                }
 
             }
         });
@@ -231,11 +226,6 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
             return;
         }
 
-//        if (!s.isEmpty()) {
-//
-//            sharedPreferences.edit().putString(header, s).apply();//保存
-//
-//        }
 
 
         Uri uri = Uri.parse(s);
@@ -318,7 +308,7 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
 
         if (headerView.getBackground() == null) {
 
-            XposedBridge.log("lllll----header---->>null");
+//            XposedBridge.log("lllll----header---->>null");
 
             return;
         }
@@ -338,8 +328,6 @@ public class StatusBarHeaderHook implements IXposedHookLoadPackage {
         if (alpha < 0) {
             alpha = 0;
         }
-
-        XposedBridge.log("alpha----->>>"+alpha);
 
         headerView.getBackground().setAlpha((int) alpha);
 

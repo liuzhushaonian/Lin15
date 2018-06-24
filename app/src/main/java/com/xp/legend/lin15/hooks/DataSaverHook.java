@@ -65,7 +65,7 @@ public class DataSaverHook implements IXposedHookLoadPackage {
                 set=sharedPreferences.getBoolean("data",false);
 
                 if (!set){
-                    XposedBridge.log("lin15--->>>close the mobel data11");
+
 
                     return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
                 }
@@ -76,7 +76,7 @@ public class DataSaverHook implements IXposedHookLoadPackage {
 
                 method.invoke(object,false);
 
-                XposedBridge.log("lin15--->>>close the mobel data22");
+
 
                 return null;
             }
@@ -98,8 +98,6 @@ public class DataSaverHook implements IXposedHookLoadPackage {
                 case ReceiverAction.DATA_SETTING:
 
                     set=intent.getBooleanExtra("data",false);
-
-                    XposedBridge.log("lll--data-->>"+set);
 
                     SharedPreferences sharedPreferences=AndroidAppHelper.currentApplication().getSharedPreferences(ReceiverAction.SS,Context.MODE_PRIVATE);
 

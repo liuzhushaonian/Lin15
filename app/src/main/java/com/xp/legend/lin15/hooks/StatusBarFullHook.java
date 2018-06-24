@@ -90,43 +90,13 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
 
                 } else {
 
-                    setBg();
+                    if(isGaoSi) {
+                        setGaoSiImage();
+                    }else {
+                        setBg();
+                    }
                 }
 
-//                if (!s.isEmpty()) {
-////                    //对s进行转换
-////                    if (s.endsWith("-file")){
-////
-////                        s=s.replace("-file","");
-////
-////                        s="file:///"+s;
-////
-////                    }else if (s.endsWith("-content")){
-////
-////                        s=s.replace("-content","");
-////                        s="content:"+s;
-////                    }else {//兼容旧版本
-////
-////                        s="file:///"+s;
-////
-////                    }
-//                    Uri uri = Uri.parse(s);
-//
-//                    Bitmap bitmap = BitmapFactory.decodeStream(AndroidAppHelper.currentApplication().getContentResolver().openInputStream(uri));
-//
-//                    if (bitmap != null) {
-//
-//                        fullView.setBackground(new BitmapDrawable(AndroidAppHelper.currentApplication().getResources(), bitmap));
-//                        fullView.getBackground().setAlpha(alphaValue);//设置颜色
-//                    }
-//                } else if (color != -1) {
-//
-//
-//                }
-//                else if (fullView.getBackground() == null) {
-//
-//                    fullView.setBackground(getDefaultDrawable());
-//                }
             }
         });
     }
@@ -247,8 +217,6 @@ public class StatusBarFullHook implements IXposedHookLoadPackage {
             Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
 
             if (bitmap != null) {
-
-//                Bitmap b=bitmap.copy(Bitmap.Config.ARGB_8888,false);
 
                 String path = context.getFilesDir().getAbsolutePath();
 
