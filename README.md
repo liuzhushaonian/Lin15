@@ -1,3 +1,6 @@
+![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185210.png)
+
+![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185230.png)
 # 更新内容：
 
 - 储存图片改为私有储存，避免图片被误删而导致无法设置。
