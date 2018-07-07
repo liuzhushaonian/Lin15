@@ -17,14 +17,17 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+/**
+ * 关闭流量无需确认
+ */
 public class DataSaverHook implements IXposedHookLoadPackage {
 
 
     private static final String CLASS="com.android.systemui.qs.tiles.CellularTile";
     private static final String METHOD="handleClick";
     private static final String DATA_SETTING="data_setting";
-    private DataReceiver receiver;
-    private boolean set=false;
+//    private DataReceiver receiver;
+//    private boolean set=false;
 
 
 
@@ -37,21 +40,21 @@ public class DataSaverHook implements IXposedHookLoadPackage {
         }
 
 
-        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, "createTileView", Context.class, new XC_MethodHook() {
-            @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                super.beforeHookedMethod(param);
-
-                if (receiver==null){//注册
-                    receiver=new DataReceiver();
-                    IntentFilter intentFilter=new IntentFilter();
-                    intentFilter.addAction(ReceiverAction.DATA_SETTING);
-                    AndroidAppHelper.currentApplication().registerReceiver(receiver,intentFilter);
-
-                    XposedBridge.log("register------>>>DataReceiver");
-                }
-            }
-        });
+//        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, "createTileView", Context.class, new XC_MethodHook() {
+//            @Override
+//            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+//                super.beforeHookedMethod(param);
+//
+//                if (receiver==null){//注册
+//                    receiver=new DataReceiver();
+//                    IntentFilter intentFilter=new IntentFilter();
+//                    intentFilter.addAction(ReceiverAction.DATA_SETTING);
+//                    AndroidAppHelper.currentApplication().registerReceiver(receiver,intentFilter);
+//
+//                    XposedBridge.log("register------>>>DataReceiver");
+//                }
+//            }
+//        });
 
 
 
@@ -62,13 +65,13 @@ public class DataSaverHook implements IXposedHookLoadPackage {
 
                 SharedPreferences sharedPreferences=AndroidAppHelper.currentApplication().getSharedPreferences(ReceiverAction.SS,Context.MODE_PRIVATE);
 
-                set=sharedPreferences.getBoolean("data",false);
-
-                if (!set){
-
-
-                    return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
-                }
+//                set=sharedPreferences.getBoolean("data",false);
+//
+//                if (!set){
+//
+//
+//                    return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
+//                }
 
                 Object object=XposedHelpers.getObjectField(param.thisObject,"mDataController");
 
@@ -84,27 +87,27 @@ public class DataSaverHook implements IXposedHookLoadPackage {
 
     }
 
-    public class DataReceiver extends BroadcastReceiver{
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action=intent.getAction();
-
-            if (action==null){
-                return;
-            }
-
-            switch (action){
-                case ReceiverAction.DATA_SETTING:
-
-                    set=intent.getBooleanExtra("data",false);
-
-                    SharedPreferences sharedPreferences=AndroidAppHelper.currentApplication().getSharedPreferences(ReceiverAction.SS,Context.MODE_PRIVATE);
-
-                    sharedPreferences.edit().putBoolean("data",set).apply();//保存
-
-                    break;
-            }
-        }
-    }
+//    public class DataReceiver extends BroadcastReceiver{
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action=intent.getAction();
+//
+//            if (action==null){
+//                return;
+//            }
+//
+//            switch (action){
+//                case ReceiverAction.DATA_SETTING:
+//
+//                    set=intent.getBooleanExtra("data",false);
+//
+//                    SharedPreferences sharedPreferences=AndroidAppHelper.currentApplication().getSharedPreferences(ReceiverAction.SS,Context.MODE_PRIVATE);
+//
+//                    sharedPreferences.edit().putBoolean("data",set).apply();//保存
+//
+//                    break;
+//            }
+//        }
+//    }
 }

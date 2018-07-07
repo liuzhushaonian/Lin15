@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 
 import com.xp.legend.lin15.utils.ReceiverAction;
@@ -37,6 +38,10 @@ public class IconsHandlerHook implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+
+        if (!isO()){
+            return;
+        }
 
         if (!lpparam.packageName.equals("org.lineageos.trebuchet")) {
 
@@ -84,6 +89,11 @@ public class IconsHandlerHook implements IXposedHookLoadPackage {
         });
 
 
+    }
+
+    private boolean isO() {
+
+        return Build.VERSION.SDK_INT == Build.VERSION_CODES.O || Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1;
     }
 
     class HideAppReceiver extends BroadcastReceiver {

@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -77,6 +78,11 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
 
+        if (!isO()){
+            return;
+        }
+
+
         if (!lpparam.packageName.equals("org.lineageos.trebuchet")) {
 
 
@@ -114,6 +120,11 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
             }
         });
 
+    }
+
+    private boolean isO() {
+
+        return Build.VERSION.SDK_INT == Build.VERSION_CODES.O || Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1;
     }
 
 

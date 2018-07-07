@@ -37,19 +37,7 @@ public class ReceiverAction {
 
     public static final String ADAPTER_REGISTER="com.legend.xp.adapter.register";
 
-    public static final String HIDE_APPS_BY_ADAPTER="com.legend.xp.adapter.hide_apps";
 
-    public static final String SHOW_APPS_BY_ADAPTER="com.legend.xp.adapter.show_apps";
-
-    public static final String SEND_SINGLE_HEIGHT="com.legend.xp.send_single_height";
-
-    public static final String SEND_QUALITY="com.legend.xp.send_quality_to_bg";
-
-    public static final String SEND_GAO_SI="com.legend.xp.send_gao_si";
-
-    public static final String SEND_GAO_VALUE="com.legend.xp.send_gao_value";
-
-    public static final String SEND_SET_FULL="com.legend.xp.send_full_set";
 
     public static final String SHOW_SYSTEM="com.legend.xp.show_system";
 
@@ -59,6 +47,88 @@ public class ReceiverAction {
 
     public static final String SEND_NEW_PASS="com.legend.xp.send_new_pass_info";
 
-    public static final String TOGLE_BG="com.legend.xp.togle.bg";
+
+
+
+
+
+
+        public static final String SET_N_HEADER_VERTICAL_IMAGE="set_n_header_vertical_image";
+
+        public static final String SET_N_HEADER_HORIZONTAL_IMAGE="set_n_header_horizontal_image";
+
+
+
+
+        public static final String SET_O_HEADER_VERTICAL_IMAGE="set_o_header_vertical_image";
+
+        public static final String SET_O_HEADER_HORIZONTAL_IMAGE="set_o_header_horizontal_image";
+
+        public static final String SET_O_FULL_VERTICAL_IMAGE="set_o_full_vertical_image";
+
+        public static final String SET_O_FULL_HORIZONTAL_IMAGE="set_o_full_horizontal_image";
+
+
+        public static final String N_GET_EXPANSION_FLOAT="n_get_expansion_float";
+
+        public static final String SET_N_HEADER_ALPHA_VALUE="get_n_header_alpha_value";
+
+        public static final String SET_N_HEADER_GAO_SI="set_n_header_gao_si";
+
+        public static final String GET_N_HEADER_INFO="get_n_header_info";
+
+        public static final String SET_N_HEADER_GAO_SI_VALUE="set_n_header_gao_si_value";
+
+
+        public static final String DELETE_N_HEADER_BG="delete_n_header_bg";
+
+        public static final String SEND_N_HEADER_INFO="send_n_header_info";
+
+        public static final String GET_HEADER_ALL_INFO="get_header_all_info";
+
+        public static final String SEND_TO_UI_HEADER_ALL_INFO="send_to_ui_header_all_info";
+
+        public static final String SET_HEADER_QUALITY="set_header_quality";
+
+    /*
+    -------------------------------------------------------------------------------------------------------------
+     */
+
+
+        public static final String SET_N_FULL_VERTICAL_IMAGE="set_n_full_vertical_image";
+
+        public static final String SET_N_FULL_HORIZONTAL_IMAGE="set_n_full_horizontal_image";
+
+        public static final String N_FULL_ALPHA_VALUE="n_full_alpha_value";
+
+        public static final String SET_N_FULL_GAO_SI="set_n_full_gao_si";
+
+        public static final String SET_N_FULL_GAO_VALUE="set_n_full_gao_value";
+
+        public static final String DELETE_FULL_BG="delete_full_bg";
+
+        public static final String GET_FULL_INFO="get_full_info";
+
+        public static final String SET_FULL_QUALITY="set_full_quality";
+
+        public static final String SEND_TO_UI_FULL_ALL_INFO="send_to_ui_full_all_info";
+
+        public static final String SEND_FULL_INFO="send_full_info";
+
+        public static final String HEADER_TO_UI_INFO="header_to_ui_info";
+
+        public static final String UI_GET_HEADER_INFO="ui_get_header_info";
+
+        public static final String FULL_TO_UI_INFO="full_to_ui_info";
+
+        public static final String UI_GET_FULL_INFO="ui_get_full_info";
+
+
+        public static final String SEND_O_FLOAT="send_o_float";
+
+
+
+
+
 
 }

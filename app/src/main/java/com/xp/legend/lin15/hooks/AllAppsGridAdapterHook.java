@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
+
 import com.xp.legend.lin15.utils.ReceiverAction;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,6 +25,10 @@ public class AllAppsGridAdapterHook implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+
+        if (!isO()){
+            return;
+        }
 
         if (!lpparam.packageName.equals("org.lineageos.trebuchet")) {
             return;
@@ -48,6 +54,11 @@ public class AllAppsGridAdapterHook implements IXposedHookLoadPackage {
             }
         });
 
+    }
+
+    private boolean isO() {
+
+        return Build.VERSION.SDK_INT == Build.VERSION_CODES.O || Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1;
     }
 
     class AdapterReceiver extends BroadcastReceiver {

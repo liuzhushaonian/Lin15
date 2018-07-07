@@ -14,23 +14,17 @@
 
     <string name="string_about">
 
-        额，这里是lin15的说明书。\n\n
+        这里是lin15的说明书。\n\n
 
-        但凡是8.0且能装XP框架的ROM大概都能设置背景图\n\n
+        但凡是7.0或8.0且能装XP框架的ROM大概都能设置背景图\n\n
         我并未使用资源钩子\n
         而是纯Java代码写的\n
+        \n
+
         图片压缩功能个人认为最低就可以了\n
         所占内存是最好的一半\n
         也看不出什么差别来\n
         当然大内存用户随意\n\n
-
-        如果设置全部时一直提示无法获取高度\n
-        或是高度本身就有问题\n
-        可以尝试自定义高度\n
-        我手上小米5的高度大概是1200~1400\n
-        所以高度可以自测\n
-        根据自己手机的屏幕高度来大概估计\n
-        或是直接尺子量（骚操作）\n\n
 
         高斯模糊你们可以随意\n
         模糊数值越大越模糊\n\n
@@ -44,16 +38,46 @@
 
     </string>
 
-    <string name="hongbao">打赏</string>
 
-    <string name="hongbao_content">没错这是个伪打赏\n\n
-        这里只有一个支付宝的吱口令\n\n
-        我知道很多人不会打赏的\n\n
-        那就领个红包\n\n
-        让我喝瓶阔落吧\n\n
-        点击下方的复制吱口令\n\n
-        打开支付宝即可(有概率)获得两份红包\n\n
-        所以兄dei领个红包吧！\n
+        <!-- TODO: Remove or change this placeholder text -->
+        <string name="hello_blank_fragment">Hello blank fragment</string>
+
+        <string name="bg_alpha">透明度</string>
+
+        <string name="header_heng">头部-横屏</string>
+
+        <string name="header_shu">头部-竖屏</string>
+
+        <string name="full_heng">全部-横屏</string>
+
+        <string name="full_shu">全部-竖屏</string>
+
+        <string name="setting_info">点击设置&amp;长按取消</string>
+
+        <string name="gaoji">高级功能(捐赠版)</string>
+
+        <string name="gaosi">高斯模糊</string>
+
+        <string name="gao_si_value">高斯模糊半径</string>
+
+        <string name="best">最好(大内存)</string>
+
+        <string name="lower">最低(低内存)</string>
+
+        <string name="quality">图片质量</string>
+
+        <string name="shang">捐赠</string>
+
+        <string name="about">关于</string>
+
+        <string name="shang_info">
+
+        为了能写出这个插件没少阅读源码\n
+        也为这个头疼了好几天\n
+        如果你喜欢这个插件\n
+        也有一定的财富\n
+        那就请我喝一罐阔落吧\n
+        感谢\n
 
     </string>
 
