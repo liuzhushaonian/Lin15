@@ -207,4 +207,14 @@ public class MainPresenter {
 
     }
 
+    public void switchBg(Activity activity,boolean is){
+
+        Intent intent=new Intent(ReceiverAction.TOGLE_BG);
+
+        intent.putExtra("change",is);
+
+        activity.sendBroadcast(intent);
+
+    }
+
 }

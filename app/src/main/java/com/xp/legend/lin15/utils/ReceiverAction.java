@@ -59,4 +59,6 @@ public class ReceiverAction {
 
     public static final String SEND_NEW_PASS="com.legend.xp.send_new_pass_info";
 
+    public static final String TOGLE_BG="com.legend.xp.togle.bg";
+
 }
