@@ -5,11 +5,11 @@ public class Conf {
 
     public static final String SHARE="warau";
 
-    public static final String N_HEADER_VERTICAL_FILE="n_header_vertical_file";
+    public static final String N_HEADER_VERTICAL_FILE="header_file";
 
     public static final String N_HEADER_HORIZONTAL_FILE="n_header_horizontal_file";
 
-    public static final String N_FULL_VERTICAL_FILE="n_full_vertical_file";
+    public static final String N_FULL_VERTICAL_FILE="full_file";
 
     public static final String N_FULL_HORIZONTAL_FILE="n_full_horizontal_file";
 
