@@ -59,7 +59,7 @@ public class FullPresenter {
 
         Intent intent=new Intent(ReceiverAction.SET_FULL_QUALITY);
 
-        intent.putExtra(Conf.FULL_QUALITY,type);
+        intent.putExtra(Conf.IMAGE_QUALITY,type);
 
         activity.sendBroadcast(intent);
 

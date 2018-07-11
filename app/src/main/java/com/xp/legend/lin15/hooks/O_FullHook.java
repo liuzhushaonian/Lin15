@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.xp.legend.lin15.bean.Full;
@@ -28,6 +29,7 @@ import java.io.FileOutputStream;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -74,6 +76,23 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 fullView = (View) param.thisObject;//获取实例
 
+                View view=((ViewGroup)fullView).getChildAt(0);
+
+                int id=AndroidAppHelper
+                        .currentApplication()
+                        .getResources()
+                        .getIdentifier("qs_background", "id", lpparam.packageName);
+
+                if (view!=null&&view.getId()==id){
+                    view.setVisibility(View.GONE);
+                }
+
+//                ((ViewGroup)fullView).getChildAt(0).setVisibility(View.GONE);//去掉背景
+
+//                ViewGroup viewGroup= (ViewGroup) param.thisObject;
+//
+//                fullView=viewGroup.getChildAt(0);
+
                 header= (View) XposedHelpers.getObjectField(param.thisObject,"mHeader");
 
                 sharedPreferences = AndroidAppHelper.currentApplication().getSharedPreferences(Conf.SHARE, Context.MODE_PRIVATE);
@@ -99,6 +118,19 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
                         SensorManager.SENSOR_DELAY_NORMAL);
 
                 myOrientationEventChangeListener.enable();
+
+//                XposedBridge.log("full---count--->>"+viewGroup.getChildCount());
+//
+//                XposedBridge.log("full----------->>"+fullView.toString());
+//
+//                for (int i=0;i<viewGroup.getChildCount();i++){
+//
+//                    XposedBridge.log("lin15------->>>"+viewGroup.getChildAt(i).toString());
+//
+//                }
+
+
+
 
 
             }

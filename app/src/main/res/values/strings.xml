@@ -39,45 +39,51 @@
     </string>
 
 
-        <!-- TODO: Remove or change this placeholder text -->
-        <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
-        <string name="bg_alpha">透明度</string>
+    <string name="bg_alpha">透明度</string>
 
-        <string name="header_heng">头部-横屏</string>
+    <string name="header_heng">头部-横屏</string>
 
-        <string name="header_shu">头部-竖屏</string>
+    <string name="header_shu">头部-竖屏</string>
 
-        <string name="full_heng">全部-横屏</string>
+    <string name="full_heng">全部-横屏</string>
 
-        <string name="full_shu">全部-竖屏</string>
+    <string name="full_shu">全部-竖屏</string>
 
-        <string name="setting_info">点击设置&amp;长按取消</string>
+    <string name="setting_info">点击设置&amp;长按取消</string>
 
-        <string name="gaoji">高级功能(捐赠版)</string>
+    <string name="gaoji">高级功能(捐赠版)</string>
 
-        <string name="gaosi">高斯模糊</string>
+    <string name="gaosi">高斯模糊</string>
 
-        <string name="gao_si_value">高斯模糊半径</string>
+    <string name="gao_si_value">高斯模糊半径</string>
 
-        <string name="best">最好(大内存)</string>
+    <string name="best">最好(大内存)</string>
 
-        <string name="lower">最低(低内存)</string>
+    <string name="lower">最低(低内存)</string>
 
-        <string name="quality">图片质量</string>
+    <string name="quality">图片质量</string>
 
-        <string name="shang">捐赠</string>
+    <string name="shang">捐赠</string>
 
-        <string name="about">关于</string>
+    <string name="about">关于</string>
 
-        <string name="shang_info">
+    <string name="shang_info">
 
         为了能写出这个插件没少阅读源码\n
         也为这个头疼了好几天\n
-        如果你喜欢这个插件\n
-        也有一定的财富\n
+        如果您喜欢这个插件\n
+        也有一定的积蓄\n
         那就请我喝一罐阔落吧\n
-        感谢\n
+        感谢\n\n
+        如果您并不富裕\n
+        请不要捐赠\n
+        因为lin15所有功能都是免费的
+        哪怕您不捐赠\n
+        也一样可以使用它\n
+
 
     </string>
 
