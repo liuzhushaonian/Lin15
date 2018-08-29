@@ -172,11 +172,13 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         return view;
     }
 
+
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
         presenter.getAllFullInfo(getActivity());
+
     }
 
     @Override
@@ -307,6 +309,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
 
+            if (!isAutoSet) {
 
                 switch (checkedId) {
 
@@ -321,7 +324,13 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                         break;
 
+
                 }
+                Log.d("set----->>>>",""+checkedId);
+
+            }
+
+            isAutoSet=false;
 
 
 //            presenter.sendQuality(getActivity(),type);
@@ -333,9 +342,6 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-
 
         switch (requestCode){
 
@@ -396,8 +402,12 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
     }
 
+    boolean isAutoSet=false;
+
+
+
     /**
-     * 恢复界面 从header处获取数据并恢复
+     * 恢复界面 从full处获取数据并恢复
      * @param result
      */
     private void initUi(Result result) {
@@ -434,6 +444,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         autoSet=true;
 
+        isAutoSet=true;
+
         switch (type) {
 
             case Conf.LOW_QUALITY:
@@ -452,8 +464,6 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         }
 
         switchGao.setChecked(result.isGao());
-
-
         seekBarGao.setProgress(result.getGaoValue());
         seekBarGao.setEnabled(result.isGao());
 

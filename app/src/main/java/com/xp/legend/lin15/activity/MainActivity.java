@@ -107,6 +107,10 @@ public class MainActivity extends BaseActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+//        viewPager.setOffscreenPageLimit(2);
+
+        viewPager.setCurrentItem(1,false);//保证全部的图片质量不会失效
+
     }
 
     private void initTab(){
@@ -119,6 +123,13 @@ public class MainActivity extends BaseActivity {
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.mode_full)));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+
+        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent,getTheme()));
+
+        tabLayout.setSelectedTabIndicatorHeight(getResources().getDimensionPixelOffset(R.dimen.tab_height));
+
+        tabLayout.setTabTextColors(getResources().getColor(R.color.colorGrey,getTheme()),getResources().getColor(R.color.colorAccent,getTheme()));
+
 
     }
 
