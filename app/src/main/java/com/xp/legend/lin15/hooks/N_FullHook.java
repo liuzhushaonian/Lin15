@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import java.io.FileOutputStream;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -156,7 +158,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
             intentFilter.addAction(ReceiverAction.DELETE_FULL_BG);
 
             intentFilter.addAction(ReceiverAction.GET_FULL_INFO);
+
             intentFilter.addAction(ReceiverAction.SET_FULL_QUALITY);
+
             intentFilter.addAction(ReceiverAction.UI_GET_FULL_INFO);
 
 
@@ -224,6 +228,10 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     break;
                 case ReceiverAction.SET_FULL_QUALITY:
+
+                    XposedBridge.log("lin15------>>>get the action");
+
+                    Log.d("lin15------>>>","get the action");
 
                     getQuality(intent);
 
@@ -857,6 +865,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
         if (!isGao) {
             setBg();//重新设置画质
         }
+
+        XposedBridge.log("lin15----->>>>"+quality);
+
 
         sharedPreferences.edit().putInt(Conf.FULL_QUALITY, quality).apply();
 

@@ -3,6 +3,7 @@ package com.xp.legend.lin15.presenter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import com.xp.legend.lin15.interfaces.IFullFragment;
 import com.xp.legend.lin15.utils.Conf;
@@ -62,6 +63,8 @@ public class FullPresenter {
         intent.putExtra(Conf.IMAGE_QUALITY,type);
 
         activity.sendBroadcast(intent);
+
+        Log.d("sssss----->>>","发送成功！！！");
 
     }
 

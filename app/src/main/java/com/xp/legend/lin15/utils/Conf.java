@@ -59,10 +59,10 @@ public class Conf {
 
     public static final String IMAGE_QUALITY="quality";
 
-    public static final int HEIGHT_QUALITY=0x00401;
+    public static final int HEIGHT_QUALITY=401;
 
 
-    public static final int LOW_QUALITY=0x00403;
+    public static final int LOW_QUALITY=403;
 
 
     public static final String FULL_ALPHA_VALUE="full_alpha_value";

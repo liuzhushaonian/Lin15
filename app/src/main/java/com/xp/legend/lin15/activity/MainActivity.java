@@ -115,8 +115,8 @@ public class MainActivity extends BaseActivity {
             return;
         }
 
-        tabLayout.addTab(tabLayout.newTab().setText("头部"));
-        tabLayout.addTab(tabLayout.newTab().setText("全部"));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.mode_top)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.mode_full)));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
 
@@ -152,19 +152,19 @@ public class MainActivity extends BaseActivity {
 
         textView.setText(content);
 
-        builder.setView(view).setTitle("捐赠").setPositiveButton("支付宝", (DialogInterface dialog, int which) -> {
+        builder.setView(view).setTitle(getString(R.string.shang)).setPositiveButton(getString(R.string.AliPay), (DialogInterface dialog, int which) -> {
 
             showImage(10);
 
         });
 
-        builder.setNegativeButton("微信",(dialog, which) -> {
+        builder.setNegativeButton(getString(R.string.wechat),(dialog, which) -> {
 
             showImage(20);
 
         });
 
-        builder.setNeutralButton("QQ",(dialog, which) -> {
+        builder.setNeutralButton(getString(R.string.QQ),(dialog, which) -> {
 
             showImage(30);
 
@@ -210,11 +210,11 @@ public class MainActivity extends BaseActivity {
             return true;
         });
 
-        builder.setView(view).setPositiveButton("取消",(dialog, which) -> {
+        builder.setView(view).setPositiveButton(getString(R.string.cancel),(dialog, which) -> {
 
             builder.create().cancel();
 
-        }).setTitle("感谢捐赠(长按保存)").show();
+        }).setTitle(getString(R.string.thanks)).show();
 
     }
 
@@ -252,7 +252,7 @@ public class MainActivity extends BaseActivity {
 
 
                 } else {
-                    Toast.makeText(this, "无法获取权限，请赋予相关权限", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.save_info), Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -344,7 +344,7 @@ public class MainActivity extends BaseActivity {
 
         }
 
-        Toast.makeText(this, "保存在sdcard/lin15下了,感谢你的打赏与鼓励~", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.save), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -362,7 +362,7 @@ public class MainActivity extends BaseActivity {
 
         textView.setText(content);
 
-        builder.setView(view).setPositiveButton("确定",(dialog, which) -> {
+        builder.setView(view).setPositiveButton(getString(R.string.determine),(dialog, which) -> {
 
             builder.create().cancel();
 

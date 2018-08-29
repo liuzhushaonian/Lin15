@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Lin15</string>
+    <string name="quick_item">下拉菜单设置</string>
+    <string name="color_item">选择颜色</string>
+    <string name="image_item">选择图片</string>
+    <string name="alpha_item">透明度 100%</string>
+    <string name="background">背景</string>
+    <string name="bg_mode">背景设置模式(点击设置&amp;长按复原)</string>
+    <string name="mode_top">头部</string>
+    <string name="mode_foot">底部</string>
+    <string name="mode_full">全部</string>
+    <string name="resume">复原</string>
+    <string name="cancel_the_data">取消关闭移动数据确认</string>
+
+    <string name="string_about">
+
+        这里是lin15的说明书。\n\n
+
+        但凡是7.0或8.0且能装XP框架的ROM大概都能设置背景图\n\n
+        我并未使用资源钩子\n
+        而是纯Java代码写的\n
+        \n
+
+        图片压缩功能个人认为最低就可以了\n
+        所占内存是最好的一半\n
+        也看不出什么差别来\n
+        当然大内存用户随意\n\n
+
+        高斯模糊你们可以随意\n
+        模糊数值越大越模糊\n\n
+
+        以下功能仅针对lineageOS15\n
+        请不是lineageOS的各位不要调皮\n
+
+        1、隐藏应用功能\n
+        它的入口在lineageOS15官方桌面 -> 主屏幕设置(长按桌面空白处出现) -> 更多 -> 隐藏应用
+        \n\n
+
+        2、取消关闭移动数据时弹窗提示\n
+        关闭移动数据时，将不会再有弹窗提示是否关闭，而是直接关闭\n
+
+
+        我是legend\n
+        一个拥有匠心的开发者\n
+
+
+    </string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="bg_alpha">透明度</string>
+
+    <string name="header_heng">头部-横屏</string>
+
+    <string name="header_shu">头部-竖屏</string>
+
+    <string name="full_heng">全部-横屏</string>
+
+    <string name="full_shu">全部-竖屏</string>
+
+    <string name="setting_info">点击设置&amp;长按取消</string>
+
+    <string name="gaoji">高级功能(捐赠版)</string>
+
+    <string name="gaosi">高斯模糊</string>
+
+    <string name="gao_si_value">高斯模糊半径</string>
+
+    <string name="best">最好(大内存)</string>
+
+    <string name="lower">最低(低内存)</string>
+
+    <string name="quality">图片质量</string>
+
+    <string name="shang">捐赠</string>
+
+    <string name="about">关于</string>
+
+    <string name="shang_info">
+
+        为了能写出这个模块没少阅读源码\n
+        也为这个头疼了好几天\n
+        如果您喜欢这个模块\n
+        也有一定的积蓄\n
+        那就请我喝一罐阔落吧\n
+        感谢\n\n
+        如果您并不富裕\n
+        请不要捐赠\n
+        因为lin15所有功能都是免费的
+        哪怕您不捐赠\n
+        也一样可以使用它\n
+
+
+    </string>
+    
+    
+    <string name="determine">确定</string>
+
+    <string name="cancel">取消</string>
+
+    <string name="AliPay">支付宝</string>
+    <string name="QQ">QQ</string>
+    <string name="wechat">微信</string>
+
+    <string name="thanks">"感谢捐赠(长按保存)"</string>
+
+    <string name="save_info">无法获取权限，请赋予相关权限</string>
+
+    <string name="save">保存在sdcard/lin15下了,感谢你的打赏与鼓励~</string>
+
+    <string name="all_info1">请在竖屏状态下下拉一次通知面板到底部</string>
+
+    <string name="all_info2">请在横屏状态下下拉一次通知面板到底部</string>
+
+    <string name="header_info1">无法获取准确宽高，请下拉一次设置面板</string>
+
+    <string name="header_info2">无法获取准确宽高，请横屏一次后再设置</string>
+
+</resources>

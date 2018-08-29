@@ -109,7 +109,7 @@ public class ReceiverAction {
 
         public static final String GET_FULL_INFO="get_full_info";
 
-        public static final String SET_FULL_QUALITY="set_full_quality";
+        public static final String SET_FULL_QUALITY="set_full_quality_ll";
 
         public static final String SEND_TO_UI_FULL_ALL_INFO="send_to_ui_full_all_info";
 

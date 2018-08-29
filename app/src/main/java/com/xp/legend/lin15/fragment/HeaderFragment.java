@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +104,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
                             if (shu_width <= 0 || shu_height <= 0) {
 
-                                Toast.makeText(getContext(), "无法获取准确宽高，请下拉一次设置面板", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.header_info1), Toast.LENGTH_SHORT).show();
 
                                 return;
 
@@ -122,7 +123,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
                             if (heng_width <= 0 || heng_height <= 0) {
 
-                                Toast.makeText(getContext(), "无法获取准确宽高，请横屏一次后再设置", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.header_info2), Toast.LENGTH_SHORT).show();
 
                                 return;
 
@@ -231,7 +232,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                String s = "透明度" + progress;
+                String s = getString(R.string.bg_alpha) +" "+ progress;
 
                 alphaInfo.setText(s);
             }
@@ -331,6 +332,9 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                     break;
 
             }
+
+            Log.d("header--发送-->>",""+checkedId);
+
 
         });
 

@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
@@ -242,6 +243,9 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     break;
                 case ReceiverAction.SET_FULL_QUALITY:
+
+                    Log.d("get---->>","get the action");
+
 
                     getQuality(intent);
 
@@ -788,29 +792,35 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private void getQuality(Intent intent) {
 
-        int type = intent.getIntExtra(Conf.IMAGE_QUALITY, Conf.LOW_QUALITY);
+//        int type = intent.getIntExtra(Conf.IMAGE_QUALITY, Conf.LOW_QUALITY);
 
-        switch (type) {
-
-            case Conf.HEIGHT_QUALITY:
-
-                this.quality = Conf.HEIGHT_QUALITY;
-
-                break;
+        this.quality=intent.getIntExtra(Conf.IMAGE_QUALITY, Conf.LOW_QUALITY);
 
 
-            case Conf.LOW_QUALITY:
-
-                this.quality = Conf.LOW_QUALITY;
-
-                break;
-
-
-        }
+//        switch (type) {
+//
+//            case Conf.HEIGHT_QUALITY:
+//
+//                this.quality = Conf.HEIGHT_QUALITY;
+//
+//                break;
+//
+//
+//            case Conf.LOW_QUALITY:
+//
+//                this.quality = Conf.LOW_QUALITY;
+//
+//                break;
+//
+//
+//        }
 
         if (!isGaoSi) {
             setBg();//重新设置画质
         }
+
+
+        Log.d("quality---->>>",""+quality);
 
         sharedPreferences.edit().putInt(Conf.FULL_QUALITY, quality).apply();
 

@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Lin15</string>
     <string name="quick_item">下拉菜单设置</string>
     <string name="color_item">选择颜色</string>
@@ -29,8 +31,16 @@
         高斯模糊你们可以随意\n
         模糊数值越大越模糊\n\n
 
-        隐藏应用仅针对lineageOS15官方桌面\n
-        请不是lineageOS的各位不要调皮\n\n
+        以下功能仅针对lineageOS15\n
+        请不是lineageOS的各位不要调皮\n
+
+        1、隐藏应用功能\n
+        它的入口在lineageOS15官方桌面 -> 主屏幕设置(长按桌面空白处出现) -> 更多 -> 隐藏应用
+        \n\n
+
+        2、取消关闭移动数据时弹窗提示\n
+        关闭移动数据时，将不会再有弹窗提示是否关闭，而是直接关闭\n
+
 
         我是legend\n
         一个拥有匠心的开发者\n
@@ -72,9 +82,9 @@
 
     <string name="shang_info">
 
-        为了能写出这个插件没少阅读源码\n
+        为了能写出这个模块没少阅读源码\n
         也为这个头疼了好几天\n
-        如果您喜欢这个插件\n
+        如果您喜欢这个模块\n
         也有一定的积蓄\n
         那就请我喝一罐阔落吧\n
         感谢\n\n
@@ -87,5 +97,27 @@
 
     </string>
 
+
+    <string name="determine">确定</string>
+
+    <string name="cancel">取消</string>
+
+    <string name="AliPay">支付宝</string>
+    <string name="QQ">QQ</string>
+    <string name="wechat">微信</string>
+
+    <string name="thanks">"感谢捐赠(长按保存)"</string>
+
+    <string name="save_info">无法获取权限，请赋予相关权限</string>
+
+    <string name="save">保存在sdcard/lin15下了,感谢你的打赏与鼓励~</string>
+
+    <string name="all_info1">请在竖屏状态下下拉一次通知面板到底部</string>
+
+    <string name="all_info2">请在横屏状态下下拉一次通知面板到底部</string>
+
+    <string name="header_info1">无法获取准确宽高，请下拉一次设置面板</string>
+
+    <string name="header_info2">无法获取准确宽高，请横屏一次后再设置</string>
 
 </resources>

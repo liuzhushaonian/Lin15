@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="app_name">Lin15</string>
+    <string name="quick_item">QuickSettingBackground</string>
+    <string name="color_item">选择颜色</string>
+    <string name="image_item">选择图片</string>
+    <string name="alpha_item">透明度 100%</string>
+    <string name="background">背景</string>
+    <string name="bg_mode">背景设置模式(点击设置&amp;长按复原)</string>
+    <string name="mode_top">Header</string>
+    <string name="mode_foot">底部</string>
+    <string name="mode_full">All</string>
+    <string name="resume">复原</string>
+    <string name="cancel_the_data">取消关闭移动数据确认</string>
+
+    <string name="string_about">
+
+        Here is the manual for lin15.\n\n
+
+        But all Android 7.0 or 8.0 and can be installed xposed framework ROM can probably set the background image\n\n
+        I did not use resource hooks\n
+        But written in Java code\n
+        \n
+
+        Picture quality, personally think that ordinary quality is enough\n
+        The memory is the best half\n
+        I can’t see any difference.\n
+        Of course, large memory users are free\n\n
+
+        Gaussian blur, you can feel free\n
+        The larger the fuzzy value, the more blurred\n\n
+
+        The following features are only for lineageOS15\n
+        Please do not be naughty for everyone who is not lineageOS\n
+
+        1、Hide app features\n
+        Its entrance is at lineageOS15 official desktop -> HOME SETTINGS(This option appears after long pressing the blank space on the desktop) -> More -> 隐藏应用(Hidden application)
+        \n\n
+
+
+        2、Cancellation pop prompt when you close the mobile data\n
+        When you close the mobile data,
+        \n
+        there will be no more pop-up prompts to close,\n
+
+        but close directly.\n\n
+
+
+        I am legend\n
+        An ingenious developer\n
+
+        \n
+        (The above translation is from Google Translate)\n
+
+    </string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="bg_alpha">transparency</string>
+
+    <string name="header_heng">Header-Horizontal screen</string>
+
+    <string name="header_shu">Header-Vertical screen</string>
+
+    <string name="full_heng">All-Horizontal screen</string>
+
+    <string name="full_shu">All-Vertical screen</string>
+
+    <string name="setting_info">
+        Click to select image\n
+        Long press to resume
+    </string>
+
+    <string name="gaoji">Advanced Features</string>
+
+    <string name="gaosi">Gaussian blur</string>
+
+    <string name="gao_si_value">Gaussian blur radius</string>
+
+    <string name="best">Best(Large memory)</string>
+
+    <string name="lower">Ordinary(Small memory)</string>
+
+    <string name="quality">Picture quality</string>
+
+    <string name="shang">Donation</string>
+
+    <string name="about">About</string>
+
+    <string name="shang_info">
+
+        In order to write this module, there is no reading source code.\n
+        Also for this headache for a few days\n
+        If you like this module\n
+        There is also a certain amount of savings\n
+        Then please let me drink a can of Coke.\n
+        Thanks\n\n
+        If you are not rich\n
+        Please don't donate\n
+        Because all features of lin15 are free
+        Even if you don't donate\n
+        The same can be used\n
+
+        \n
+        (The above translation is from Google Translate)\n
+
+
+    </string>
+
+
+    <string name="determine">Determine</string>
+
+    <string name="cancel">Cancel</string>
+
+    <string name="AliPay">AliPay</string>
+    <string name="QQ">QQ</string>
+    <string name="wechat">WeChat</string>
+
+    <string name="thanks">"Thanks to donations(Long press to save the picture)"</string>
+
+    <string name="save_info">Please grant permission</string>
+
+    <string name="save">The picture is saved in sdcard/lin15,Thank you for your reward and encouragement~</string>
+
+    <string name="all_info1">Please pull down the quick setting panel to the bottom in portrait mode.</string>
+
+    <string name="all_info2">Please pull down the quick setting panel to the bottom in the horizontal screen state.</string>
+
+    <string name="header_info1">Unable to get accurate width and height, please pull down the quick setting panel once</string>
+
+    <string name="header_info2">Unable to get accurate width and height, please set it after horizontal screen</string>
+
+
+
+</resources>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
     private ImageView heng, shu;
     private Switch switchGao;
     private FullPresenter presenter;
+    private boolean autoSet=false;
 
     private int shu_width = -1;
 
@@ -100,7 +102,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                             if (shu_width<=0||shu_height<=0){
 
-                                Toast.makeText(context, "请在竖屏状态下下拉一次通知面板到底部", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, getString(R.string.all_info1), Toast.LENGTH_LONG).show();
 
                                 return;
 
@@ -120,7 +122,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                             if (heng_width<=0||heng_height<=0){
 
-                                Toast.makeText(context, "请在横屏状态下下拉一次通知面板到底部", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, getString(R.string.all_info2), Toast.LENGTH_LONG).show();
 
                                 return;
 
@@ -157,13 +159,13 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+        register();
+
         View view=inflater.inflate(R.layout.fragment_full, container, false);
 
         presenter=new FullPresenter(this);
 
         getComponent(view);
-
-        register();
 
         event();
 
@@ -225,7 +227,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         seekBarAlpha.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String s=getString(R.string.bg_alpha)+progress;
+                String s=getString(R.string.bg_alpha)+" "+progress;
 
                 alphaInfo.setText(s);
             }
@@ -305,27 +307,24 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
 
-            int type=Conf.LOW_QUALITY;
 
-            switch (checkedId){
+                switch (checkedId) {
 
-                case R.id.full_best:
+                    case R.id.full_best:
 
-                    type= Conf.HEIGHT_QUALITY;
+                        presenter.sendQuality(getActivity(), Conf.HEIGHT_QUALITY);
+                        break;
 
-                    break;
+                    case R.id.full_lower:
+
+                        presenter.sendQuality(getActivity(), Conf.LOW_QUALITY);
+
+                        break;
+
+                }
 
 
-                case R.id.full_lower:
-
-                    type=Conf.LOW_QUALITY;
-
-                    break;
-
-
-            }
-
-            presenter.sendQuality(getActivity(),type);
+//            presenter.sendQuality(getActivity(),type);
 
         });
 
@@ -430,6 +429,10 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         gaoInfo.setText(gao_info);
 
         int type = result.getQuality();
+
+        Log.d("type---->>",type+"");
+
+        autoSet=true;
 
         switch (type) {
 

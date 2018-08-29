@@ -103,8 +103,8 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
                 Preference preference = new Preference(fragment.getContext());
 
                 preference.setKey("hide_icon");
-                preference.setTitle("隐藏应用");
-                preference.setSummary("隐藏那些……你懂的~");
+                preference.setTitle("隐藏应用(Hidden application)");
+                preference.setSummary("隐藏那些……你懂的~(Hide those... you know~)");
 
                 preferenceScreen.addPreference(preference);
 
@@ -159,7 +159,7 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
         EditText editText = new EditText(activity);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        builder.setPositiveButton("下一步", (dialogInterface, i) -> {
+        builder.setPositiveButton("下一步(next)", (dialogInterface, i) -> {
 
             String pass = editText.getText().toString();
 
@@ -170,7 +170,7 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
             confirmPassDialog(activity, pass);
         });
 
-        builder.setView(editText).setTitle("请设置密码");
+        builder.setView(editText).setTitle("请设置密码(Please set a password)");
 
 
         builder.show();
@@ -191,7 +191,7 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
         EditText editText = new EditText(activity);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        builder.setPositiveButton("确认", (dialogInterface, i) -> {
+        builder.setPositiveButton("确认(Confirm)", (dialogInterface, i) -> {
 
             String confirm_pass = editText.getText().toString();
 
@@ -202,12 +202,12 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
 
             } else {
 
-                Toast.makeText(activity, "密码不一致", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "密码不一致(Inconsistent password)", Toast.LENGTH_SHORT).show();
             }
 
         });
 
-        builder.setView(editText).setTitle("请确认密码");
+        builder.setView(editText).setTitle("请确认密码(Please confirm your password)");
 
         builder.show();
 
@@ -271,14 +271,14 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
 
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        builder.setPositiveButton("确定", (dialogInterface, i) -> {
+        builder.setPositiveButton("确定(Determine)", (dialogInterface, i) -> {
             String pass = editText.getText().toString();
 
             confirmPass(activity, pass);
 
         });
 
-        builder.setView(editText).setTitle("请输入密码");
+        builder.setView(editText).setTitle("请输入密码(Please enter your password)");
 
         builder.show();
 
@@ -294,7 +294,7 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
         String con_pass = getMd5(pass);
 
         if (con_pass == null) {
-            Toast.makeText(AndroidAppHelper.currentApplication(), "密码错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AndroidAppHelper.currentApplication(), "密码错误(wrong password)", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -305,7 +305,7 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
             showHideApps(activity);
         } else {
 
-            Toast.makeText(AndroidAppHelper.currentApplication(), "密码错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AndroidAppHelper.currentApplication(), "密码错误(wrong password)", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -336,15 +336,15 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
 
         recyclerView.setLayoutParams(layoutParams);
 
-        builder.setNegativeButton("添加应用", (dialogInterface, i) -> {
+        builder.setNegativeButton("添加应用(Add apps)", (dialogInterface, i) -> {
             showAllAppsDialog(activity);
         });
 
-        builder.setNeutralButton("退出", (dialogInterface, i) -> {
+        builder.setNeutralButton("退出(exit)", (dialogInterface, i) -> {
             builder.create().cancel();
         });
 
-        builder.setTitle("已隐藏的APP(点击启动，长按取消隐藏)").setView(recyclerView).create().show();
+        builder.setTitle("已隐藏的APP&点击启动&长按取消隐藏(Hidden APP & Click to start & long press to unhide)").setView(recyclerView).create().show();
 
         new Thread() {
             @Override
@@ -414,11 +414,11 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
 
-        builder.setNeutralButton("退出", (dialogInterface, i) -> {
+        builder.setNeutralButton("退出(exit)", (dialogInterface, i) -> {
             builder.create().cancel();
         });
 
-        builder.setNegativeButton("确认添加", (dialogInterface, i) -> {
+        builder.setNegativeButton("确认添加(Confirm add)", (dialogInterface, i) -> {
 
             //添加应用到隐藏
 
@@ -426,7 +426,7 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
 
         });
 
-        builder.setTitle("请选择需要隐藏的应用").setView(recyclerView).create().show();
+        builder.setTitle("请选择需要隐藏的应用(Please select some apps to hide)").setView(recyclerView).create().show();
 
         new Thread() {
             @Override
@@ -514,7 +514,7 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
 
         hideList = null;
 
-        Toast.makeText(AndroidAppHelper.currentApplication(), "添加成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(AndroidAppHelper.currentApplication(), "添加成功(Added successfully)", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -600,7 +600,7 @@ public class SettingsActivityHook implements IXposedHookLoadPackage {
         AndroidAppHelper.currentApplication().sendBroadcast(intent);
 
 
-        Toast.makeText(AndroidAppHelper.currentApplication(), "删除成功~", Toast.LENGTH_SHORT).show();
+        Toast.makeText(AndroidAppHelper.currentApplication(), "删除成功~(Deleted successfully~)", Toast.LENGTH_SHORT).show();
 
 
     }
