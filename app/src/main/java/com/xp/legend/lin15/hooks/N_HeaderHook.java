@@ -845,9 +845,9 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         public void onOrientationChanged(int orientation) {
 
 
-            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
-                return;  //手机平放时，检测不到有效的角度
-            }//只检测是否有四个角度的改变
+//            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+//                return;  //手机平放时，检测不到有效的角度
+//            }//只检测是否有四个角度的改变
 
 
             if (orientation > 350 || orientation < 10) { //0度

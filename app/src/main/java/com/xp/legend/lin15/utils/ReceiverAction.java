@@ -126,9 +126,11 @@ public class ReceiverAction {
 
         public static final String SEND_O_FLOAT="send_o_float";
 
+        public static final String SEND_FULL_SCROLL="send_full_scroll";
 
+        public static final String SEND_CLEAN_ACTION="send_clean_action";
 
-
+        public static final String SEND_CUSTOM_HEIGHT="send_custom_height_by_user";
 
 
 }

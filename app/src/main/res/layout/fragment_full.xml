@@ -153,6 +153,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:text="@string/lower"
+                    android:checked="true"
                     />
 
 
@@ -223,6 +224,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/switch_full_gao" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/scroll"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seekBar_gao_value"
+                android:id="@+id/scrollSwitch"
+                android:paddingBottom="16dp"
+                />
 
 
         </android.support.constraint.ConstraintLayout>

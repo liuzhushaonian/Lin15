@@ -120,4 +120,14 @@ public class FullPresenter {
 
     }
 
+    public void sendScroll(Activity activity,boolean isScroll){
+
+        Intent intent=new Intent(ReceiverAction.SEND_FULL_SCROLL);
+
+        intent.putExtra(Conf.FULL_SCROLL,isScroll);
+
+        activity.sendBroadcast(intent);
+
+    }
+
 }

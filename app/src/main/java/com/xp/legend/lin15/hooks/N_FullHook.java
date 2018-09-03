@@ -15,6 +15,8 @@ import android.os.Build;
 import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -40,6 +42,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private static final String METHOD = "onFinishInflate";
 
+    private static final String METHOD2="setQsExpansion";
+
 
     private View full;
 
@@ -62,6 +66,10 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
     private MyOrientationEventChangeListener myOrientationEventChangeListener;
 
     private View header;
+
+    private ImageView bgView, hengBgView;
+
+    private boolean isScroll = true;//是否滚动背景
 
 
     @Override
@@ -92,6 +100,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 gaoValue = sharedPreferences.getInt(Conf.FULL_GAO_VALUE, 25);
 
+                isScroll = sharedPreferences.getBoolean(Conf.FULL_SCROLL, true);
+
 
                 drawable = AndroidAppHelper
                         .currentApplication()
@@ -112,16 +122,41 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
         });
 
+
+        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, METHOD2, float.class, float.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+
+                float f= (float) param.args[0];
+
+                autoChangeAlpha(f);
+
+            }
+        });
+
+
     }
 
 
     private void autoSetBg() {
 
-        if (isGao) {
-            setGaoImage();
-        } else {
+//        if (isGao) {
+//            setGaoImage();
+//        } else {
+//            setBg();
+//        }
+
+        if (isScroll){
+
+            setScrollBg();
+
+        }else {
+
             setBg();
         }
+
+
 
     }
 
@@ -163,6 +198,10 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             intentFilter.addAction(ReceiverAction.UI_GET_FULL_INFO);
 
+            intentFilter.addAction(ReceiverAction.SEND_FULL_SCROLL);
+            intentFilter.addAction(ReceiverAction.SEND_CLEAN_ACTION);
+
+            intentFilter.addAction(ReceiverAction.SEND_CUSTOM_HEIGHT);
 
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter);
 
@@ -229,17 +268,13 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
                     break;
                 case ReceiverAction.SET_FULL_QUALITY:
 
-                    XposedBridge.log("lin15------>>>get the action");
-
-                    Log.d("lin15------>>>","get the action");
-
                     getQuality(intent);
 
                     break;
 
                 case ReceiverAction.N_GET_EXPANSION_FLOAT:
 
-                    autoChangeAlpha(intent);
+//                    autoChangeAlpha(intent);
 
                     break;
 
@@ -250,9 +285,67 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     break;
 
+                case ReceiverAction.SEND_FULL_SCROLL:
+
+                    setScroll(intent);
+
+                    break;
+
+                case ReceiverAction.SEND_CLEAN_ACTION:
+
+                    resetAll();
+
+                    break;
+
+                case ReceiverAction.SEND_CUSTOM_HEIGHT://自定义高度
+
+                    setCustomHeight(intent);
+
+                    break;
+
             }
         }
     }
+
+    private void resetAll() {
+
+        String path = "/data/user_de/0/" + AndroidAppHelper.currentApplication().getPackageName() + "/shared_prefs/" + Conf.SHARE+".xml";
+
+        File file = new File(path);
+
+        if (file.exists()) {
+            file.delete();
+
+            Toast.makeText(AndroidAppHelper.currentApplication(), "重置设置(reset success)", Toast.LENGTH_SHORT).show();
+        }
+
+
+        if (getHeaderFile(Conf.HORIZONTAL).exists()){
+
+            getHeaderFile(Conf.HORIZONTAL).delete();
+
+        }
+
+        if (getHeaderFile(Conf.VERTICAL).exists()){
+            getHeaderFile(Conf.VERTICAL).delete();
+        }
+
+        if (getNFullFile(Conf.HORIZONTAL).exists()){
+            getNFullFile(Conf.HORIZONTAL).delete();
+        }
+
+        if (getNFullFile(Conf.VERTICAL).exists()){
+            getNFullFile(Conf.VERTICAL).delete();
+        }
+
+
+
+
+
+//        Toast.makeText(AndroidAppHelper.currentApplication(), "重置成功(reset success)", Toast.LENGTH_SHORT).show();
+
+    }
+
 
 
     /**
@@ -352,9 +445,160 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 
     /**
+     * 设置滚动背景
+     */
+    private void setScrollBg() {
+
+
+        File file = null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+        switch (this.quality) {
+
+            case Conf.HEIGHT_QUALITY:
+
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+                break;
+
+
+            case Conf.LOW_QUALITY:
+
+                options.inPreferredConfig = Bitmap.Config.RGB_565;
+
+                break;
+
+
+        }
+
+
+        if (isVertical()) {//竖屏
+
+            if (bgView == null) {//如果为null，则重新实例化
+                bgView = new ImageView(AndroidAppHelper.currentApplication());
+            }
+
+            file = getNFullFile(Conf.VERTICAL);
+
+            if (!file.exists()) {//文件不存在
+
+                bgView.setVisibility(View.GONE);//实例化后的惨案
+                full.setBackground(getDefaultDrawable());
+
+                return;
+
+            }
+
+
+            if (bgView.getVisibility() == View.GONE) {//如果不可见，则设置为可见
+                bgView.setVisibility(View.VISIBLE);
+            }
+
+            if (hengBgView != null) {//隐藏横屏背景
+
+                if (hengBgView.getVisibility() == View.VISIBLE) {
+
+                    hengBgView.setVisibility(View.GONE);
+                }
+
+            }
+
+
+            ((ViewGroup) full).removeView(bgView);
+
+            ((ViewGroup) full).addView(bgView, 0);//放在第一位
+
+
+            if (isGao) {
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                bitmap = getBitmap(AndroidAppHelper.currentApplication(), bitmap, gaoValue);
+                bgView.setImageBitmap(bitmap);
+                return;
+            }else {
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+                bgView.setImageBitmap(bitmap);
+
+                bgView.setImageAlpha(alphaValue);
+
+            }
+
+
+        } else {//横屏
+
+            if (hengBgView == null) {
+
+                hengBgView = new ImageView(AndroidAppHelper.currentApplication());
+            }
+
+            file = getNFullFile(Conf.HORIZONTAL);
+
+            if (!file.exists()) {//文件不存在
+
+                hengBgView.setVisibility(View.GONE);
+                full.setBackground(getDefaultDrawable());
+
+                return;
+
+            }
+
+            if (hengBgView.getVisibility() == View.GONE) {
+
+                hengBgView.setVisibility(View.VISIBLE);
+            }
+
+
+            if (bgView != null) {
+
+                if (bgView.getVisibility() == View.VISIBLE) {
+                    bgView.setVisibility(View.GONE);
+                }
+
+            }
+
+
+            ((ViewGroup) full).removeView(hengBgView);
+            ((ViewGroup) full).addView(hengBgView, 0);//添加到第一位
+
+
+
+            if (isGao) {
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                bitmap = getBitmap(AndroidAppHelper.currentApplication(), bitmap, gaoValue);
+
+                hengBgView.setImageBitmap(bitmap);
+                hengBgView.setImageAlpha(alphaValue);
+
+            }else {
+
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+                hengBgView.setImageBitmap(bitmap);
+
+                hengBgView.setImageAlpha(alphaValue);
+            }
+
+        }
+
+        autoSetHeaderBg();
+
+    }
+
+
+
+    /**
      * 自动判断并设置背景
      */
     private void setBg() {
+
+        if (bgView!=null&&bgView.getVisibility()==View.VISIBLE){
+            bgView.setVisibility(View.GONE);
+        }
+
+        if (hengBgView!=null&&hengBgView.getVisibility()==View.VISIBLE){
+            hengBgView.setVisibility(View.GONE);
+        }
 
         if (full == null) {
             return;
@@ -396,15 +640,25 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
 
                 break;
-
-
         }
 
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 
-        full.setBackground(bitmap2Drawable(bitmap));
+        if (isGao){
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
-        full.getBackground().setAlpha(alphaValue);
+            full.setBackground(bitmap2Drawable(bitmap));
+
+            full.getBackground().setAlpha(alphaValue);
+
+        }else {
+
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            full.setBackground(bitmap2Drawable(bitmap));
+
+            full.getBackground().setAlpha(alphaValue);
+        }
+
+
 
         //判断头部是否存在，如果不存在，则给头部设置上背景
 
@@ -621,9 +875,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
         public void onOrientationChanged(int orientation) {
 
 
-            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
-                return;  //手机平放时，检测不到有效的角度
-            }//只检测是否有四个角度的改变
+//            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+//                return;  //手机平放时，检测不到有效的角度
+//            }//只检测是否有四个角度的改变
 
 
             if (orientation > 350 || orientation < 10) { //0度
@@ -781,6 +1035,19 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         alphaValue = value;
 
+        if (isScroll) {
+
+            if (bgView != null && bgView.getVisibility() == View.VISIBLE) {
+                bgView.setImageAlpha(alphaValue);
+            }
+
+            if (hengBgView != null && hengBgView.getVisibility() == View.VISIBLE) {
+                hengBgView.setImageAlpha(alphaValue);
+            }
+
+            return;
+        }
+
 
         if (full == null || full.getBackground() == null) {
             return;
@@ -831,11 +1098,13 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         sharedPreferences.edit().putInt(Conf.FULL_GAO_VALUE, gaoValue).apply();
 
-//        autoSetBg();
-
         if (isGao) {
-            setGaoImage();
+            autoSetBg();
         }
+
+//        if (isGao) {
+//            setGaoImage();
+//        }
 
 
     }
@@ -862,11 +1131,11 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         }
 
-        if (!isGao) {
-            setBg();//重新设置画质
-        }
+//        if (!isGao) {
+//            setBg();//重新设置画质
+//        }
 
-        XposedBridge.log("lin15----->>>>"+quality);
+        autoSetBg();
 
 
         sharedPreferences.edit().putInt(Conf.FULL_QUALITY, quality).apply();
@@ -889,7 +1158,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             Toast.makeText(context, "清除成功", Toast.LENGTH_SHORT).show();
 
-            setBg();
+//            setBg();
+
+            autoSetBg();
 
         }
 
@@ -951,9 +1222,11 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
-    private void autoChangeAlpha(Intent intent){
+    private void autoChangeAlpha(float f){
 
-        float f = intent.getFloatExtra(Conf.N_EXPAND_VALUE, -0.1f);
+//        float f = intent.getFloatExtra(Conf.N_EXPAND_VALUE, -0.1f);
+
+        scrollBgView(f,full.getHeight());
 
         if (f == 1) {//完全下拉状态，保存高度
 
@@ -1087,5 +1360,104 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
+    private int record = -1;//记录者，避免重复设置浪费资源
+
+    /**
+     * 滚动背景
+     *
+     * @param height 传递此时设置面板的高度，根据高度设置滑动位置
+     */
+    private void scrollBgView(float f, int height) {
+
+        int imageHeight = -1;
+
+        if (isVertical()) {
+
+            imageHeight = sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT, -1);
+
+        } else {
+
+            imageHeight = sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT, -1);
+
+
+        }
+
+
+        if (record == height) {
+
+            if (f == 0) {//未展开,不显示
+//                bgView.scrollTo(0, imageHeight);
+
+                if (isVertical() && bgView != null&&bgView.getVisibility()==View.VISIBLE) {
+                    bgView.scrollTo(0, imageHeight);
+                } else if (!isVertical() && hengBgView != null&&hengBgView.getVisibility()==View.VISIBLE) {
+                    hengBgView.scrollTo(0,  imageHeight);
+                }
+
+
+            }
+
+            return;
+        }
+
+        record = height;//记录
+
+        if (record < 0) {
+            return;
+        }
+
+        if (imageHeight < 0) {
+            return;
+        }
+
+        if (isVertical() && bgView != null&&bgView.getVisibility()==View.VISIBLE) {
+            bgView.scrollTo(0, -(height - imageHeight));
+        } else if (!isVertical() && hengBgView != null&&hengBgView.getVisibility()==View.VISIBLE) {
+            hengBgView.scrollTo(0, -(height - imageHeight));
+        }
+
+    }
+
+
+    private void setScroll(Intent intent) {
+
+        this.isScroll=intent.getBooleanExtra(Conf.FULL_SCROLL, true);
+        //保存变量
+        sharedPreferences.edit().putBoolean(Conf.FULL_SCROLL, isScroll).apply();
+
+        autoSetBg();//重新设置背景
+    }
+
+
+    private void setCustomHeight(Intent intent){
+
+
+        int type=intent.getIntExtra("type",-1);
+
+        if (type==-1){
+            return;
+        }
+
+        String h=intent.getStringExtra("height");
+
+        int height=Integer.parseInt(h);
+
+        switch (type){
+            case 10://竖屏
+
+                sharedPreferences.edit().putInt(Conf.FULL_SHU_HEIGHT, height).apply();
+
+                break;
+
+            case 20://横屏
+
+                sharedPreferences.edit().putInt(Conf.FULL_HENG_HEIGHT, height).apply();
+
+                break;
+        }
+
+        Toast.makeText(AndroidAppHelper.currentApplication(), "自定义高度成功", Toast.LENGTH_SHORT).show();
+
+    }
 
 }

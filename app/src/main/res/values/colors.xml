@@ -5,8 +5,31 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorTeal500">#009688</color>
     <color name="colorSelect">#2bc777</color>
-    <color name="colorCP">#00c4ff</color>
-
+    <color name="colorBlue">#5677fc</color>
+    <color name="colorOrange">#ff9800</color>
     <color name="colorGrey">#9e9e9e</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#FF000000</color>
+    <color name="colorLightBlue">#03A9F4</color>
+    <color name="colorBrown">#795548</color>
+    <color name="colorCP">#00c4ff</color>
+    <color name="colorAlphaBlack">#20000000</color>
+    <color name="colorBlueGrey">#607d8b</color>
+    <color name="colorPink">#e91e63</color>
+    <color name="colorPurple">#9c27b0</color>
+    <color name="colorRed">#e51c23</color>
+    <color name="colorDeepPurple">#673ab7</color>
+    <color name="colorIndigo">#3f51b5</color>
+    <color name="colorCyan">#00bcd4</color>
+    <color name="colorTeal">#009688</color>
+    <color name="colorGreen">#259b24</color>
+    <color name="colorLightGreen">#8bc34a</color>
+    <color name="colorLime">#cddc39</color>
+    <color name="colorYellow">#ffeb3b</color>
+    <color name="colorAmber">#ffc107</color>
+    <color name="colorDeepOrange">#ff5722</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorMi">#dfdfdf</color>
+    <color name="colorButton">#c1c1c1</color>
 
 </resources>

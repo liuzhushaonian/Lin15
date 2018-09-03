@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -35,7 +36,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
     private TextView alphaInfo, gaoInfo;
     private SeekBar seekBarAlpha, seekBarGao;
     private ImageView heng, shu;
-    private Switch switchGao;
+    private Switch switchGao,switchScroll;
     private FullPresenter presenter;
     private boolean autoSet=false;
 
@@ -220,6 +221,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         shu=view.findViewById(R.id.full_shu_header);
         switchGao=view.findViewById(R.id.switch_full_gao);
         radioGroup=view.findViewById(R.id.radioGroup2);
+        switchScroll=view.findViewById(R.id.scrollSwitch);
 
     }
 
@@ -337,6 +339,13 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         });
 
+        switchScroll.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+
+            presenter.sendScroll(getActivity(),isChecked);
+
+        });
+
 
     }
 
@@ -440,8 +449,6 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         int type = result.getQuality();
 
-        Log.d("type---->>",type+"");
-
         autoSet=true;
 
         isAutoSet=true;
@@ -466,6 +473,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         switchGao.setChecked(result.isGao());
         seekBarGao.setProgress(result.getGaoValue());
         seekBarGao.setEnabled(result.isGao());
+
+        switchScroll.setChecked(result.isScroll());
 
 
     }

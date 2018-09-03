@@ -95,6 +95,7 @@ public class Conf {
     public static final String FULL_TO_UI_RESULT="full_to_ui_result";
 
 
+    public static final String FULL_SCROLL="full_scroll";
 
 
 }

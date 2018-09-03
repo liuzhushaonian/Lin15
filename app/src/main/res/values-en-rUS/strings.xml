@@ -70,6 +70,9 @@
 
     <string name="full_shu">All-Vertical screen</string>
 
+    <string name="scroll">scroll the background(test)</string>
+    <string name="clean">reset systemUi</string>
+
     <string name="setting_info">
         Click to select image\n
         Long press to resume
@@ -135,5 +138,6 @@
     <string name="header_info2">Unable to get accurate width and height, please set it after horizontal screen</string>
 
 
+    <string name="diyHeight">自定义设置图片高度</string>
 
 </resources>

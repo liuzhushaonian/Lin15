@@ -13,14 +13,18 @@ public class Result implements Parcelable{
 
     private int gaoValue;
 
+    private boolean isScroll;
+
     public Result() {
     }
 
-    private Result(Parcel in) {
+
+    protected Result(Parcel in) {
         alpha = in.readInt();
         quality = in.readInt();
         gao = in.readByte() != 0;
         gaoValue = in.readInt();
+        isScroll = in.readByte() != 0;
     }
 
     public static final Creator<Result> CREATOR = new Creator<Result>() {
@@ -67,6 +71,15 @@ public class Result implements Parcelable{
         this.gaoValue = gaoValue;
     }
 
+    public boolean isScroll() {
+        return isScroll;
+    }
+
+    public void setScroll(boolean scroll) {
+        isScroll = scroll;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -78,5 +91,6 @@ public class Result implements Parcelable{
         dest.writeInt(quality);
         dest.writeByte((byte) (gao ? 1 : 0));
         dest.writeInt(gaoValue);
+        dest.writeByte((byte) (isScroll ? 1 : 0));
     }
 }

@@ -2,7 +2,10 @@ package com.xp.legend.lin15.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,9 +19,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,12 +35,14 @@ import com.xp.legend.lin15.R;
 import com.xp.legend.lin15.adapter.MainAdapter;
 import com.xp.legend.lin15.fragment.FullFragment;
 import com.xp.legend.lin15.fragment.HeaderFragment;
+import com.xp.legend.lin15.utils.ReceiverAction;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends BaseActivity {
 
@@ -42,7 +53,7 @@ public class MainActivity extends BaseActivity {
     private TabLayout tabLayout;
 
     private MainAdapter adapter;
-    private TextView shang,about;
+    private TextView shang;
 
     private static final String[] permissionStrings =
             new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -75,8 +86,6 @@ public class MainActivity extends BaseActivity {
 
         shang=findViewById(R.id.shang);
 
-        about=findViewById(R.id.about);
-
     }
 
     private void initToolbar(){
@@ -84,6 +93,14 @@ public class MainActivity extends BaseActivity {
         toolbar.setTitle("");
 
         setSupportActionBar(toolbar);
+
+        int color=getRandomColor();
+
+        if (color==-1){
+            color=getResources().getColor(R.color.colorTeal500,getTheme());
+        }
+
+        toolbar.setBackgroundColor(color);
 
     }
 
@@ -141,11 +158,11 @@ public class MainActivity extends BaseActivity {
             showShangDialog();
         });
 
-        about.setOnClickListener(v -> {
-
-            showAbout();
-
-        });
+//        about.setOnClickListener(v -> {
+//
+//            showAbout();
+//
+//        });
 
 
     }
@@ -374,6 +391,169 @@ public class MainActivity extends BaseActivity {
         textView.setText(content);
 
         builder.setView(view).setPositiveButton(getString(R.string.determine),(dialog, which) -> {
+
+            builder.create().cancel();
+
+        }).show();
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.clean:
+
+                showAlert();
+
+                break;
+
+
+            case R.id.about_app:
+
+                showAbout();
+
+                break;
+
+            case R.id.diy_height:
+
+                showEditDialog();
+
+                break;
+
+
+        }
+
+
+        return true;
+    }
+
+    private void showAlert(){
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+
+        builder.setTitle(getString(R.string.reset_title))
+                .setMessage(getString(R.string.reset_content))
+                .setPositiveButton(getString(R.string.determine),(dialog, which) -> {
+
+                    Intent intent=new Intent(ReceiverAction.SEND_CLEAN_ACTION);
+
+                    sendBroadcast(intent);
+
+
+                }).setNegativeButton(getString(R.string.cancel),(dialog, which) -> {
+
+
+                    builder.create().cancel();
+
+        }).show();
+
+
+    }
+
+    private int getRandomColor(){
+
+        int color=-1;
+
+        Random random=new Random();
+
+        int r=random.nextInt(23);
+
+        List<Integer> colors=new ArrayList<>();
+
+        Resources resources=getResources();
+
+        XmlResourceParser xmlResourceParser=resources.getXml(R.xml.color_list);
+
+        try {
+            while (xmlResourceParser.getEventType()!=XmlResourceParser.END_DOCUMENT){
+
+                if (xmlResourceParser.getEventType()== XmlResourceParser.START_TAG){
+
+                    String name=xmlResourceParser.getName();
+                    if (name.equals("color")){
+                        String c=xmlResourceParser.nextText();
+
+                        int color_int= android.graphics.Color.parseColor(c);
+
+                        colors.add(color_int);
+                    }
+                }
+
+                xmlResourceParser.next();
+
+            }
+
+            if (r>colors.size()){
+                r=21%r;
+            }
+
+            color=colors.get(r);//随机颜色
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return color;
+
+    }
+
+
+    private void showEditDialog(){
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+
+        View view=LayoutInflater.from(this).inflate(R.layout.custom_height,null,false);
+
+        EditText editText=view.findViewById(R.id.edit);
+
+        RadioGroup radioGroup=view.findViewById(R.id.select_type);
+
+        Intent intent=new Intent(ReceiverAction.SEND_CUSTOM_HEIGHT);
+
+
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+
+            switch (checkedId){
+
+                case R.id.shu:
+
+                    intent.putExtra("type",10);
+
+                    break;
+
+                case R.id.heng:
+
+                    intent.putExtra("type",20);
+                    break;
+
+            }
+
+        });
+
+        builder.setTitle(getString(R.string.custom_height)).setView(view).setPositiveButton(getString(R.string.determine),(dialog, which) -> {
+
+
+            String s=editText.getText().toString();
+
+            intent.putExtra("height",s);
+
+            sendBroadcast(intent);
+
+
+        }).setNegativeButton(getString(R.string.cancel),(dialog, which) -> {
 
             builder.create().cancel();
 
