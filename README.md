@@ -1,6 +1,17 @@
 ![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185210.png)
 
 ![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185230.png)
+
+# 2.0更新内容
+
+- 添加滚动模式
+- 添加卷轴模式
+- 添加自定义背景高度
+- 添加重置systemUI功能
+- 优化旋转屏幕算法
+- 修复全局无法使用高质量图片bug
+
+
 # 更新内容：
 
 - 适配Android7.0
