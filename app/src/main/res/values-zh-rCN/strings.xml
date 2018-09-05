@@ -13,7 +13,7 @@
     <string name="mode_full">全部</string>
     <string name="resume">复原</string>
     <string name="cancel_the_data">取消关闭移动数据确认</string>
-    <string name="scroll">背景滚动(测试功能)</string>
+
     <string name="clean">重置systemUI</string>
 
     <string name="string_about">
@@ -33,8 +33,22 @@
         高斯模糊你们可以随意\n
         模糊数值越大越模糊\n\n
 
+        自定义高度功能已经回归\n
 
-        背景滚动功能目前仅仅作为测试使用\n
+        用于某些ROM无法直接通过下拉快速设置面板获取高度\n
+
+        如果一直提示无法获取高度\n
+
+        那么可以试试自定义高度\n
+
+        一般高度是1200~1400\n
+
+        数据并非很准确\n
+
+        以个人机子实际情况为准\n\n
+
+
+        背景滚动功能与卷轴背景功能目前仅仅作为测试使用\n
         因为尚有bug无法解决\n
         所以留下了一个开关让你自己决定用不用它\n\n
 
@@ -131,5 +145,16 @@
     <string name="header_info2">无法获取准确宽高，请横屏一次后再设置</string>
 
     <string name="diyHeight">自定义设置图片高度</string>
+
+    <string name="custom_height">自定义高度</string>
+
+    <string name="edit_tip">输入0清除自定义高度</string>
+
+    <string name="shu">竖屏高度</string>
+
+    <string name="heng">横屏高度</string>
+
+    <string name="slit">卷轴背景(测试功能)</string>
+    <string name="scroll">背景滚动(测试功能)</string>
 
 </resources>

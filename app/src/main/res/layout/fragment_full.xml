@@ -240,6 +240,19 @@
                 />
 
 
+            <Switch
+                android:id="@+id/slit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:checked="true"
+                android:padding="16dp"
+                android:text="@string/slit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scrollSwitch" />
+
+
         </android.support.constraint.ConstraintLayout>
 
 

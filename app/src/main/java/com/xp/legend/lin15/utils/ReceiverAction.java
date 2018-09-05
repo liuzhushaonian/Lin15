@@ -132,5 +132,7 @@ public class ReceiverAction {
 
         public static final String SEND_CUSTOM_HEIGHT="send_custom_height_by_user";
 
+        public static final String SEND_ORI="send_ori_by_user";
 
+        public static final String SEND_SLIT_INFO="send_slit_info";
 }

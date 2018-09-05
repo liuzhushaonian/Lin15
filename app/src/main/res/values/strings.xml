@@ -143,4 +143,10 @@
 
     <string name="heng">横屏高度</string>
 
+    <string name="slit">卷轴背景(测试功能)</string>
+
+    <string name="tip">提示</string>
+
+    <string name="tip_content">如果您实在无法自动获取到高度，可以尝试使用右上角菜单栏里的自定义图片方法，输入自定义高度后即可选择图片设置了。具体高度请自测，一般是1200~1400左右</string>
+
 </resources>

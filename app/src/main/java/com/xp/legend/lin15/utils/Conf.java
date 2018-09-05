@@ -97,5 +97,6 @@ public class Conf {
 
     public static final String FULL_SCROLL="full_scroll";
 
+    public static final String SLIT="slit";
 
 }

@@ -32,6 +32,32 @@
         Gaussian blur, you can feel free\n
         The larger the fuzzy value, the more blurred\n\n
 
+        Custom height function has been returned\n
+        
+        For some ROMs, you cannot get the height directly from the drop-down quick settings panel.
+        
+        If you are always prompted to get the height \n
+        
+        Then try the custom height\n
+        
+        The general height is 1200~1400\n
+        
+        The data is not very accurate\n
+        
+        Subject to the actual situation of the personal phone \n\n
+
+        Background scrolling and reel background features are currently only used as tests\n
+
+        Because there are still bugs that can not be solved\n
+
+        So leave a switch for you to decide if you do not need it.\n
+
+        Resetting the systemUI function is a big trick that is very hurtful.\n
+
+        Otherwise it is not recommended to use it unless you want to delete all configurations\n\n
+
+
+
         The following features are only for lineageOS15\n
         Please do not be naughty for everyone who is not lineageOS\n
 
@@ -70,8 +96,7 @@
 
     <string name="full_shu">All-Vertical screen</string>
 
-    <string name="scroll">scroll the background(test)</string>
-    <string name="clean">reset systemUi</string>
+    <string name="scroll">Scrolling background(test)</string>
 
     <string name="setting_info">
         Click to select image\n
@@ -137,7 +162,17 @@
 
     <string name="header_info2">Unable to get accurate width and height, please set it after horizontal screen</string>
 
+    <string name="diyHeight">Customize image height</string>
 
-    <string name="diyHeight">自定义设置图片高度</string>
+    <string name="custom_height">Custom height</string>
+
+    <string name="edit_tip">Enter 0 to clear the custom height</string>
+
+    <string name="shu">Vertical screen height</string>
+
+    <string name="heng">Horizontal height</string>
+
+    <string name="slit">Reel background(test)</string>
+    <string name="clean">Reset systemUI</string>
 
 </resources>

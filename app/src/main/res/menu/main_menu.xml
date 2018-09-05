@@ -4,7 +4,7 @@
 
 
     <item android:id="@+id/diy_height"
-        android:title=""
+        android:title="@string/diyHeight"
         />
 
     <item android:title="@string/clean"

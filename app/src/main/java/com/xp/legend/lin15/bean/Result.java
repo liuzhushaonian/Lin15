@@ -15,6 +15,8 @@ public class Result implements Parcelable{
 
     private boolean isScroll;
 
+    private boolean isSlit;
+
     public Result() {
     }
 
@@ -25,6 +27,7 @@ public class Result implements Parcelable{
         gao = in.readByte() != 0;
         gaoValue = in.readInt();
         isScroll = in.readByte() != 0;
+        isSlit = in.readByte() != 0;
     }
 
     public static final Creator<Result> CREATOR = new Creator<Result>() {
@@ -80,6 +83,14 @@ public class Result implements Parcelable{
     }
 
 
+    public boolean isSlit() {
+        return isSlit;
+    }
+
+    public void setSlit(boolean slit) {
+        isSlit = slit;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -92,5 +103,6 @@ public class Result implements Parcelable{
         dest.writeByte((byte) (gao ? 1 : 0));
         dest.writeInt(gaoValue);
         dest.writeByte((byte) (isScroll ? 1 : 0));
+        dest.writeByte((byte) (isSlit ? 1 : 0));
     }
 }

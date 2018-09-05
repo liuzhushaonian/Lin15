@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 
 import android.support.design.widget.TabLayout;
@@ -523,6 +524,7 @@ public class MainActivity extends BaseActivity {
 
         Intent intent=new Intent(ReceiverAction.SEND_CUSTOM_HEIGHT);
 
+        intent.putExtra("type",10);//默认
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
 

@@ -70,14 +70,16 @@ public abstract class BaseHook {
 
     }
 
-    protected boolean isVertical(){
+//    protected boolean isVertical(){
+////
+////        return AndroidAppHelper
+////                .currentApplication()
+////                .getResources()
+////                .getConfiguration()
+////                .orientation== Configuration.ORIENTATION_PORTRAIT;
+////    }
 
-        return AndroidAppHelper
-                .currentApplication()
-                .getResources()
-                .getConfiguration()
-                .orientation== Configuration.ORIENTATION_PORTRAIT;
-    }
 
+    protected boolean isVertical=true;
 
 }

@@ -6,7 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +63,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
     private RadioGroup radioGroup;
 
     private FullReceiver fullReceiver;
+    private Switch slit;
+    private int count=0;
 
 
     public FullFragment() {
@@ -105,6 +111,12 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                                 Toast.makeText(context, getString(R.string.all_info1), Toast.LENGTH_LONG).show();
 
+                                count++;
+
+                                if (count>=3){
+                                    showDialog();
+                                }
+
                                 return;
 
                             }
@@ -124,6 +136,12 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                             if (heng_width<=0||heng_height<=0){
 
                                 Toast.makeText(context, getString(R.string.all_info2), Toast.LENGTH_LONG).show();
+
+                                count++;
+
+                                if (count>=3){
+                                    showDialog();
+                                }
 
                                 return;
 
@@ -170,6 +188,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         event();
 
+        presenter.getAllFullInfo(getActivity());
+
         return view;
     }
 
@@ -177,8 +197,6 @@ public class FullFragment extends BaseFragment implements IFullFragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        presenter.getAllFullInfo(getActivity());
 
     }
 
@@ -222,6 +240,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         switchGao=view.findViewById(R.id.switch_full_gao);
         radioGroup=view.findViewById(R.id.radioGroup2);
         switchScroll=view.findViewById(R.id.scrollSwitch);
+        slit=view.findViewById(R.id.slit);
 
     }
 
@@ -326,9 +345,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                         break;
 
-
                 }
-                Log.d("set----->>>>",""+checkedId);
 
             }
 
@@ -343,6 +360,13 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
 
             presenter.sendScroll(getActivity(),isChecked);
+
+        });
+
+
+        slit.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            presenter.sendSlit(getActivity(),isChecked);
 
         });
 
@@ -427,6 +451,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         int a=result.getAlpha();
 
+
+
         a= (int) (a/2.55)+1;
 
         if (a<0){
@@ -441,7 +467,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         alphaInfo.setText(alpha_info);
 
-        seekBarAlpha.setProgress(result.getAlpha());
+//        seekBarAlpha.setProgress(result.getAlpha());
 
         String gao_info = getString(R.string.gao_si_value) +" "+ result.getGaoValue();
 
@@ -452,6 +478,18 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         autoSet=true;
 
         isAutoSet=true;
+
+
+
+        switchGao.setChecked(result.isGao());
+        seekBarGao.setProgress(result.getGaoValue());
+        seekBarGao.setEnabled(result.isGao());
+
+        switchScroll.setChecked(result.isScroll());
+
+        slit.setChecked(result.isSlit());
+
+        seekBarAlpha.setProgress(a);
 
         switch (type) {
 
@@ -470,11 +508,13 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         }
 
-        switchGao.setChecked(result.isGao());
-        seekBarGao.setProgress(result.getGaoValue());
-        seekBarGao.setEnabled(result.isGao());
+    }
 
-        switchScroll.setChecked(result.isScroll());
+    private void showDialog(){
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+
+        builder.setTitle(getString(R.string.tip)).setMessage(getString(R.string.tip_content)).show();
 
 
     }

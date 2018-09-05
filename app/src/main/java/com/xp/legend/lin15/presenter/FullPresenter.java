@@ -130,4 +130,13 @@ public class FullPresenter {
 
     }
 
+    public void sendSlit(Activity activity,boolean slit){
+
+        Intent intent=new Intent(ReceiverAction.SEND_SLIT_INFO);
+        intent.putExtra(Conf.SLIT,slit);
+
+        activity.sendBroadcast(intent);
+
+    }
+
 }

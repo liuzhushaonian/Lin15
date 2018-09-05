@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.hardware.SensorManager;
 import android.net.Uri;
@@ -48,7 +50,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     private int gaoValue = 25;
 
-    private MyOrientationEventChangeListener myOrientationEventChangeListener;
+//    private MyOrientationEventChangeListener myOrientationEventChangeListener;
 
     private int rotation = -101;
 
@@ -91,10 +93,10 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 autoSetBg();
 
 
-                myOrientationEventChangeListener = new MyOrientationEventChangeListener(AndroidAppHelper.currentApplication(),
-                        SensorManager.SENSOR_DELAY_NORMAL);
-
-                myOrientationEventChangeListener.enable();
+//                myOrientationEventChangeListener = new MyOrientationEventChangeListener(AndroidAppHelper.currentApplication(),
+//                        SensorManager.SENSOR_DELAY_NORMAL);
+//
+//                myOrientationEventChangeListener.enable();
 
 
             }
@@ -132,6 +134,8 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             intentFilter.addAction(ReceiverAction.SET_HEADER_QUALITY);
 
             intentFilter.addAction(ReceiverAction.UI_GET_HEADER_INFO);
+
+            intentFilter.addAction(ReceiverAction.SEND_ORI);
 
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter);
         }
@@ -227,6 +231,11 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                     sendAllInfo(intent,context);
 
                     break;
+                case ReceiverAction.SEND_ORI://接收屏幕旋转信息
+
+                    autoSetPosition(intent);
+
+                    break;
 
             }
 
@@ -235,101 +244,101 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
 
 
-    /**
-     * 监听屏幕横竖变化，改变快速设置面板的背景图
-     */
-    private class MyOrientationEventChangeListener extends OrientationEventListener {
-
-
-        MyOrientationEventChangeListener(Context context, int rate) {
-            super(context, rate);
-        }
-
-        @Override
-        public void onOrientationChanged(int orientation) {
-
-
-//            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
-//                return;  //手机平放时，检测不到有效的角度
-//            }//只检测是否有四个角度的改变
-
-
-            if (orientation > 350 || orientation < 10) { //0度
-
-                saveHeaderWidthInfo();//保存宽度信息
-
-                saveHeaderHeightInfo();//保存高度信息
-
-
-                if (rotation == 10) {
-                    return;
-                }
-
-                if (isVertical()) {
-
-                    rotation = 10;
-
-                    autoSetBg();
-                }
-
-
-            } else if (orientation > 80 && orientation < 100) { //90度
-
-                saveHeaderWidthInfo();//保存宽度信息
-
-                saveHeaderHeightInfo();//保存高度信息
-
-                if (rotation == 20) {
-                    return;
-                }
-
-                if (!isVertical()) {
-
-                    rotation = 20;//不一致时表示屏幕旋转，重新赋值
-
-                    autoSetBg();
-                }
-
-
-            } else if (orientation > 170 && orientation < 190) { //180度
-
-                saveHeaderWidthInfo();//保存宽度信息
-
-                saveHeaderHeightInfo();//保存高度信息
-
-                if (rotation == 30) {
-                    return;
-                }
-
-                if (isVertical()) {
-
-                    rotation = 30;//不一致时表示屏幕旋转，重新赋值
-
-                    autoSetBg();
-                }
-
-
-            } else if (orientation > 265 && orientation < 275) { //270度
-
-                saveHeaderWidthInfo();//保存宽度信息
-
-                saveHeaderHeightInfo();//保存高度信息
-
-                if (rotation == 40) {
-                    return;
-                }
-
-                if (!isVertical()) {
-
-                    rotation = 40;//不一致时表示屏幕旋转，重新赋值
-
-                    autoSetBg();
-                }
-
-
-            }
-        }
-    }
+//    /**
+//     * 监听屏幕横竖变化，改变快速设置面板的背景图
+//     */
+//    private class MyOrientationEventChangeListener extends OrientationEventListener {
+//
+//
+//        MyOrientationEventChangeListener(Context context, int rate) {
+//            super(context, rate);
+//        }
+//
+//        @Override
+//        public void onOrientationChanged(int orientation) {
+//
+//
+////            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+////                return;  //手机平放时，检测不到有效的角度
+////            }//只检测是否有四个角度的改变
+//
+//
+//            if (orientation > 350 || orientation < 10) { //0度
+//
+//                saveHeaderWidthInfo();//保存宽度信息
+//
+//                saveHeaderHeightInfo();//保存高度信息
+//
+//
+//                if (rotation == 10) {
+//                    return;
+//                }
+//
+//                if (isVertical) {
+//
+//                    rotation = 10;
+//
+//                    autoSetBg();
+//                }
+//
+//
+//            } else if (orientation > 80 && orientation < 100) { //90度
+//
+//                saveHeaderWidthInfo();//保存宽度信息
+//
+//                saveHeaderHeightInfo();//保存高度信息
+//
+//                if (rotation == 20) {
+//                    return;
+//                }
+//
+//                if (!isVertical) {
+//
+//                    rotation = 20;//不一致时表示屏幕旋转，重新赋值
+//
+//                    autoSetBg();
+//                }
+//
+//
+//            } else if (orientation > 170 && orientation < 190) { //180度
+//
+//                saveHeaderWidthInfo();//保存宽度信息
+//
+//                saveHeaderHeightInfo();//保存高度信息
+//
+//                if (rotation == 30) {
+//                    return;
+//                }
+//
+//                if (isVertical) {
+//
+//                    rotation = 30;//不一致时表示屏幕旋转，重新赋值
+//
+//                    autoSetBg();
+//                }
+//
+//
+//            } else if (orientation > 265 && orientation < 275) { //270度
+//
+//                saveHeaderWidthInfo();//保存宽度信息
+//
+//                saveHeaderHeightInfo();//保存高度信息
+//
+//                if (rotation == 40) {
+//                    return;
+//                }
+//
+//                if (!isVertical) {
+//
+//                    rotation = 40;//不一致时表示屏幕旋转，重新赋值
+//
+//                    autoSetBg();
+//                }
+//
+//
+//            }
+//        }
+//    }
 
     /**
      * 获取并保存header的宽度信息
@@ -344,7 +353,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         int n_header_horizontal_width = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_WIDTH, -1);
 
         //还没有保存信息且是垂直模式
-        if (n_header_vertical_width < 0 && isVertical()) {
+        if (n_header_vertical_width < 0 && isVertical) {
 
             n_header_vertical_width = header.getWidth();
 
@@ -353,7 +362,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
 
-        if (n_header_horizontal_width == n_header_vertical_width || (n_header_horizontal_width < 0 && !isVertical())) {
+        if (n_header_horizontal_width == n_header_vertical_width || (n_header_horizontal_width < 0 && !isVertical)) {
 
             n_header_horizontal_width = header.getWidth();
 
@@ -375,7 +384,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         int n_header_vertical_height = sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_HEIGHT, -1);
 
 
-        if (n_header_vertical_height <= 0 && isVertical()) {
+        if (n_header_vertical_height <= 0 && isVertical) {
             n_header_vertical_height = header.getHeight();
 
             sharedPreferences.edit().putInt(Conf.N_HEADER_VERTICAL_HEIGHT, n_header_vertical_height).apply();
@@ -384,7 +393,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         int n_header_horizontal_height = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, -1);
 
 
-        if (n_header_horizontal_height <= 0 && !isVertical()) {
+        if (n_header_horizontal_height <= 0 && !isVertical) {
 
             n_header_horizontal_height = header.getHeight();
 
@@ -419,7 +428,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             return;
         }
 
-        if (isVertical()) {
+        if (isVertical) {
 
             file = getNHeaderFile(Conf.VERTICAL);
 
@@ -429,27 +438,42 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (!file.exists()) {
 
+            if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
 
-            if (isVertical()) {
+                if (sharedPreferences.getBoolean(Conf.SLIT,false)){
 
-                if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
-
-                    header.setBackground(getDefaultDrawable());
-
-                } else {
                     header.setBackground(null);
+                    header.setBackgroundColor(Color.TRANSPARENT);
+
+                }else {
+                    header.setBackground(getDefaultDrawable());
                 }
 
             } else {
 
-                if (isFullExists(Conf.HORIZONTAL)) {
-                    header.setBackground(getDefaultDrawable());
-
-                } else {
-                    header.setBackground(null);
-                }
-
+                header.setBackground(null);
             }
+
+//            if (isVertical) {
+//
+//                if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
+//
+//                    header.setBackground(getDefaultDrawable());
+//
+//                } else {
+//                    header.setBackground(null);
+//                }
+//
+//            } else {
+//
+//                if (isFullExists(Conf.HORIZONTAL)) {
+//                    header.setBackground(getDefaultDrawable());
+//
+//                } else {
+//                    header.setBackground(null);
+//                }
+//
+//            }
 
             return;
         }
@@ -479,7 +503,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         File file = null;
 
         //自动判断是横屏或是竖屏
-        if (isVertical()) {
+        if (isVertical) {
 
             file = getNHeaderFile(Conf.VERTICAL);
 
@@ -492,27 +516,25 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (!file.exists()) {//文件不存在
 
+//
 
-            if (isVertical()) {
+            if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
 
-                if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
+                if (sharedPreferences.getBoolean(Conf.SLIT,false)){
 
-                    header.setBackground(getDefaultDrawable());
-
-                } else {
                     header.setBackground(null);
+                    header.setBackgroundColor(Color.TRANSPARENT);
+
+                }else {
+                    header.setBackground(getDefaultDrawable());
                 }
 
             } else {
 
-                if (isFullExists(Conf.HORIZONTAL)) {
-                    header.setBackground(getDefaultDrawable());
-
-                } else {
-                    header.setBackground(null);
-                }
-
+                header.setBackground(null);
             }
+
+
 
             return;
         }
@@ -621,7 +643,13 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             Toast.makeText(context, "清除成功", Toast.LENGTH_SHORT).show();
 
-            setBg();
+            if (sharedPreferences.getBoolean(Conf.SLIT,false)){
+
+                header.setBackgroundColor(Color.TRANSPARENT);
+
+            }else {
+                setBg();
+            }
         }
 
     }
@@ -691,7 +719,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 if (result > 0) {
 
-                    if (isVertical()) {
+                    if (isVertical) {
 
 
                         if (isGAO) {
@@ -748,7 +776,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 if (result > 0) {
 
-                    if (!isVertical()) {//如果当前是横屏状态
+                    if (!isVertical) {//如果当前是横屏状态
 
 
                         if (isGAO) {
@@ -894,7 +922,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             return;
         }
 
-        if (isVertical()) {
+        if (isVertical) {
 
             if (getNHeaderFile(Conf.VERTICAL).exists()) {
 
@@ -1068,5 +1096,51 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
 
     }
+
+
+    /**
+     * 自动根据当前屏幕设置背景，代替之前的监听
+     *
+     * @param intent
+     */
+    private void autoSetPosition(Intent intent) {
+
+        int p = intent.getIntExtra("ori", -1);
+
+        if (p == -1) {
+            return;
+        }
+
+        switch (p) {
+
+            case Configuration.ORIENTATION_LANDSCAPE://横屏
+
+                if (!isVertical){//避免重复
+                    return;
+                }
+
+                isVertical=false;
+
+                autoSetBg();
+
+                break;
+
+            case Configuration.ORIENTATION_PORTRAIT://竖屏
+            default:
+
+                if (isVertical){//避免重复
+                    return;
+                }
+
+                isVertical=true;
+
+                autoSetBg();
+
+                break;
+
+        }
+
+    }
+
 
 }
