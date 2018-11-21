@@ -569,42 +569,6 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 header.setBackground(null);
             }
 
-//            if (isVertical) {
-//
-//                if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
-//
-//                    if (sharedPreferences.getBoolean(Conf.SLIT,false)){
-//
-//                        header.setBackground(null);
-//                        header.setBackgroundColor(Color.TRANSPARENT);
-//
-//                    }else {
-//                        header.setBackground(getDefaultDrawable());
-//                    }
-//
-//                } else {
-//
-//                    header.setBackground(null);
-//                }
-//
-//            } else {
-//
-//                if (isFullExists(Conf.HORIZONTAL)) {
-//
-//                    if (sharedPreferences.getBoolean(Conf.SLIT,false)){
-//                        header.setBackground(null);
-//                        header.setBackgroundColor(Color.TRANSPARENT);
-//                    }else {
-//
-//                        header.setBackground(getDefaultDrawable());
-//                    }
-//
-//                } else {
-//                    header.setBackground(null);
-//                }
-//
-//            }
-
             return;
         }
 
@@ -997,6 +961,11 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void autoSetBg() {
 
+
+        if (header==null){
+            return;
+        }
+
         if (isGAO) {
             setGaoSiImage();
         } else {
@@ -1167,6 +1136,7 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                     return;
                 }
 
+
                 isVertical=false;
 
                 autoSetBg();
@@ -1180,6 +1150,7 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                     return;
                 }
 
+
                 isVertical=true;
 
                 autoSetBg();
@@ -1187,6 +1158,10 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 break;
 
         }
+
+        saveHeaderHeightInfo();
+
+        saveHeaderWidthInfo();
 
     }
 

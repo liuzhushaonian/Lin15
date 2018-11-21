@@ -353,7 +353,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         int n_header_horizontal_width = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_WIDTH, -1);
 
         //还没有保存信息且是垂直模式
-        if (n_header_vertical_width < 0 && isVertical) {
+        if (n_header_vertical_width <= 0 && isVertical) {
 
             n_header_vertical_width = header.getWidth();
 
@@ -362,7 +362,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
 
-        if (n_header_horizontal_width == n_header_vertical_width || (n_header_horizontal_width < 0 && !isVertical)) {
+        if ((n_header_horizontal_width <= 0 && !isVertical)) {
 
             n_header_horizontal_width = header.getWidth();
 
@@ -408,6 +408,11 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
      * 判断是否高斯模糊
      */
     private void autoSetBg() {
+
+
+        if (header==null){
+            return;
+        }
 
         if (isGAO) {
             setGaoSiImage();
@@ -1118,7 +1123,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 if (!isVertical){//避免重复
                     return;
                 }
-
+                
                 isVertical=false;
 
                 autoSetBg();
@@ -1132,6 +1137,7 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                     return;
                 }
 
+
                 isVertical=true;
 
                 autoSetBg();
@@ -1139,6 +1145,10 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 break;
 
         }
+
+        saveHeaderHeightInfo();
+
+        saveHeaderWidthInfo();
 
     }
 

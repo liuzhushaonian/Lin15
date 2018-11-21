@@ -89,16 +89,18 @@ public class SlitImageView extends FrameLayout {
                     @Override
                     public void onGlobalLayout() {
 
-                        getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
 
                         Matrix matrix=new Matrix();
-                        double scaleX=1.0*getWidth()/bitmap.getWidth();
+                        double scaleX=1.0*getMeasuredWidth()/bitmap.getWidth();
 
-                        double scaleY=1.0*getHeight()/bitmap.getHeight();
+                        double scaleY=1.0*getMeasuredHeight()/bitmap.getHeight();
 
                         matrix.preScale((float) scaleX,(float) scaleY);
 
-                        bitmap=Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+                        bitmap=Bitmap.createBitmap(bitmap,0,0,getWidth(),getHeight(),matrix,true);
+
+//                        Bitmap.createScaledBitmap(bitmap,)
 
                         if (limitHeight<=0){
 
@@ -108,6 +110,7 @@ public class SlitImageView extends FrameLayout {
                         isScale=true;
 
 
+                        getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                     }
                 });
@@ -120,7 +123,7 @@ public class SlitImageView extends FrameLayout {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
-        scaleBitmap();
+//        scaleBitmap();
         postInvalidate();
 
 
@@ -129,4 +132,7 @@ public class SlitImageView extends FrameLayout {
     public void setAlpha(int alpha) {
         this.alpha = alpha;
     }
+
+
+
 }

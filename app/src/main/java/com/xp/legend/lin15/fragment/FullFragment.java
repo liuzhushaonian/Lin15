@@ -107,7 +107,16 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                             shu_height=full.getHeight();
 
-                            if (shu_width<=0||shu_height<=0){
+
+
+                            if (shu_width<=0){
+
+                                Toast.makeText(context, getString(R.string.no_width), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+
+                            if (shu_height<=0){
 
                                 Toast.makeText(context, getString(R.string.all_info1), Toast.LENGTH_LONG).show();
 
@@ -121,6 +130,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                             }
 
+
+
                             openAlbum(SELECT_SHU_IMAGE);
 
 
@@ -133,7 +144,14 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                             heng_height=full.getHeight();
 
-                            if (heng_width<=0||heng_height<=0){
+
+                            if (heng_width<=0){
+
+                                Toast.makeText(context, getString(R.string.no_width), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            if (heng_height<=0){
 
                                 Toast.makeText(context, getString(R.string.all_info2), Toast.LENGTH_LONG).show();
 

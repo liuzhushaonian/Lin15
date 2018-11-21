@@ -116,9 +116,9 @@
 
     <string name="all_info2">请在横屏状态下下拉一次通知面板到底部</string>
 
-    <string name="header_info1">无法获取准确宽高，请下拉一次设置面板</string>
+    <string name="header_info1">无法获取准确高度，请下拉一次设置面板</string>
 
-    <string name="header_info2">无法获取准确宽高，请横屏一次后再设置</string>
+    <string name="header_info2">无法获取准确宽度，请横屏一次后再设置</string>
 
     <string name="scroll">背景滚动(测试功能)</string>
 
@@ -147,6 +147,9 @@
 
     <string name="tip">提示</string>
 
-    <string name="tip_content">如果您实在无法自动获取到高度，可以尝试使用右上角菜单栏里的自定义图片方法，输入自定义高度后即可选择图片设置了。具体高度请自测，一般是1200~1400左右</string>
+    <string name="tip_content">如果您实在无法自动获取到高度，可以尝试使用右上角菜单栏里的自定义图片高度方法，输入自定义高度后即可选择图片设置了。具体高度请自测，一般是1200~1400左右</string>
+
+    <string name="no_width">无法获取到有效宽度，如果多次出现此信息，请旋转屏幕后再试</string>
+
 
 </resources>

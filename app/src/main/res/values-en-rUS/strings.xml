@@ -121,16 +121,18 @@
 
     <string name="shang_info">
 
-        In order to write this module, there is no reading source code.\n
+        In order to write this module\n
+
+        there is no reading source code\n
         Also for this headache for a few days\n
         If you like this module\n
         There is also a certain amount of savings\n
-        Then please let me drink a can of Coke.\n
+        Then please let me drink a can of Coke\n
         Thanks\n\n
         If you are not rich\n
-        Please don't donate\n
+        Please do not donate\n
         Because all features of lin15 are free
-        Even if you don't donate\n
+        Even if you do not donate\n
         The same can be used\n
 
         \n
@@ -174,5 +176,35 @@
 
     <string name="slit">Reel background(test)</string>
     <string name="clean">Reset systemUI</string>
+
+
+    <string name="reset_title">About resetting systemUI</string>
+
+    <string name="reset_content">Resetting systemUI means actively deleting the local data of Lin15 in systemUI\n
+         For example, sharedPreferences for saving various variables and saved background images will be deleted. \n
+         The purpose of this function is that after the user uninstalls lin15, the sharedPreferences left by lin15 and the set pictures will remain in the systemUI.
+         If the user does not want this data to remain in the phone\n
+        you can use this feature to delete the remaining traces. \n
+        Note that after using this function\n
+        please uninstall the app and restart your phone. \n
+         This function has another function\n
+        which is to clear the old traces\n
+        reset all settings, then your phone will be restored to the way you have never installed lin15\n
+        everything starts again, it is strongly recommended to restart the phone after reset\n
+    </string>
+
+
+    <string name="tip">tip</string>
+
+    <string name="tip_content">If you can not get the height automatically\n
+        try using the custom image height method in the menu bar in the upper right corner\n
+        After entering the custom height\n
+        you can select the image settings\n
+        Please check the specific height\n
+        usually around 1200~1400</string>
+
+    <string name="no_width">Unable to get valid width\n
+        If this message appears multiple times\n
+        please rotate the screen and try again</string>
 
 </resources>

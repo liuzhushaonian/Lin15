@@ -157,4 +157,23 @@
     <string name="slit">卷轴背景(测试功能)</string>
     <string name="scroll">背景滚动(测试功能)</string>
 
+
+    <string name="reset_title">关于重置systemUI</string>
+
+    <string name="reset_content">重置systemUI意味着会主动删除systemUI里Lin15的本地数据\n
+        比如用于保存各种变量的sharedPreferences以及保存过的背景图片，都会被删除掉。\n
+        本功能的用意在于，用户卸载lin15后，systemUI内仍会残留lin15留下的sharedPreferences以及设置过的图片，
+        如果用户不希望这些资料残留在手机内，即可使用本功能将残留的痕迹删除。注意，使用本功能后，请卸载APP后再重启手机。\n
+        本功能还有另一个作用，那就是清除旧痕迹，重置所有设定，届时您的手机将会还原成从未安装过lin15的样子，一切重新开始，墙裂建议重置后重启手机\n
+    </string>
+
+
+
+    <string name="tip">提示</string>
+
+    <string name="tip_content">如果您实在无法自动获取到高度，可以尝试使用右上角菜单栏里的自定义图片高度方法，输入自定义高度后即可选择图片设置了。具体高度请自测，一般是1200~1400左右</string>
+
+    <string name="no_width">无法获取到有效宽度，如果多次出现此信息，请旋转屏幕后再试</string>
+
+
 </resources>
