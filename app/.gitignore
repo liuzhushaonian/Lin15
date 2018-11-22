@@ -46,6 +46,7 @@ proguard/
 /*/*/production
 captures/
 .navigation/
+/*/release/
 *.ipr
 *~
 *.swp
