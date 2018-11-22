@@ -410,9 +410,9 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     private void autoSetBg() {
 
 
-        if (header==null){
-            return;
-        }
+//        if (header==null){
+//            return;
+//        }
 
         if (isGAO) {
             setGaoSiImage();

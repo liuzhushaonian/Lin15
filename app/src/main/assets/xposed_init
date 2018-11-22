@@ -1,11 +1,11 @@
+com.xp.legend.lin15.hooks.N_HeaderHook
+com.xp.legend.lin15.hooks.O_HeaderHook
+com.xp.legend.lin15.hooks.N_StatusBarHeaderHook
 com.xp.legend.lin15.hooks.AllAppsGridAdapterHook
 com.xp.legend.lin15.hooks.DataSaverHook
 com.xp.legend.lin15.hooks.IconsHandlerHook
-com.xp.legend.lin15.hooks.N_FullHook
-com.xp.legend.lin15.hooks.N_HeaderHook
-com.xp.legend.lin15.hooks.N_StatusBarHeaderHook
-com.xp.legend.lin15.hooks.O_FullHook
-com.xp.legend.lin15.hooks.O_HeaderHook
 com.xp.legend.lin15.hooks.QuickSettingExpansion
 com.xp.legend.lin15.hooks.SettingsActivityHook
 com.xp.legend.lin15.hooks.QSDetailHook
+com.xp.legend.lin15.hooks.N_FullHook
+com.xp.legend.lin15.hooks.O_FullHook

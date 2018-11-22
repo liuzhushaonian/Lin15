@@ -61,7 +61,7 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private SlitImageView shuSlit, hengSlit;
 
-    private boolean isScroll = true;//是否滚动背景
+    private boolean isScroll = false;//是否滚动背景
 
     private boolean isSlit=true;//是否卷轴背景
 
@@ -111,7 +111,7 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 alphaValue = sharedPreferences.getInt(Conf.FULL_ALPHA_VALUE, 255);
 
-                isScroll = sharedPreferences.getBoolean(Conf.FULL_SCROLL, true);
+                isScroll = sharedPreferences.getBoolean(Conf.FULL_SCROLL, false);
 
                 isSlit=sharedPreferences.getBoolean(Conf.SLIT,true);
 
@@ -444,19 +444,19 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
-
+    //自动设置背景
     private void autoSetBg() {
 
 
-        if (isSlit){
+        if (this.isSlit){//卷轴模式
 
             setSlitImage();
 
-        }else if (isScroll) {
+        }else if (this.isScroll) {//滚动模式
 
             setScrollBg();
 
-        } else {
+        } else {//普通模式
             setBg();
         }
 
@@ -992,6 +992,8 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
         if (isGaoSi) {
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
+            bitmap=getBitmap(AndroidAppHelper.currentApplication(),bitmap,gaoValue);
+
             fullView.setBackground(bitmap2Drawable(bitmap));
 
             fullView.getBackground().setAlpha(alphaValue);
@@ -1088,6 +1090,7 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         context.sendBroadcast(intent1);
 
+        saveFullWidthInfo();
 
     }
 
@@ -1292,7 +1295,7 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private void setScroll(Intent intent) {
 
-        this.isScroll = intent.getBooleanExtra(Conf.FULL_SCROLL, true);
+        this.isScroll = intent.getBooleanExtra(Conf.FULL_SCROLL, false);
         //保存变量
         sharedPreferences.edit().putBoolean(Conf.FULL_SCROLL, isScroll).apply();
 
@@ -1626,6 +1629,18 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             int width=sharedPreferences.getInt(Conf.FULL_SHU_WIDTH,-1);
 
+            if (width<=0&&fullView!=null){
+
+                width=fullView.getWidth();
+
+                if (width>0){
+
+                    saveFullWidthInfo();//顺便保存数据
+
+                }
+
+            }
+
             if (height<=0||width<=0){
 
                 return;
@@ -1661,9 +1676,6 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
             hengSlit=new SlitImageView(AndroidAppHelper.currentApplication());
 
             ViewGroup.LayoutParams layoutParams=new FrameLayout.LayoutParams(width,height);
-
-//            layoutParams.height=height;
-//            layoutParams.width=width;
 
             hengSlit.setLayoutParams(layoutParams);
 

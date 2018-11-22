@@ -551,7 +551,7 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         }
 
-        if (!file.exists()) {//文件不存在
+        if (!file.exists()) {//文件不存在，最后返回，不往下执行
 
             if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
 
@@ -962,9 +962,9 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     private void autoSetBg() {
 
 
-        if (header==null){
-            return;
-        }
+//        if (header==null){
+//            return;
+//        }
 
         if (isGAO) {
             setGaoSiImage();

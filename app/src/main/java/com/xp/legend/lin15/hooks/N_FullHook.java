@@ -107,7 +107,7 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 gaoValue = sharedPreferences.getInt(Conf.FULL_GAO_VALUE, 25);
 
-                isScroll = sharedPreferences.getBoolean(Conf.FULL_SCROLL, true);
+                isScroll = sharedPreferences.getBoolean(Conf.FULL_SCROLL, false);
                 isSlit=sharedPreferences.getBoolean(Conf.SLIT,true);
 
                 drawable = AndroidAppHelper
@@ -124,9 +124,6 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 autoSetBg();
 
-//                myOrientationEventChangeListener = new MyOrientationEventChangeListener(AndroidAppHelper.currentApplication(), SensorManager.SENSOR_DELAY_NORMAL);
-//
-//                myOrientationEventChangeListener.enable();
             }
         });
 
@@ -147,12 +144,12 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
-
+    //自动设置头部
     private void autoSetBg() {
 
-        if (full==null){
-            return;
-        }
+//        if (full==null){
+//            return;
+//        }
 
 
         if (isSlit){
@@ -245,38 +242,38 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             switch (action) {
 
-                case ReceiverAction.SET_N_FULL_VERTICAL_IMAGE:
+                case ReceiverAction.SET_N_FULL_VERTICAL_IMAGE://设置竖屏背景
 
                     setFullVerticalImage(intent, context);
 
                     break;
 
-                case ReceiverAction.SET_N_FULL_HORIZONTAL_IMAGE:
+                case ReceiverAction.SET_N_FULL_HORIZONTAL_IMAGE://设置横屏背景
 
                     setFullHorizontalImage(context, intent);
 
 
                     break;
-                case ReceiverAction.N_FULL_ALPHA_VALUE:
+                case ReceiverAction.N_FULL_ALPHA_VALUE://设置透明度
                     getAlpha(intent);
 
                     break;
-                case ReceiverAction.SET_N_FULL_GAO_SI:
+                case ReceiverAction.SET_N_FULL_GAO_SI://设置高斯模糊
 
                     getGaoSi(intent);
 
                     break;
-                case ReceiverAction.SET_N_FULL_GAO_VALUE:
+                case ReceiverAction.SET_N_FULL_GAO_VALUE://设置高斯模糊数值
 
                     getGaoValue(intent);
 
                     break;
-                case ReceiverAction.DELETE_FULL_BG:
+                case ReceiverAction.DELETE_FULL_BG://删除背景
 
                     deleteBg(intent, context);
 
                     break;
-                case ReceiverAction.GET_FULL_INFO:
+                case ReceiverAction.GET_FULL_INFO://获取全部的信息（高，宽）
 
                     sendInfo(intent,context);
 
@@ -680,6 +677,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (isGao){
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+
+            bitmap=getBitmap(AndroidAppHelper.currentApplication(),bitmap,gaoValue);
 
             full.setBackground(bitmap2Drawable(bitmap));
 
@@ -1096,6 +1095,10 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
         context.sendBroadcast(intent1);
 
 
+        saveFullWidthInfo();//顺便保存一下宽度信息
+        /**
+         * 关于宽度信息，不知为何宽度信息会为0，所以在这里顺便保存一份，避免宽度为0
+         */
 
     }
 
@@ -1319,7 +1322,7 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private void setScroll(Intent intent) {
 
-        this.isScroll=intent.getBooleanExtra(Conf.FULL_SCROLL, true);
+        this.isScroll=intent.getBooleanExtra(Conf.FULL_SCROLL, false);
         //保存变量
         sharedPreferences.edit().putBoolean(Conf.FULL_SCROLL, isScroll).apply();
 
@@ -1421,10 +1424,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
-
+    //设置卷轴背景
     private void setSlitImage() {
-
-
 
         File file = null;
 
@@ -1444,7 +1445,6 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
                     options.inPreferredConfig = Bitmap.Config.RGB_565;
 
                     break;
-
 
             }
         }
@@ -1468,11 +1468,10 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
 
-
             if (shuSlit == null) {
 //                shuSlit = new SlitImageView(AndroidAppHelper.currentApplication());
 
-                initShuSlitView();
+                initShuSlitView();//实例化
 
                 if (shuSlit==null){
                     return;
@@ -1488,7 +1487,6 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
             ((ViewGroup) full).removeView(shuSlit);
             ((ViewGroup) full).addView(shuSlit, 0);
 
-
             if (isGao) {//是否高斯模糊
 
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
@@ -1503,6 +1501,7 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 shuSlit.setBitmap(bitmap);
                 shuSlit.setAlpha(alphaValue);
+
             }
 
             shuSlit.setBackgroundColor(Color.TRANSPARENT);//设置透明背景
@@ -1661,6 +1660,18 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             int width=sharedPreferences.getInt(Conf.FULL_SHU_WIDTH,-1);
 
+            if (width<=0&&full!=null){
+
+                width=full.getWidth();
+
+                if (width>0){
+
+                    saveFullWidthInfo();//顺便保存数据
+
+                }
+
+            }
+
             if (height<=0||width<=0){
 
                 return;
@@ -1671,8 +1682,6 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             ViewGroup.LayoutParams layoutParams=new FrameLayout.LayoutParams(width,height);
 
-//            layoutParams.height=height;
-//            layoutParams.width=width;
 
             shuSlit.setLayoutParams(layoutParams);
 
@@ -1694,13 +1703,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
 
-
             hengSlit=new SlitImageView(AndroidAppHelper.currentApplication());
 
             ViewGroup.LayoutParams layoutParams=new FrameLayout.LayoutParams(width,height);
-
-//            layoutParams.height=height;
-//            layoutParams.width=width;
 
             hengSlit.setLayoutParams(layoutParams);
 
