@@ -2,6 +2,12 @@
 
 ![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185230.png)
 
+
+# 2.2更新内容
+
+- 增加无设置背景调节透明度功能（某网友说想在看视频的时候下拉快速设置面板时还能看到视频）
+- 增加日志开关功能，用于调试
+
 # 2.1更新内容
 
 - 修复2.0.3之前遗留下载的一个大bug

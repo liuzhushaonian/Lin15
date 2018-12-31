@@ -135,4 +135,6 @@ public class ReceiverAction {
         public static final String SEND_ORI="send_ori_by_user";
 
         public static final String SEND_SLIT_INFO="send_slit_info";
+
+        public static final String SEND_LOGS="send_logs";
 }

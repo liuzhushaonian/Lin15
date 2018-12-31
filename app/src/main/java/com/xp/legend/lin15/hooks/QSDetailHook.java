@@ -4,6 +4,8 @@ package com.xp.legend.lin15.hooks;
 import android.app.AndroidAppHelper;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Environment;
+
 import com.xp.legend.lin15.utils.ReceiverAction;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;

@@ -6,6 +6,10 @@
     <item android:id="@+id/diy_height"
         android:title="@string/diyHeight"
         />
+    <item
+        android:id="@+id/logs_switch"
+        android:title="@string/logs_switch"
+        />
 
     <item android:title="@string/clean"
         android:id="@+id/clean"

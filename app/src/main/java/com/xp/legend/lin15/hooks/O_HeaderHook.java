@@ -1020,6 +1020,9 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                     info.setWidth(width);
 
+                    logs("发送头部竖屏 height--->>>"+height);
+                    logs("发送头部竖屏 width--->>>"+width);
+
 //                    intent1.putExtra(Conf.N_HEADER_RESULT,VERTICAL);
 
                     break;
@@ -1033,6 +1036,9 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                     info.setHeight(height1);
 
                     info.setWidth(width1);
+
+                    logs("发送头部横屏 height--->>>"+height1);
+                    logs("发送头部横屏 width--->>>"+width1);
 
 //                    intent1.putExtra(Conf.N_HEADER_RESULT,HORIZONTAL);
 

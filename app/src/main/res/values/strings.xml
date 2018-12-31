@@ -151,5 +151,27 @@
 
     <string name="no_width">无法获取到有效宽度，如果多次出现此信息，请旋转屏幕后再试</string>
 
+    <string name="logs_switch">日志记录选项</string>
+
+    <string name="logs_about">这个是可以开启xposed框架的日志\n
+        用于调试与记录\n
+        如果开启该日志\n
+        就会产生大量日志\n
+        日志的功能在于帮助开发者找到设置失效的原因\n
+        如果你日常使用正常\n
+        请不要打开该选项\n
+        如果你无法设置上背景\n
+        那么请打开它\n
+        然后设置背景图片\n
+        再去xposed框架里找到日志\n
+        即可看到运行到哪里出了问题\n
+        如果看不懂\n
+        可以将日志文件发给我\n
+    </string>
+
+    <string name="jing">警告</string>
+
+    <string name="open_log">打开日志</string>
+    <string name="close_log">关闭日志</string>
 
 </resources>

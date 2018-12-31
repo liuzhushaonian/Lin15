@@ -99,4 +99,6 @@ public class Conf {
 
     public static final String SLIT="slit";
 
+    public static final String LOG="logs";
+
 }

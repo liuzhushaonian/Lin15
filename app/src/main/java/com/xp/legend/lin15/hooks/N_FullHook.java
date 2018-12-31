@@ -144,6 +144,7 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
+
     //自动设置头部
     private void autoSetBg() {
 
@@ -215,6 +216,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
             intentFilter.addAction(ReceiverAction.SEND_ORI);
 
             intentFilter.addAction(ReceiverAction.SEND_SLIT_INFO);
+
+            intentFilter.addAction(ReceiverAction.SEND_LOGS);
 
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter);
 
@@ -328,6 +331,10 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     break;
 
+                case ReceiverAction.SEND_LOGS:
+
+                    openLogs(intent);
+
             }
         }
     }
@@ -383,6 +390,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
         String s = intent.getStringExtra(Conf.N_FULL_VERTICAL_FILE);
 
         if (s == null || s.isEmpty()) {
+
+            logs("s为null，图片信息传输失败");
+
             return;
         }
 
@@ -410,6 +420,7 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
                     }
                 } else {
 
+                    logs("图片初始化错误，该文件或许不是图片");
                     Toast.makeText(context, "设置失败，保存失败", Toast.LENGTH_SHORT).show();
                 }
 
@@ -474,6 +485,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void setScrollBg() {
 
+        logs("开始设置滚动背景");
+
         cleanSlitImage();
 
         File file = null;
@@ -501,6 +514,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (isVertical) {//竖屏
 
+            logs("竖屏滚动");
+
             if (bgView == null) {//如果为null，则重新实例化
                 bgView = new ImageView(AndroidAppHelper.currentApplication());
             }
@@ -511,6 +526,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 bgView.setVisibility(View.GONE);//实例化后的惨案
                 full.setBackground(getDefaultDrawable());
+
+                logs("图片文件不存在");
 
                 return;
 
@@ -625,7 +642,7 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 //        if (hengBgView!=null&&hengBgView.getVisibility()==View.VISIBLE){
 //            hengBgView.setVisibility(View.GONE);
 //        }
-
+        logs("开始设置普通背景");
 
 
         if (full == null) {
@@ -647,6 +664,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
         if (!file.exists()) {
 
             full.setBackground(getDefaultDrawable());
+
+            logs("图片文件不存在");
 
             return;
         }
@@ -727,8 +746,6 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
         }else {
 
             if (!getHeaderFile(Conf.VERTICAL).exists()){
-
-
 
                 header.setBackground(getDefaultDrawable());
             }
@@ -898,21 +915,14 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         alphaValue = value;
 
-        if (isScroll) {
 
-            if (bgView != null && bgView.getVisibility() == View.VISIBLE) {
-                bgView.setImageAlpha(alphaValue);
-            }
-
-            if (hengBgView != null && hengBgView.getVisibility() == View.VISIBLE) {
-                hengBgView.setImageAlpha(alphaValue);
-            }
-
+        if (full == null || full.getBackground() == null) {
             return;
         }
 
 
-        if (isSlit){
+
+        if (isSlit){//卷轴
 
             if (shuSlit!=null){
 
@@ -927,17 +937,23 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
 
-        }
+        }else if (isScroll) {//滚动
 
+            if (bgView != null && bgView.getVisibility() == View.VISIBLE) {
+                bgView.setImageAlpha(alphaValue);
+            }
 
-        if (full == null || full.getBackground() == null) {
-            return;
+            if (hengBgView != null && hengBgView.getVisibility() == View.VISIBLE) {
+                hengBgView.setImageAlpha(alphaValue);
+            }
+
+//            return;
         }
 
         full.getBackground().setAlpha(alphaValue);
-
-
         sharedPreferences.edit().putInt(Conf.FULL_ALPHA_VALUE, alphaValue).apply();
+
+
 
 
     }
@@ -1072,6 +1088,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 full.setWidth(w);
                 full.setHeight(h);
 
+                logs("发送全部竖屏 w--->>"+w);
+                logs("发送全部竖屏 h--->>"+h);
+
                 break;
 
 
@@ -1083,6 +1102,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 full.setWidth(w1);
                 full.setHeight(h1);
+
+                logs("发送全部横屏 w--->>"+w1);
+                logs("发送全部横屏 h--->>"+h1);
 
                 break;
 
@@ -1427,11 +1449,15 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
     //设置卷轴背景
     private void setSlitImage() {
 
+        logs("开始设置卷轴背景");
+
         File file = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
 
         if (!isGao) {//如果非高斯模糊，则读取配置
+
+            logs("非高斯模糊");
 
             switch (this.quality) {
 
@@ -1460,6 +1486,8 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             if (!file.exists()){//文件不存在
 
+                logs("文件不存在");
+
                 cleanScrollImage();
                 cleanSlitImage();
                 cleanBg();
@@ -1470,14 +1498,19 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             if (shuSlit == null) {
 //                shuSlit = new SlitImageView(AndroidAppHelper.currentApplication());
+                logs("卷轴背景为null，开始第一次初始化");
 
                 initShuSlitView();//实例化
 
                 if (shuSlit==null){
+
+                    logs("卷轴背景初始化失败，有可能是宽高获取有问题");
                     return;
                 }
 
             }else if (shuSlit.getVisibility()==View.GONE){//存在但是被隐藏
+                logs("卷轴背景已存在，改为显示");
+
                 shuSlit.setVisibility(View.VISIBLE);
             }
 
@@ -1674,6 +1707,10 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             if (height<=0||width<=0){
 
+                logs("获取竖屏height--->>"+height);
+                logs("获取竖屏width--->>"+width);
+                logs("由此返回，初始化卷轴背景失败");
+
                 return;
             }
 
@@ -1699,6 +1736,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
             int width=sharedPreferences.getInt(Conf.FULL_HENG_WIDTH,-1);
 
             if (height<=0||width<=0){
+                logs("获取横屏的height--->>"+height);
+                logs("获取横屏width--->>"+width);
+                logs("由此返回，初始化卷轴背景失败");
                 return;
             }
 

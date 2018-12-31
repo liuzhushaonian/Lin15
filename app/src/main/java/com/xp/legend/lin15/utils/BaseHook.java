@@ -1,26 +1,22 @@
 package com.xp.legend.lin15.utils;
 
 import android.app.AndroidAppHelper;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.TypedArray;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import de.robv.android.xposed.XposedBridge;
+
 
 public abstract class BaseHook {
 
@@ -70,16 +66,45 @@ public abstract class BaseHook {
 
     }
 
-//    protected boolean isVertical(){
-////
-////        return AndroidAppHelper
-////                .currentApplication()
-////                .getResources()
-////                .getConfiguration()
-////                .orientation== Configuration.ORIENTATION_PORTRAIT;
-////    }
 
+    SharedPreferences sharedPreferences;
+
+
+
+    protected void openLogs(Intent intent){
+
+        boolean log=intent.getBooleanExtra(Conf.LOG,false);
+
+        //保存
+        sharedPreferences.edit().putBoolean(Conf.LOG,log).apply();
+
+        if (log) {
+
+            Toast.makeText(AndroidAppHelper.currentApplication(), "日志已打开", Toast.LENGTH_SHORT).show();
+        }else {
+
+            Toast.makeText(AndroidAppHelper.currentApplication(), "日志已关闭", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
     protected boolean isVertical=true;
+
+    /**
+     * 记录日志
+     * @param infos 日志内容
+     */
+    protected void logs(String infos){
+
+        if (sharedPreferences==null) {
+            sharedPreferences = AndroidAppHelper.currentApplication().getSharedPreferences(Conf.SHARE, Context.MODE_PRIVATE);
+        }
+
+        if (sharedPreferences.getBoolean(Conf.LOG,false)) {//判断是否开启了log
+
+            XposedBridge.log("lin15---->>>"+infos);
+        }
+
+    }
 
 }

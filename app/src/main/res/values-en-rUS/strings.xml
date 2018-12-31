@@ -207,4 +207,28 @@
         If this message appears multiple times\n
         please rotate the screen and try again</string>
 
+    <string name="logs_switch">Logging options</string>
+
+    <string name="logs_about">
+        This is the log that can open the app\n
+         For debugging and recording\n
+         If the log is turned on\n
+         Will generate a lot of logs\n
+         The function of the log is to help developers find the reason for the setting failure.\n
+         If you use it normally\n
+         Please do not open this option\n
+         If you can not set the background \n
+         Then please open it\n
+         Then set the background image\n
+         Go to the xposed frame and find the log\n
+         You can see where the problem is running \n
+         If you do not understand \n
+         Please send me the log file\n
+    </string>
+
+    <string name="jing">WARNING</string>
+
+    <string name="open_log">Open log</string>
+    <string name="close_log">Close the log</string>
+
 </resources>

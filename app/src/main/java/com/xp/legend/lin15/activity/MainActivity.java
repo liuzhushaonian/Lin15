@@ -36,6 +36,7 @@ import com.xp.legend.lin15.R;
 import com.xp.legend.lin15.adapter.MainAdapter;
 import com.xp.legend.lin15.fragment.FullFragment;
 import com.xp.legend.lin15.fragment.HeaderFragment;
+import com.xp.legend.lin15.utils.Conf;
 import com.xp.legend.lin15.utils.ReceiverAction;
 
 import java.io.File;
@@ -432,6 +433,12 @@ public class MainActivity extends BaseActivity {
 
                 break;
 
+            case R.id.logs_switch:
+
+                showLogAbout();
+
+                break;
+
 
         }
 
@@ -558,6 +565,29 @@ public class MainActivity extends BaseActivity {
         }).setNegativeButton(getString(R.string.cancel),(dialog, which) -> {
 
             builder.create().cancel();
+
+        }).show();
+
+    }
+
+    private void showLogAbout(){
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+
+        builder.setTitle(getString(R.string.jing)).setMessage(getString(R.string.logs_about)).setPositiveButton(getString(R.string.open_log),(dialog, which) -> {
+
+            Intent intent=new Intent(ReceiverAction.SEND_LOGS);
+            intent.putExtra(Conf.LOG,true);
+
+            sendBroadcast(intent);
+
+
+        }).setNegativeButton(getString(R.string.close_log),(dialog, which) -> {
+
+            Intent intent=new Intent(ReceiverAction.SEND_LOGS);
+            intent.putExtra(Conf.LOG,false);
+
+            sendBroadcast(intent);
 
         }).show();
 
