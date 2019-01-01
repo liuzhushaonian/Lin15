@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+static def releaseTime() {
+    return new Date().format("yyyy:MM:dd-HH:mm:ss", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -16,6 +20,14 @@ android {
             shrinkResources true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        def appName="${defaultConfig.applicationId }_${defaultConfig.versionName}_${releaseTime() }"
+
+        variant.outputs.all { output ->
+            outputFileName = "${appName}.apk"
         }
     }
 

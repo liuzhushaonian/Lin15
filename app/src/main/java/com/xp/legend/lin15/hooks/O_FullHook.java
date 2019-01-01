@@ -1466,7 +1466,7 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 shuSlit.setBitmap(bitmap);
                 shuSlit.setAlpha(alphaValue);
 
-                logs("非高斯模糊");
+                logs("高斯模糊");
 
             } else {
 
@@ -1474,7 +1474,7 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 shuSlit.setBitmap(bitmap);
                 shuSlit.setAlpha(alphaValue);
-                logs("高斯模糊");
+                logs("非高斯模糊");
             }
 
             shuSlit.setBackgroundColor(Color.TRANSPARENT);//设置透明背景
