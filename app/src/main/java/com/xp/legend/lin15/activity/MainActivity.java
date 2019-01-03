@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PersistableBundle;
@@ -397,6 +398,13 @@ public class MainActivity extends BaseActivity {
         builder.setView(view).setPositiveButton(getString(R.string.determine),(dialog, which) -> {
 
             builder.create().cancel();
+
+        }).setNegativeButton(getString(R.string.quest),(dialog, which) -> {
+
+            Uri uri = Uri.parse("https://www.baidu.com");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+
 
         }).show();
 

@@ -179,4 +179,6 @@
     <string name="exit_info">xposed内尚未激活本模块\n
         请前往激活后再使用</string>
 
+    <string name="quest">疑难解答</string>
+
 </resources>

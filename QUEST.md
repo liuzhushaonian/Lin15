@@ -1,21 +1,22 @@
-# 这里是专门的解答区
 
-# 0、为什么设置会无效？变透明
+[中文版]()
 
-目前原因未知，尤其是只变透明这一现象，请发xposed的日志给我。
+# 0, Why is the setting invalid? Become transparent
 
-# 1、点击图标无效，没有任何反应
+The current reason is unknown, especially if it only becomes transparent. Please open the log option and send the xposed log to me.
 
-无反应的原因只有一个，那就是lin15没有真正获取到可以设置背景的class，systemUI被改了，或是被混淆了。导致在寻找的时候找不到了，如果是这样，说实话适配的难度非常大，个人不太想去适配。
+# 1. The click icon is invalid, nothing happens.
 
-# 2、图片剪切高度不对，比快速设置面板短
+There is only one reason for no response, that is, lin15 does not really get the class that can set the background, systemUI has been changed, or it is confused. It can't be found when searching. If this is the case, it is very difficult to adjust the truth, and the individual does not want to adapt.
 
-高度是依据设置面板来获取的，如果高度不一致，那应该是获取到的高度有问题，建议使用自定义高度功能将之前保存的高度清空（设置为0），之后再重新下拉整个设置面板到底，再进行设置
+# 2, the picture cut height is wrong, shorter than the quick setting panel
 
-# 3、下拉有点卡啊
+The height is obtained according to the setting panel. If the height is inconsistent, it should be the height of the acquired height. It is recommended to use the custom height function to clear the previously saved height (set to 0), and then pull down the entire setting panel to the end. Set again
 
-正常现象，毕竟这图也占了很大一部分内存。当然可以调教，多压制一下后台就行了。当然个人推荐用低质量图片，图片不要太风骚太花俏，毕竟图越复杂绘制时间越长。
+# 3, pull down the quick settings panel does not feel smooth
 
-# 4、我想提交日志文件给作者排查bug
+Normal phenomenon, after all, this picture also accounts for a large part of the memory. Of course, you can adjust your training, and you can tune and close some background apps that you don't use. Of course, personal recommendation is to use low-quality pictures, the picture is not too colorful, after all, the more complicated the drawing, the longer the drawing time.
 
-请将日志文件以文件的形式发送到liuzhu234@gmail.com，如果点击无效，可以的话，还可以将systemUI发给我看看
+# 4, I want to submit a log file to the author to troubleshoot the bug
+
+Please send the log file to ```liuzhu234@gmail``` .com as a file. If the click is invalid, you can also send me the systemUI.
