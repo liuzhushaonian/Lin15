@@ -17,68 +17,62 @@
 
     <string name="string_about">
 
-        Here is the manual for lin15.\n\n
+Here is the manual for lin15.\n\n
 
-        But all Android 7.0 or 8.0 and can be installed xposed framework ROM can probably set the background image\n\n
-        I did not use resource hooks\n
-        But written in Java code\n
-        \n
+But all Android 7.0 or 8.0 and can be installed xposed framework ROM can probably set the background image\n\n
+I did not use resource hooks\n
+But written in Java code\n
+\n
 
-        Picture quality, personally think that ordinary quality is enough\n
-        The memory is the best half\n
-        I can’t see any difference.\n
-        Of course, large memory users are free\n\n
+Picture quality, personally think that ordinary quality is enough\n
+The memory is the best half\n
+I can’t see any difference.\n
+Of course, large memory users are free\n\n
 
-        Gaussian blur, you can feel free\n
-        The larger the fuzzy value, the more blurred\n\n
+Gaussian blur, you can feel free\n
+The larger the fuzzy value, the more blurred\n\n
 
-        Custom height function has been returned\n
-        
-        For some ROMs, you cannot get the height directly from the drop-down quick settings panel.
-        
-        If you are always prompted to get the height \n
-        
-        Then try the custom height\n
-        
-        The general height is 1200~1400\n
-        
-        The data is not very accurate\n
-        
-        Subject to the actual situation of the personal phone \n\n
+Custom height function has been returned\n
 
-        Background scrolling and reel background features are currently only used as tests\n
+For some ROMs, you cannot get the height directly from the drop-down quick settings panel.
 
-        Because there are still bugs that can not be solved\n
+If you are always prompted to get the height \n
 
-        So leave a switch for you to decide if you do not need it.\n
+Then try the custom height\n
 
-        Resetting the systemUI function is a big trick that is very hurtful.\n
+The general height is 1200~1400\n
 
-        Otherwise it is not recommended to use it unless you want to delete all configurations\n\n
+The data is not very accurate\n
 
+Subject to the actual situation of the personal phone \n\n
 
+Background scrolling and reel background features are currently only used as tests\n
 
-        The following features are only for lineageOS15\n
-        Please do not be naughty for everyone who is not lineageOS\n
+Because there are still bugs that can not be solved\n
 
-        1、Hide app features\n
-        Its entrance is at lineageOS15 official desktop -> HOME SETTINGS(This option appears after long pressing the blank space on the desktop) -> More -> 隐藏应用(Hidden application)
-        \n\n
+So leave a switch for you to decide if you do not need it.\n
+
+Resetting the systemUI function is a big trick that is very hurtful.\n
+
+Otherwise it is not recommended to use it unless you want to delete all configurations\n\n
+
+The following features are only for lineageOS15\n
+Please do not be naughty for everyone who is not lineageOS\n
+
+1、Hide app features\n
+Its entrance is at lineageOS15 official desktop -> HOME SETTINGS(This option appears after long pressing the blank space on the desktop) -> More -> 隐藏应用(Hidden application)
+\n\n
 
 
-        2、Cancellation pop prompt when you close the mobile data\n
-        When you close the mobile data,
-        \n
-        there will be no more pop-up prompts to close,\n
-
-        but close directly.\n\n
-
-
-        I am legend\n
-        An ingenious developer\n
-
-        \n
-        (The above translation is from Google Translate)\n
+2、Cancellation pop prompt when you close the mobile data\n
+When you close the mobile data,
+\n
+there will be no more pop-up prompts to close,\n
+but close directly.\n\n
+I am legend\n
+An ingenious developer\n
+\n
+(The above translation is from Google Translate)\n
 
     </string>
 
@@ -99,8 +93,8 @@
     <string name="scroll">Scrolling background(test)</string>
 
     <string name="setting_info">
-        Click to select image\n
-        Long press to resume
+Click to select image\n
+Long press to clear
     </string>
 
     <string name="gaoji">Advanced Features</string>
@@ -120,23 +114,21 @@
     <string name="about">About</string>
 
     <string name="shang_info">
+In order to write this module\n
+there is no reading source code\n
+Also for this headache for a few days\n
+If you like this module\n
+There is also a certain amount of savings\n
+Then please let me drink a can of Coke\n
+Thanks\n\n
+If you are not rich\n
+Please do not donate\n
+Because all features of lin15 are free
+Even if you do not donate\n
+The same can be used\n
 
-        In order to write this module\n
-
-        there is no reading source code\n
-        Also for this headache for a few days\n
-        If you like this module\n
-        There is also a certain amount of savings\n
-        Then please let me drink a can of Coke\n
-        Thanks\n\n
-        If you are not rich\n
-        Please do not donate\n
-        Because all features of lin15 are free
-        Even if you do not donate\n
-        The same can be used\n
-
-        \n
-        (The above translation is from Google Translate)\n
+\n
+(The above translation is from Google Translate)\n
 
 
     </string>
@@ -181,27 +173,27 @@
     <string name="reset_title">About resetting systemUI</string>
 
     <string name="reset_content">Resetting systemUI means actively deleting the local data of Lin15 in systemUI\n
-         For example, sharedPreferences for saving various variables and saved background images will be deleted. \n
-         The purpose of this function is that after the user uninstalls lin15, the sharedPreferences left by lin15 and the set pictures will remain in the systemUI.
-         If the user does not want this data to remain in the phone\n
-        you can use this feature to delete the remaining traces. \n
-        Note that after using this function\n
-        please uninstall the app and restart your phone. \n
-         This function has another function\n
-        which is to clear the old traces\n
-        reset all settings, then your phone will be restored to the way you have never installed lin15\n
-        everything starts again, it is strongly recommended to restart the phone after reset\n
+For example, sharedPreferences for saving various variables and saved background images will be deleted. \n
+The purpose of this function is that after the user uninstalls lin15, the sharedPreferences left by lin15 and the set pictures will remain in the systemUI.
+If the user does not want this data to remain in the phone\n
+you can use this feature to delete the remaining traces. \n
+Note that after using this function\n
+please uninstall the app and restart your phone. \n
+This function has another function\n
+which is to clear the old traces\n
+reset all settings, then your phone will be restored to the way you have never installed lin15\n
+everything starts again, it is strongly recommended to restart the phone after reset\n
     </string>
 
 
     <string name="tip">tip</string>
 
     <string name="tip_content">If you can not get the height automatically\n
-        try using the custom image height method in the menu bar in the upper right corner\n
-        After entering the custom height\n
-        you can select the image settings\n
-        Please check the specific height\n
-        usually around 1200~1400</string>
+try using the custom image height method in the menu bar in the upper right corner\n
+After entering the custom height\n
+you can select the image settings\n
+Please check the specific height\n
+usually around 1200~1400</string>
 
     <string name="no_width">Unable to get valid width\n
         If this message appears multiple times\n
@@ -210,20 +202,19 @@
     <string name="logs_switch">Logging options</string>
 
     <string name="logs_about">
-        This is the log that can open the app\n
-         For debugging and recording\n
-         If the log is turned on\n
-         Will generate a lot of logs\n
-         The function of the log is to help developers find the reason for the setting failure.\n
-         If you use it normally\n
-         Please do not open this option\n
-         If you can not set the background \n
-         Then please open it\n
-         Then set the background image\n
-         Go to the xposed frame and find the log\n
-         You can see where the problem is running \n
-         If you do not understand \n
-         Please send me the log file\n
+This is the log that can open the app\nFor debugging and recording\n
+If the log is turned on\n
+Will generate a lot of logs\n
+The function of the log is to help developers find the reason for the setting failure.\n
+If you use it normally\n
+Please do not open this option\n
+If you can not set the background \n
+Then please open it\n
+Then set the background image\n
+Go to the xposed frame and find the log\n
+You can see where the problem is running \n
+If you do not understand \n
+Please send me the log file\n
     </string>
 
     <string name="jing">WARNING</string>
@@ -231,8 +222,7 @@
     <string name="open_log">Open log</string>
     <string name="close_log">Close the log</string>
 
-    <string name="exit_info">This module has not been activated in xposed\n
-         Please go to activation before using</string>
+    <string name="exit_info">This module has not been activated in xposed,Please go to activation before using</string>
     <string name="exit">exit</string>
 
     <string name="quest">something wrong?</string>
