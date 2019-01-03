@@ -2,6 +2,13 @@
 
 ![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185230.png)
 
+# 2.3更新内容
+
+- 增加模块激活认证
+- 增加问答，在关于里可以看到
+- 修改英文版文字排版错乱问题
+- 修改个别字眼，避免引起误会
+
 
 # 2.2更新内容
 

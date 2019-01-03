@@ -406,8 +406,6 @@ public class MainActivity extends BaseActivity {
 
             Locale locale=getResources().getConfiguration().getLocales().get(0);
 
-            Log.d("local---->>>",locale.getCountry());
-
             if (locale.getCountry().equals("CN")||locale.getCountry().equals("TW")) {
                 uri = Uri.parse("https://github.com/liuzhushaonian/Lin15/blob/master/QUEST_ZH.md");
             }else {
