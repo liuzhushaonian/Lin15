@@ -1,5 +1,5 @@
 
-[中文版]()
+[中文版](https://github.com/liuzhushaonian/Lin15/blob/master/QUEST_ZH.md )
 
 # 0, Why is the setting invalid? Become transparent
 

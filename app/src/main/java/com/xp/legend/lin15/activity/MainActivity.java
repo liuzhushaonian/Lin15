@@ -45,6 +45,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity extends BaseActivity {
@@ -401,7 +402,17 @@ public class MainActivity extends BaseActivity {
 
         }).setNegativeButton(getString(R.string.quest),(dialog, which) -> {
 
-            Uri uri = Uri.parse("https://www.baidu.com");
+            Uri uri = null;
+
+            Locale locale=getResources().getConfiguration().getLocales().get(0);
+
+            Log.d("local---->>>",locale.getCountry());
+
+            if (locale.getCountry().equals("CN")||locale.getCountry().equals("TW")) {
+                uri = Uri.parse("https://github.com/liuzhushaonian/Lin15/blob/master/QUEST_ZH.md");
+            }else {
+                uri = Uri.parse("https://github.com/liuzhushaonian/Lin15/blob/master/QUEST.md");
+            }
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
 
