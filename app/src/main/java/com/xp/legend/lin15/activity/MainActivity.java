@@ -38,6 +38,7 @@ import com.xp.legend.lin15.adapter.MainAdapter;
 import com.xp.legend.lin15.fragment.FullFragment;
 import com.xp.legend.lin15.fragment.HeaderFragment;
 import com.xp.legend.lin15.utils.Conf;
+import com.xp.legend.lin15.utils.NotProguard;
 import com.xp.legend.lin15.utils.ReceiverAction;
 
 import java.io.File;
@@ -613,7 +614,8 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    private static boolean isModuleActive() {
+    @NotProguard
+    private boolean isModuleActive() {
 
         return false;
 
