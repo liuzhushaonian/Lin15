@@ -226,4 +226,5 @@ Please send me the log file\n
     <string name="exit">exit</string>
 
     <string name="quest">something wrong?</string>
+    <string name="moduel_info">Module for modifying lineageOS15</string>
 </resources>
