@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 static def releaseTime() {
-    return new Date().format("yyyy:MM:dd", TimeZone.getTimeZone("UTC"))
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
 android {
@@ -24,7 +24,7 @@ android {
     }
 
     android.applicationVariants.all { variant ->
-        def appName="${defaultConfig.applicationId }_${defaultConfig.versionName}_${releaseTime() }"
+        def appName="lin15_${defaultConfig.versionName}_${releaseTime() }"
 
         variant.outputs.all { output ->
             outputFileName = "${appName}.apk"

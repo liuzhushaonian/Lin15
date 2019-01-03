@@ -231,4 +231,7 @@
     <string name="open_log">Open log</string>
     <string name="close_log">Close the log</string>
 
+    <string name="exit_info">This module has not been activated in xposed\n
+         Please go to activation before using</string>
+    <string name="exit">exit</string>
 </resources>
