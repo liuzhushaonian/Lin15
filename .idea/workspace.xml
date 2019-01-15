@@ -6,7 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="CMakeSettings">
@@ -15,83 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2abc994-6da4-4148-8dde-ebb22aeb248f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/jarAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskJars.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskJars.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_core_common_1_1_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_core_runtime_1_1_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_common_1_1_0_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_livedata_core_1_1_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_runtime_1_1_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_viewmodel_1_1_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_animated_vector_drawable_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_appcompat_v7_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_design_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_recyclerview_v7_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_annotations_27_1_1_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_compat_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_core_ui_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_core_utils_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_fragment_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_media_compat_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_v4_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_vector_drawable_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_transition_27_1_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/xposed_init" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/xposed_init" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/activity/BaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/activity/BaseActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/activity/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/activity/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/adapter/MainAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/adapter/MainAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/bean/Full.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/bean/Full.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/bean/HeaderInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/bean/HeaderInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/bean/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/bean/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/fragment/BaseFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/fragment/BaseFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/fragment/FullFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/fragment/FullFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/fragment/HeaderFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/fragment/HeaderFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/AllAppsGridAdapterHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/AllAppsGridAdapterHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/DataSaverHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/DataSaverHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/IconsHandlerHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/IconsHandlerHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/MyselfHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/MyselfHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/N_FullHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/N_FullHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/N_HeaderHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/N_HeaderHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/N_StatusBarHeaderHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/N_StatusBarHeaderHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/O_FullHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_FullHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/O_HeaderHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_HeaderHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/QSDetailHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/QSDetailHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/QuickSettingExpansion.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/QuickSettingExpansion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/SettingsActivityHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/SettingsActivityHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/hooks/SlitImageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/SlitImageView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/interfaces/IFullFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/interfaces/IFullFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/interfaces/IHeaderFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/interfaces/IHeaderFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/presenter/FullPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/presenter/FullPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/presenter/HeaderPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/presenter/HeaderPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/utils/BaseHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/utils/BaseHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/utils/Conf.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/utils/Conf.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/utils/NotProguard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/utils/NotProguard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin15/utils/ReceiverAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/utils/ReceiverAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/proguard-files/proguard-android-optimize.txt-3.2.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/proguard-files/proguard-android.txt-3.2.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/proguard-files/proguard-defaults.txt-3.2.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-    </list>
+    <list default="true" id="d2abc994-6da4-4148-8dde-ebb22aeb248f" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,8 +72,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_FullHook.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="1162" column="36" selection-start-line="1162" selection-start-column="36" selection-end-line="1162" selection-end-column="36" />
+            <state relative-caret-position="434">
+              <caret line="1203" column="31" lean-forward="true" selection-start-line="1203" selection-start-column="31" selection-end-line="1203" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -2772,7 +2696,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50106496" side_tool="true" weight="0.32916668" />
       <window_info anchor="bottom" id="Logcat" order="10" weight="0.7626943" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32953367" />
-      <window_info anchor="bottom" id="Terminal" order="12" weight="0.36373058" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" visible="true" weight="0.36373058" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -3007,8 +2931,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_FullHook.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="1162" column="36" selection-start-line="1162" selection-start-column="36" selection-end-line="1162" selection-end-column="36" />
+        <state relative-caret-position="434">
+          <caret line="1203" column="31" lean-forward="true" selection-start-line="1203" selection-start-column="31" selection-end-line="1203" selection-end-column="31" />
         </state>
       </provider>
     </entry>
