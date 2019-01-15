@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.xp.legend.lin15">
+    package="com.xp.legend.lin16">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -24,7 +24,7 @@
             android:value="82" />
 
 
-        <activity android:name=".activity.MainActivity"
+        <activity android:name="com.xp.legend.lin16.activity.MainActivity"
             android:windowSoftInputMode="adjustPan"
             >
             <intent-filter>
@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.BaseActivity">
+        <activity android:name="com.xp.legend.lin16.activity.BaseActivity">
 
         </activity>
     </application>
