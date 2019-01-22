@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import com.xp.legend.lin16.utils.ReceiverAction;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -37,6 +38,8 @@ public class QSDetailHook implements IXposedHookLoadPackage{
                     Intent intent=new Intent(ReceiverAction.SEND_ORI);
 
                     intent.putExtra("ori",configuration.orientation);
+
+                XposedBridge.log("lin16----->>>旋转屏幕了");
 
                     AndroidAppHelper.currentApplication().sendBroadcast(intent);
 

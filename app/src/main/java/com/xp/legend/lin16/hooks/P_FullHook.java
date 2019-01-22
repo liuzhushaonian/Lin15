@@ -26,6 +26,7 @@ import com.xp.legend.lin16.bean.Full;
 import com.xp.legend.lin16.bean.Result;
 import com.xp.legend.lin16.utils.BaseHook;
 import com.xp.legend.lin16.utils.Conf;
+import com.xp.legend.lin16.utils.LogUtils;
 import com.xp.legend.lin16.utils.ReceiverAction;
 
 import java.io.File;
@@ -154,6 +155,9 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 super.afterHookedMethod(param);
 
                 float f = XposedHelpers.getFloatField(param.thisObject, "mQsExpansion");
+
+                XposedBridge.log("lin16----->>>"+f);
+
 
                 autoChangeAlpha(f);
 

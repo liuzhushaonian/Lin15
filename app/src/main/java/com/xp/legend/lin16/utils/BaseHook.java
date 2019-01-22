@@ -105,4 +105,10 @@ public abstract class BaseHook {
 
     }
 
+    public BaseHook() {
+
+
+
+
+    }
 }
