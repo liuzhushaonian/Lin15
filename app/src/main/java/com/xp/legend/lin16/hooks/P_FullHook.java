@@ -154,9 +154,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
 
-                float f = XposedHelpers.getFloatField(param.thisObject, "mQsExpansion");
+//                float f = XposedHelpers.getFloatField(param.thisObject, "mQsExpansion");
+
+                float f= (float) param.args[0];
 
                 XposedBridge.log("lin16----->>>"+f);
+
+                LogUtils.log("lin16--->>>"+f,AndroidAppHelper.currentApplication());
 
 
                 autoChangeAlpha(f);

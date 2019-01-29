@@ -1,9 +1,7 @@
 apply plugin: 'com.android.application'
-
 static def releaseTime() {
     return new Date().format("yyyy-MM-dd-HH-mm-ss", TimeZone.getTimeZone("GMT+08:00"))
 }
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -24,7 +22,7 @@ android {
     }
 
     android.applicationVariants.all { variant ->
-        def appName="lin15_${defaultConfig.versionName}_${releaseTime() }"
+        def appName = "lin15_${defaultConfig.versionName}_${releaseTime()}"
 
         variant.outputs.all { output ->
             outputFileName = "${appName}.apk"
@@ -43,10 +41,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildToolsVersion '28.0.3'
-}
-
-repositories {
-    jcenter()
 }
 
 dependencies {

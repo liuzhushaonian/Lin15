@@ -2,7 +2,7 @@
 <resources>
 
 
-    <string name="app_name">Lin15</string>
+    <string name="app_name">Lin16</string>
     <string name="quick_item">QuickSettingBackground</string>
     <string name="color_item">选择颜色</string>
     <string name="image_item">选择图片</string>

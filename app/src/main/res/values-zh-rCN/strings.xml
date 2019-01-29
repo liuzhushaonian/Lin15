@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Lin15</string>
+    <string name="app_name">Lin16</string>
     <string name="quick_item">下拉菜单设置</string>
     <string name="color_item">选择颜色</string>
     <string name="image_item">选择图片</string>
