@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -109,6 +110,12 @@ public abstract class BaseHook {
 
 
 
+
+    }
+
+    protected boolean isP(){
+
+        return Build.VERSION.SDK_INT == Build.VERSION_CODES.P;
 
     }
 }

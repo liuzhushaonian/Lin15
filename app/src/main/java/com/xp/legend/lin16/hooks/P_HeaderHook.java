@@ -14,7 +14,11 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.xp.legend.lin16.bean.HeaderInfo;
@@ -29,14 +33,17 @@ import java.io.FileOutputStream;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
-    private static final String CLASS = "com.android.systemui.qs.QuickStatusBarHeader";
+    private static final String CLASS = "com.android.systemui.qs.QSContainerImpl";
     private static final String METHOD = "onFinishInflate";
-    private View header;
+    private static final String METHOD2 = "updateExpansion";
+    private static final String METHOD3="onConfigurationChanged";
+    private static final String METHOD4="onLayout";
     private N_HeaderReceiver receiver;
     private SharedPreferences sharedPreferences;
     private boolean isGAO = false;
@@ -53,11 +60,16 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     private int rotation = -101;
 
+    private SlitImageView shuHeader,hengHeader;
+    private ViewGroup fullView;
+    private int radius;
+    private boolean isFirst=true;
+
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
 
-        if (!isO()){
+        if (!isP()){
             return;
         }
 
@@ -82,23 +94,63 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 gaoValue = sharedPreferences.getInt(Conf.N_HEADER_GAO_VALUE, 25);
 
-                drawable = AndroidAppHelper
-                        .currentApplication()
-                        .getResources()
-                        .getIdentifier("qs_background_primary", "drawable", lpparam.packageName);
+                fullView= (ViewGroup) param.thisObject;
 
-                header= (View) param.thisObject;
 
-                header.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                TypedValue typedValue = new TypedValue();
+                AndroidAppHelper.currentApplication().getTheme().resolveAttribute(android.R.attr.dialogCornerRadius, typedValue, true);
+
+
+                /**
+                 * 获取圆角度数
+                 */
+                radius=TypedValue.complexToDimensionPixelSize(typedValue.data,
+                        AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
+
+
 
                 autoSetBg();
 
 
-//                myOrientationEventChangeListener = new MyOrientationEventChangeListener(AndroidAppHelper.currentApplication(),
-//                        SensorManager.SENSOR_DELAY_NORMAL);
-//
-//                myOrientationEventChangeListener.enable();
 
+            }
+        });
+
+
+        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, METHOD3,Configuration.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//                super.afterHookedMethod(param);
+
+                Configuration configuration= (Configuration) param.args[0];
+
+                autoSetPosition(configuration.orientation);
+
+            }
+        });
+
+        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, METHOD2, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+
+                float f = XposedHelpers.getFloatField(param.thisObject, "mQsExpansion");
+
+                autoChangeAlpha(f);
+
+            }
+        });
+
+        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, METHOD4, boolean.class, int.class, int.class, int.class, int.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+
+                if (isFirst) {
+                    isFirst = false;
+                    autoSetBg();
+
+                }
 
             }
         });
@@ -143,16 +195,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
-    /**
-     * 判断是否是O系列
-     *
-     * @return
-     */
-    private boolean isO() {
-
-        return Build.VERSION.SDK_INT == Build.VERSION_CODES.O || Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1;
-    }
-
 
     private class N_HeaderReceiver extends BroadcastReceiver {
 
@@ -179,7 +221,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 case ReceiverAction.SEND_O_FLOAT://传递下拉程度
 
-                    autoChangeAlpha(intent);
+//                    autoChangeAlpha(intent);
 
                     break;
 
@@ -234,7 +276,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                     break;
                 case ReceiverAction.SEND_ORI://接收屏幕旋转信息
 
-                    autoSetPosition(intent);
+//                    autoSetPosition(intent);
 
                     break;
 
@@ -245,164 +287,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
 
 
-//    /**
-//     * 监听屏幕横竖变化，改变快速设置面板的背景图
-//     */
-//    private class MyOrientationEventChangeListener extends OrientationEventListener {
-//
-//
-//        MyOrientationEventChangeListener(Context context, int rate) {
-//            super(context, rate);
-//        }
-//
-//        @Override
-//        public void onOrientationChanged(int orientation) {
-//
-//
-////            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
-////                return;  //手机平放时，检测不到有效的角度
-////            }//只检测是否有四个角度的改变
-//
-//
-//            if (orientation > 350 || orientation < 10) { //0度
-//
-//                saveHeaderWidthInfo();//保存宽度信息
-//
-//                saveHeaderHeightInfo();//保存高度信息
-//
-//
-//                if (rotation == 10) {
-//                    return;
-//                }
-//
-//                if (isVertical) {
-//
-//                    rotation = 10;
-//
-//                    autoSetBg();
-//                }
-//
-//
-//            } else if (orientation > 80 && orientation < 100) { //90度
-//
-//                saveHeaderWidthInfo();//保存宽度信息
-//
-//                saveHeaderHeightInfo();//保存高度信息
-//
-//                if (rotation == 20) {
-//                    return;
-//                }
-//
-//                if (!isVertical) {
-//
-//                    rotation = 20;//不一致时表示屏幕旋转，重新赋值
-//
-//                    autoSetBg();
-//                }
-//
-//
-//            } else if (orientation > 170 && orientation < 190) { //180度
-//
-//                saveHeaderWidthInfo();//保存宽度信息
-//
-//                saveHeaderHeightInfo();//保存高度信息
-//
-//                if (rotation == 30) {
-//                    return;
-//                }
-//
-//                if (isVertical) {
-//
-//                    rotation = 30;//不一致时表示屏幕旋转，重新赋值
-//
-//                    autoSetBg();
-//                }
-//
-//
-//            } else if (orientation > 265 && orientation < 275) { //270度
-//
-//                saveHeaderWidthInfo();//保存宽度信息
-//
-//                saveHeaderHeightInfo();//保存高度信息
-//
-//                if (rotation == 40) {
-//                    return;
-//                }
-//
-//                if (!isVertical) {
-//
-//                    rotation = 40;//不一致时表示屏幕旋转，重新赋值
-//
-//                    autoSetBg();
-//                }
-//
-//
-//            }
-//        }
-//    }
 
-    /**
-     * 获取并保存header的宽度信息
-     */
-    private void saveHeaderWidthInfo() {
-
-//        sharedPreferences.edit().remove(Conf.N_HEADER_VERTICAL_WIDTH).apply();
-//        sharedPreferences.edit().remove(Conf.N_HEADER_HORIZONTAL_WIDTH).apply();
-
-        int n_header_vertical_width = sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_WIDTH, -1);
-
-        int n_header_horizontal_width = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_WIDTH, -1);
-
-        //还没有保存信息且是垂直模式
-        if (n_header_vertical_width <= 0 && isVertical) {
-
-            n_header_vertical_width = header.getWidth();
-
-            sharedPreferences.edit().putInt(Conf.N_HEADER_VERTICAL_WIDTH, n_header_vertical_width).apply();//保存
-
-        }
-
-
-        if ((n_header_horizontal_width <= 0 && !isVertical)) {
-
-            n_header_horizontal_width = header.getWidth();
-
-            sharedPreferences.edit().putInt(Conf.N_HEADER_HORIZONTAL_WIDTH, n_header_horizontal_width).apply();//保存
-
-        }
-
-    }
-
-    /**
-     * 保存高度信息
-     */
-    private void saveHeaderHeightInfo() {
-
-//        sharedPreferences.edit().remove(Conf.N_HEADER_VERTICAL_HEIGHT).apply();
-//
-//        sharedPreferences.edit().remove(Conf.N_HEADER_HORIZONTAL_HEIGHT).apply();
-
-        int n_header_vertical_height = sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_HEIGHT, -1);
-
-
-        if (n_header_vertical_height <= 0 && isVertical) {
-            n_header_vertical_height = header.getHeight();
-
-            sharedPreferences.edit().putInt(Conf.N_HEADER_VERTICAL_HEIGHT, n_header_vertical_height).apply();
-        }
-
-        int n_header_horizontal_height = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, -1);
-
-
-        if (n_header_horizontal_height <= 0 && !isVertical) {
-
-            n_header_horizontal_height = header.getHeight();
-
-            sharedPreferences.edit().putInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, n_header_horizontal_height).apply();
-        }
-
-
-    }
 
     /**
      * 自动设置壁纸
@@ -410,10 +295,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void autoSetBg() {
 
-
-//        if (header==null){
-//            return;
-//        }
 
         if (isGAO) {
             setGaoSiImage();
@@ -430,9 +311,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         File file = null;
 
-        if (header==null){
-            return;
-        }
 
         if (isVertical) {
 
@@ -444,42 +322,10 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (!file.exists()) {
 
-            if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
+            if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则清除
+                cleanHeaderBg();
 
-                if (sharedPreferences.getBoolean(Conf.SLIT,false)){
-
-                    header.setBackground(null);
-                    header.setBackgroundColor(Color.TRANSPARENT);
-
-                }else {
-                    header.setBackground(getDefaultDrawable());
-                }
-
-            } else {
-
-                header.setBackground(null);
             }
-
-//            if (isVertical) {
-//
-//                if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
-//
-//                    header.setBackground(getDefaultDrawable());
-//
-//                } else {
-//                    header.setBackground(null);
-//                }
-//
-//            } else {
-//
-//                if (isFullExists(Conf.HORIZONTAL)) {
-//                    header.setBackground(getDefaultDrawable());
-//
-//                } else {
-//                    header.setBackground(null);
-//                }
-//
-//            }
 
             return;
         }
@@ -491,8 +337,61 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         bitmap = getBitmap(AndroidAppHelper.currentApplication(), bitmap, value);
 
-        header.setBackground(bitmap2Drawable(bitmap));
+        showHeader();
 
+        if (isVertical) {
+
+            hideHengHeader();//隐藏横屏头部
+
+            if (shuHeader == null) {
+                initShuHeader();
+            }
+
+            if (shuHeader == null||fullView==null) {
+                return;
+            }
+
+            //还原
+            if (hengHeader!=null){
+                fullView.removeView(hengHeader);
+            }
+            fullView.removeView(shuHeader);
+            fullView.addView(shuHeader,1);//0位置放着全部背景
+
+
+            shuHeader.setImageBitmap(bitmap);
+
+            setAlpha(shuHeader);
+
+
+        }else {
+
+            hideShuHeader();//隐藏竖屏头部
+
+            if (hengHeader==null){
+                initHengHeader();
+            }
+
+            if (hengHeader==null||fullView==null){
+                return;
+            }
+
+            if (shuHeader!=null){
+                fullView.removeView(shuHeader);
+            }
+
+            fullView.removeView(hengHeader);
+            fullView.addView(hengHeader,1);
+
+
+            hengHeader.setImageBitmap(bitmap);
+
+            setAlpha(hengHeader);
+
+
+        }
+
+        autoChangePosition();//自动调整位置
 
     }
 
@@ -502,9 +401,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void setBg() {
 
-        if (header == null) {
-            return;
-        }
 
         File file = null;
 
@@ -522,25 +418,11 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (!file.exists()) {//文件不存在
 
-//
-
             if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
 
-                if (sharedPreferences.getBoolean(Conf.SLIT,false)){
+                cleanHeaderBg();
 
-                    header.setBackground(null);
-                    header.setBackgroundColor(Color.TRANSPARENT);
-
-                }else {
-                    header.setBackground(getDefaultDrawable());
-                }
-
-            } else {
-
-                header.setBackground(null);
             }
-
-
 
             return;
         }
@@ -564,9 +446,58 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 
-        header.setBackground(bitmap2Drawable(bitmap));
+        showHeader();
 
-        header.getBackground().setAlpha(alpha_value);
+        if (isVertical){
+
+            hideHengHeader();
+
+            if (shuHeader==null){
+                initShuHeader();
+            }
+
+            if (shuHeader==null||fullView==null){
+                return;
+            }
+
+            //还原
+            if (hengHeader!=null){
+                fullView.removeView(hengHeader);
+            }
+            fullView.removeView(shuHeader);
+            fullView.addView(shuHeader,1);//0位置放着全部背景
+
+
+            shuHeader.setImageBitmap(bitmap);
+
+            setAlpha(shuHeader);
+
+        }else {
+
+            hideShuHeader();
+
+            if (hengHeader==null){
+                initHengHeader();
+            }
+
+            if (hengHeader==null||fullView==null){
+                return;
+            }
+
+            if (shuHeader!=null){
+                fullView.removeView(shuHeader);
+            }
+
+            fullView.removeView(hengHeader);
+            fullView.addView(hengHeader,1);
+
+            hengHeader.setImageBitmap(bitmap);
+
+            setAlpha(hengHeader);
+
+        }
+
+        autoChangePosition();//摆正位置
 
     }
 
@@ -613,9 +544,10 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     /**
      * 获取默认背景
-     *
+     * 用自定义view作为背景，所以舍弃
      * @return
      */
+    @Deprecated
     private Drawable getDefaultDrawable() {
 
         if (drawable == 0) {
@@ -634,10 +566,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void deleteBg(Intent intent,Context context) {
 
-        if (header == null || header.getBackground() == null) {
-
-            return;
-        }
 
         int type = intent.getIntExtra(Conf.N_HEADER_DELETE_TYPE, -1);
 
@@ -649,13 +577,9 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             Toast.makeText(context, "清除成功", Toast.LENGTH_SHORT).show();
 
-            if (sharedPreferences.getBoolean(Conf.SLIT,false)){
 
-                header.setBackgroundColor(Color.TRANSPARENT);
+            setBg();
 
-            }else {
-                setBg();
-            }
         }
 
     }
@@ -784,13 +708,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                     if (!isVertical) {//如果当前是横屏状态
 
+                        autoSetBg();
 
-                        if (isGAO) {
-
-                            setGaoSiImage();
-                        } else {
-                            setBg();
-                        }
                     }
 
                     Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
@@ -858,41 +777,48 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 根据下拉程度改变透明度
      *
-     * @param intent
+     * @param f
      */
-    private void autoChangeAlpha(Intent intent) {
-
-        float f = intent.getFloatExtra(Conf.N_EXPAND_VALUE, -0.1f);
-
-        if (header == null || header.getBackground() == null) {
-
-            return;
-        }
-
-
+    private void autoChangeAlpha(float f) {
 
         if (f < 0 || f > 1) {
             return;
         }
 
-        float alpha = (1 - f) * alpha_value;
+        float alpha =((1 - f) * (alpha_value/255.0f));
 
-        if (alpha > alpha_value) {
-            alpha = alpha_value;
+        if (alpha > 1.0f) {
+            alpha = 1.0f;
         }
 
         if (alpha < 0) {
-            alpha = 0;
+            alpha = 0f;
         }
 
-        header.getBackground().setAlpha((int) alpha);
+        XposedBridge.log("header_alpha-->>"+alpha);
 
-        if (f == 1) {
-            header.getBackground().setAlpha(0);
-        } else if (f == 0) {
 
-            header.getBackground().setAlpha(alpha_value);
+        if (shuHeader!=null&&shuHeader.getVisibility()==View.VISIBLE&&isVertical){
+
+            shuHeader.setAlpha(alpha);
+
+            if (f==1){
+                shuHeader.setAlpha(0f);
+            }
+
         }
+
+
+        if (hengHeader!=null&&hengHeader.getVisibility()==View.VISIBLE&&!isVertical){
+
+            hengHeader.setAlpha(alpha);
+
+            if (f==1){
+                hengHeader.setAlpha(0f);
+            }
+
+        }
+
 
 
     }
@@ -924,27 +850,12 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         sharedPreferences.edit().putInt(Conf.N_HEADER_ALPHA, alpha_value).apply();
 
-        if (header.getBackground() == null) {
-            return;
-        }
 
-        if (isVertical) {
 
-            if (getNHeaderFile(Conf.VERTICAL).exists()) {
 
-                header.getBackground().setAlpha(value);
+        autoSetBg();
 
-            }
 
-        } else {
-
-            if (getNHeaderFile(Conf.HORIZONTAL).exists()) {
-
-                header.getBackground().setAlpha(value);
-
-            }
-
-        }
     }
 
     private void getGaoSi(Intent intent) {
@@ -962,12 +873,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
 
-        if (isGAO) {
-            setGaoSiImage();
-
-        } else {
-            setBg();
-        }
+        autoSetBg();
 
         sharedPreferences.edit().putBoolean(Conf.N_HEADER_GAO,isGAO).apply();
 
@@ -1013,9 +919,9 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 case Conf.VERTICAL:
 
-                    int width = header.getWidth();
+                    int width = getWidth(true);
 
-                    int height = header.getHeight();
+                    int height = getHeight(true);
 
                     info.setHeight(height);
 
@@ -1080,8 +986,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             return;
         }
 
-        //取8.0或8.1
-        if (sdk==Build.VERSION_CODES.O||sdk==Build.VERSION_CODES.O_MR1){
+        //取9.0
+        if (sdk==Build.VERSION_CODES.P){
 
             int alpha=sharedPreferences.getInt(Conf.N_HEADER_ALPHA,255);
 
@@ -1113,11 +1019,10 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 自动根据当前屏幕设置背景，代替之前的监听
      *
-     * @param intent
+     * @param p
      */
-    private void autoSetPosition(Intent intent) {
+    private void autoSetPosition(int p) {
 
-        int p = intent.getIntExtra("ori", -1);
 
         if (p == -1) {
             return;
@@ -1153,11 +1058,218 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         }
 
-        saveHeaderHeightInfo();
-
-        saveHeaderWidthInfo();
 
     }
 
+    //初始化竖屏头部，宽度取保存好的数值
+    private void initShuHeader(){
+
+        if (shuHeader!=null){
+            return;
+        }
+
+        int width=getWidth(true);
+        int height=getHeight(true);
+
+        if (width<=0||height<=0){
+            logs("竖屏头部信息");
+            logs("width-->>>"+width);
+            logs("height-->>>"+height);
+            return;
+        }
+
+        shuHeader=new SlitImageView(AndroidAppHelper.currentApplication());
+        ViewGroup.LayoutParams layoutParams=new FrameLayout.LayoutParams(width,height);
+
+        shuHeader.setLayoutParams(layoutParams);
+
+        shuHeader.setRadius(this.radius);//设置上圆角度数
+
+    }
+
+    /**
+     * 初始化横屏头部
+     */
+    private void initHengHeader(){
+
+        if (hengHeader!=null){
+            return;
+        }
+
+        int width=getWidth(false);
+        int height=getHeight(false);
+
+        if (width<=0||height<=0){
+            logs("横屏头部信息");
+            logs("width--->>>"+width);
+            logs("height-->>>"+height);
+            return;
+        }
+
+        hengHeader=new SlitImageView(AndroidAppHelper.currentApplication());
+        ViewGroup.LayoutParams layoutParams=new FrameLayout.LayoutParams(width,height);
+        hengHeader.setLayoutParams(layoutParams);
+        hengHeader.setRadius(this.radius);//设置上圆角度数
+
+    }
+
+    /**
+     * 获取宽度
+     * @return 返回保存好的宽度值
+     */
+    private int getWidth(boolean isV){
+
+        if (isV){
+
+            return sharedPreferences.getInt(Conf.FULL_SHU_WIDTH,-1);
+
+        }else {
+
+
+            return sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
+        }
+
+    }
+
+
+    /**
+     * 获取高度
+     * @return 返回保存好的高度值
+     */
+    private int getHeight(boolean isV){
+
+        if (isV){
+
+            return sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_HEIGHT,-1);
+
+        }else {
+
+            return sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, -1);
+        }
+    }
+
+
+    /**
+     * 清除整个头部的背景，还原
+     */
+    private void cleanHeaderBg(){
+
+        if (shuHeader!=null){
+
+            shuHeader.setVisibility(View.GONE);
+            shuHeader=null;
+        }
+
+        if (hengHeader!=null){
+            hengHeader.setVisibility(View.GONE);
+            hengHeader=null;
+        }
+
+    }
+
+    private void autoChangePosition(){
+
+        if (shuHeader!=null&&shuHeader.getVisibility()==View.VISIBLE){
+
+            int full_width=fullView.getWidth();
+
+            int bg_width=shuHeader.getWidth();
+
+            int margin=(full_width-bg_width)/2;//计算距离两边的距离
+
+            XposedBridge.log("margin--->>>"+margin);
+
+            int ii=AndroidAppHelper
+                    .currentApplication()
+                    .getResources()
+                    .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
+
+
+            int offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
+
+
+            FrameLayout.LayoutParams layoutParams= (FrameLayout.LayoutParams) shuHeader.getLayoutParams();
+            layoutParams.setMargins(margin, offset_height,margin,0);
+
+            shuHeader.setLayoutParams(layoutParams);
+
+        }
+
+        if (hengHeader!=null&&hengHeader.getVisibility()==View.VISIBLE){
+
+            int full_width=fullView.getWidth();
+
+            int bg_width=hengHeader.getWidth();
+
+            int margin=(full_width-bg_width)/2;//计算距离两边的距离
+
+            int ii=AndroidAppHelper
+                    .currentApplication()
+                    .getResources()
+                    .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
+
+            int offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
+
+
+            FrameLayout.LayoutParams layoutParams= (FrameLayout.LayoutParams) hengHeader.getLayoutParams();
+            layoutParams.setMargins(margin, offset_height,margin,0);
+
+            hengHeader.setLayoutParams(layoutParams);
+
+        }
+
+
+    }
+
+    private void showHeader(){
+
+        if (shuHeader!=null&&shuHeader.getVisibility()==View.GONE&&isVertical){
+            shuHeader.setVisibility(View.VISIBLE);
+        }
+
+
+        if (hengHeader!=null&&hengHeader.getVisibility()==View.GONE&&!isVertical){
+
+            hengHeader.setVisibility(View.VISIBLE);
+
+        }
+
+    }
+
+    private void hideShuHeader(){
+
+        if (shuHeader!=null&&shuHeader.getVisibility()==View.VISIBLE){
+            shuHeader.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void hideHengHeader(){
+
+        if (hengHeader!=null&&hengHeader.getVisibility()==View.VISIBLE){
+            hengHeader.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void setAlpha(View view){
+
+        if (view!=null){
+
+            float f=alpha_value/255.0f;
+
+            if (f>1f){
+                f=1.0f;
+            }
+
+            if (f<0f){
+                f=0f;
+            }
+
+            view.setAlpha(f);
+
+        }
+
+    }
 
 }

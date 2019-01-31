@@ -64,8 +64,6 @@ public class FullPresenter {
 
         activity.sendBroadcast(intent);
 
-        Log.d("sssss----->>>","发送成功！！！");
-
     }
 
     public void getFullInfo(Activity activity,int type){

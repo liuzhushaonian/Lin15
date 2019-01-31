@@ -237,6 +237,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/seekBar_gao_value"
                 android:id="@+id/scrollSwitch"
                 android:paddingBottom="16dp"
+                android:visibility="gone"
                 />
 
 
@@ -250,7 +251,9 @@
                 android:text="@string/slit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrollSwitch" />
+                app:layout_constraintTop_toBottomOf="@+id/scrollSwitch"
+                android:visibility="gone"
+                />
 
 
         </android.support.constraint.ConstraintLayout>

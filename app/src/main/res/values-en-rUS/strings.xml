@@ -17,61 +17,14 @@
 
     <string name="string_about">
 
-Here is the manual for lin15.\n\n
+    Here is the manual for lin16.\n\n
 
-But all Android 7.0 or 8.0 and can be installed xposed framework ROM can probably set the background image\n\n
-I did not use resource hooks\n
-But written in Java code\n
-\n
+    If you want to display the picture of the head\n
+    you must set picture for full panel\n\n
 
-Picture quality, personally think that ordinary quality is enough\n
-The memory is the best half\n
-I can’t see any difference.\n
-Of course, large memory users are free\n\n
-
-Gaussian blur, you can feel free\n
-The larger the fuzzy value, the more blurred\n\n
-
-Custom height function has been returned\n
-
-For some ROMs, you cannot get the height directly from the drop-down quick settings panel.
-
-If you are always prompted to get the height \n
-
-Then try the custom height\n
-
-The general height is 1200~1400\n
-
-The data is not very accurate\n
-
-Subject to the actual situation of the personal phone \n\n
-
-Background scrolling and reel background features are currently only used as tests\n
-
-Because there are still bugs that can not be solved\n
-
-So leave a switch for you to decide if you do not need it.\n
-
-Resetting the systemUI function is a big trick that is very hurtful.\n
-
-Otherwise it is not recommended to use it unless you want to delete all configurations\n\n
-
-The following features are only for lineageOS15\n
-Please do not be naughty for everyone who is not lineageOS\n
-
-1、Hide app features\n
-Its entrance is at lineageOS15 official desktop -> HOME SETTINGS(This option appears after long pressing the blank space on the desktop) -> More -> 隐藏应用(Hidden application)
-\n\n
-
-
-2、Cancellation pop prompt when you close the mobile data\n
-When you close the mobile data,
-\n
-there will be no more pop-up prompts to close,\n
-but close directly.\n\n
-I am legend\n
-An ingenious developer\n
-\n
+    I am legend\n
+    An ingenious developer\n
+    \n
 (The above translation is from Google Translate)\n
 
     </string>
@@ -123,7 +76,7 @@ Then please let me drink a can of Coke\n
 Thanks\n\n
 If you are not rich\n
 Please do not donate\n
-Because all features of lin15 are free
+Because all features of lin16 are free
 Even if you do not donate\n
 The same can be used\n
 
@@ -146,7 +99,7 @@ The same can be used\n
 
     <string name="save_info">Please grant permission</string>
 
-    <string name="save">The picture is saved in sdcard/lin15,Thank you for your reward and encouragement~</string>
+    <string name="save">The picture is saved in sdcard/lin16,Thank you for your reward and encouragement~</string>
 
     <string name="all_info1">Please pull down the quick setting panel to the bottom in portrait mode.</string>
 
@@ -172,16 +125,16 @@ The same can be used\n
 
     <string name="reset_title">About resetting systemUI</string>
 
-    <string name="reset_content">Resetting systemUI means actively deleting the local data of Lin15 in systemUI\n
+    <string name="reset_content">Resetting systemUI means actively deleting the local data of Lin16 in systemUI\n
 For example, sharedPreferences for saving various variables and saved background images will be deleted. \n
-The purpose of this function is that after the user uninstalls lin15, the sharedPreferences left by lin15 and the set pictures will remain in the systemUI.
+The purpose of this function is that after the user uninstalls lin16, the sharedPreferences left by lin16 and the set pictures will remain in the systemUI.
 If the user does not want this data to remain in the phone\n
 you can use this feature to delete the remaining traces. \n
 Note that after using this function\n
 please uninstall the app and restart your phone. \n
 This function has another function\n
 which is to clear the old traces\n
-reset all settings, then your phone will be restored to the way you have never installed lin15\n
+reset all settings, then your phone will be restored to the way you have never installed lin16\n
 everything starts again, it is strongly recommended to restart the phone after reset\n
     </string>
 
@@ -226,5 +179,5 @@ Please send me the log file\n
     <string name="exit">exit</string>
 
     <string name="quest">something wrong?</string>
-    <string name="moduel_info">Module for modifying lineageOS15</string>
+    <string name="moduel_info">Module for modifying lineageOS16</string>
 </resources>

@@ -16,30 +16,11 @@
 
     <string name="string_about">
 
-        这里是lin15的说明书。\n\n
+        这里是lin16的说明书。\n\n
 
-        但凡是7.0或8.0且能装XP框架的ROM大概都能设置背景图\n\n
-        我并未使用资源钩子\n
-        而是纯Java代码写的\n
-        \n
-
-        图片压缩功能个人认为最低就可以了\n
-        所占内存是最好的一半\n
-        也看不出什么差别来\n
-        当然大内存用户随意\n\n
-
-        高斯模糊你们可以随意\n
-        模糊数值越大越模糊\n\n
-
-        以下功能仅针对lineageOS15\n
-        请不是lineageOS的各位不要调皮\n
-
-        1、隐藏应用功能\n
-        它的入口在lineageOS15官方桌面 -> 主屏幕设置(长按桌面空白处出现) -> 更多 -> 隐藏应用
-        \n\n
-
-        2、取消关闭移动数据时弹窗提示\n
-        关闭移动数据时，将不会再有弹窗提示是否关闭，而是直接关闭\n
+        不同于lin15，lin16的逻辑其实更为复杂\n
+        如果想显示头部，则必须设置全部\n
+        当然设置了全部，不想要头部也没问题\n\n
 
 
         我是legend\n
@@ -90,7 +71,7 @@
         感谢\n\n
         如果您并不富裕\n
         请不要捐赠\n
-        因为lin15所有功能都是免费的
+        因为lin16所有功能都是免费的
         哪怕您不捐赠\n
         也一样可以使用它\n
 
@@ -110,7 +91,7 @@
 
     <string name="save_info">无法获取权限，请赋予相关权限</string>
 
-    <string name="save">保存在sdcard/lin15下了,感谢你的打赏与鼓励~</string>
+    <string name="save">保存在sdcard/lin16下了,感谢你的打赏与鼓励~</string>
 
     <string name="all_info1">请在竖屏状态下下拉一次通知面板到底部</string>
 
@@ -126,11 +107,11 @@
 
     <string name="reset_title">关于重置systemUI</string>
 
-    <string name="reset_content">重置systemUI意味着会主动删除systemUI里Lin15的本地数据\n
+    <string name="reset_content">重置systemUI意味着会主动删除systemUI里Lin16的本地数据\n
         比如用于保存各种变量的sharedPreferences以及保存过的背景图片，都会被删除掉。\n
-        本功能的用意在于，用户卸载lin15后，systemUI内仍会残留lin15留下的sharedPreferences以及设置过的图片，
+        本功能的用意在于，用户卸载lin16后，systemUI内仍会残留lin16留下的sharedPreferences以及设置过的图片，
         如果用户不希望这些资料残留在手机内，即可使用本功能将残留的痕迹删除。注意，使用本功能后，请卸载APP后再重启手机。\n
-        本功能还有另一个作用，那就是清除旧痕迹，重置所有设定，届时您的手机将会还原成从未安装过lin15的样子，一切重新开始，墙裂建议重置后重启手机\n
+        本功能还有另一个作用，那就是清除旧痕迹，重置所有设定，届时您的手机将会还原成从未安装过lin16的样子，一切重新开始，墙裂建议重置后重启手机\n
     </string>
     
     <string name="diyHeight">自定义设置图片高度</string>
@@ -181,6 +162,6 @@
 
     <string name="quest">疑难解答</string>
 
-    <string name="moduel_info">简单修改lineageOS15的小插件</string>
+    <string name="moduel_info">简单修改快速设置面板背景的小插件</string>
 
 </resources>

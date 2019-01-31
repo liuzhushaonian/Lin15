@@ -14,7 +14,7 @@ import android.view.WindowManager;
 public class BaseActivity extends AppCompatActivity {
 
     protected SharedPreferences sharedPreferences;
-    private static final String S="lin15_sh";
+    private static final String S="lin16_sh";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

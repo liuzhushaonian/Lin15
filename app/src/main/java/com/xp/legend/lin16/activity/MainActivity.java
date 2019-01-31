@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {
         initTab();
         event();
 
-        start();
+//        start();
     }
 
 
@@ -98,11 +98,7 @@ public class MainActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        int color=getRandomColor();
-
-        if (color==-1){
-            color=getResources().getColor(R.color.colorTeal500,getTheme());
-        }
+        int color=getResources().getColor(R.color.colorCyan,getTheme());
 
         toolbar.setBackgroundColor(color);
 
@@ -310,7 +306,7 @@ public class MainActivity extends BaseActivity {
 
                 bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.zhifubao);
 
-                File file=new File(path+"/lin15/zhifubao.jpg");
+                File file=new File(path+"/lin16/zhifubao.jpg");
 
                 if (!file.getParentFile().exists()){
 
@@ -334,7 +330,7 @@ public class MainActivity extends BaseActivity {
 
                 bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.weixin);
 
-                File file1=new File(path+"/lin15/weixin.jpg");
+                File file1=new File(path+"/lin16/weixin.jpg");
 
                 if (!file1.getParentFile().exists()){
 
@@ -356,7 +352,7 @@ public class MainActivity extends BaseActivity {
 
                 bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.qq);
 
-                File file2=new File(path+"/lin15/qq.jpg");
+                File file2=new File(path+"/lin16/qq.jpg");
 
                 if (!file2.getParentFile().exists()){
 

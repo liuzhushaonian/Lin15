@@ -6,7 +6,7 @@
     android:height="60dp">
     <path
         android:pathData="M0 0L93 0 93 13 0 13Z"
-        android:fillColor="#009688" />
+        android:fillColor="@color/colorCyan" />
     <path
         android:pathData="M0 16l93 0 0 44 -93 0z"
         android:fillColor="#d8d8d8" />
