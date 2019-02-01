@@ -362,7 +362,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 fullView.removeView(hengHeader);
             }
             fullView.removeView(shuHeader);
-            fullView.addView(shuHeader,1);//0位置放着全部背景
+            fullView.addView(shuHeader,2);//0位置放着全部背景
 
 
             shuHeader.setImageBitmap(bitmap);
@@ -387,7 +387,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
             fullView.removeView(hengHeader);
-            fullView.addView(hengHeader,1);
+            fullView.addView(hengHeader,2);
 
 
             hengHeader.setImageBitmap(bitmap);
@@ -473,7 +473,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 fullView.removeView(hengHeader);
             }
             fullView.removeView(shuHeader);
-            fullView.addView(shuHeader,1);//0位置放着全部背景
+            fullView.addView(shuHeader,2);//0位置放着全部背景
 
 
             shuHeader.setImageBitmap(bitmap);
@@ -497,7 +497,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
             fullView.removeView(hengHeader);
-            fullView.addView(hengHeader,1);
+            fullView.addView(hengHeader,2);
 
             hengHeader.setImageBitmap(bitmap);
 
@@ -506,7 +506,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
         autoChangePosition();//摆正位置
-
 
     }
 

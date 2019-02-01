@@ -1075,7 +1075,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         cleanSlitImage();
 
-        cleanScrollImage();
+//        cleanScrollImage();
 
 
         if (bgView != null && bgView.getVisibility() == View.VISIBLE) {
@@ -1509,7 +1509,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             if (!file.exists()){//文件不存在
 
-                cleanScrollImage();
+//                cleanScrollImage();
                 cleanSlitImage();
                 cleanBg();
 
@@ -1537,7 +1537,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
 
-            cleanScrollImage();
+//            cleanScrollImage();
             cleanBg();
 
 
@@ -1545,7 +1545,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 //
 //            shuSlit.setOffset_height(offset_height);
             ((ViewGroup) fullView).removeView(shuSlit);
-            ((ViewGroup) fullView).addView(shuSlit, 0);
+            ((ViewGroup) fullView).addView(shuSlit, 1);
 
 
 
@@ -1592,7 +1592,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             if (!file.exists()){//文件不存在
 
-                cleanScrollImage();
+//                cleanScrollImage();
                 cleanSlitImage();
                 cleanBg();
 
@@ -1620,11 +1620,11 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
 
-            cleanScrollImage();
+//            cleanScrollImage();
             cleanBg();
 
             ((ViewGroup) fullView).removeView(hengSlit);
-            ((ViewGroup) fullView).addView(hengSlit, 0);
+            ((ViewGroup) fullView).addView(hengSlit, 1);
 
 
 
@@ -1655,7 +1655,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 
 
-        bg.setBackgroundColor(Color.TRANSPARENT);//设置成功，将原先的背景给设置为透明，避免遮挡
+//        bg.setBackgroundColor(Color.TRANSPARENT);//设置成功，将原先的背景给设置为透明，避免遮挡
 
         autoChangePosition();//设置背景居中，避免歪掉，可以的话尽量搞个线程，睡个几秒钟再居中
 
@@ -1715,6 +1715,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     }
 
     //清除滚动背景
+    @Deprecated
     private void cleanScrollImage(){
 
         if (bgView!=null){
@@ -1849,14 +1850,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     //清除背景，还原
     private void cleanBg(){
 
-        if (fullView==null){
-            return;
-        }
-
-        bg.setBackground(getDefaultDrawable());
-
-        mBackgroundGradient.setVisibility(View.VISIBLE);
-        mStatusBarBackground.setVisibility(View.VISIBLE);
+        showBackView();
 
     }
 
@@ -1942,6 +1936,18 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (mBackgroundGradient!=null){
             mBackgroundGradient.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void showBackView(){
+
+        if (mStatusBarBackground!=null){
+            mStatusBarBackground.setVisibility(View.VISIBLE);
+        }
+
+        if (mBackgroundGradient!=null){
+            mBackgroundGradient.setVisibility(View.VISIBLE);
         }
 
     }
