@@ -67,6 +67,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     private ViewGroup fullView;
     private int radius;
     private boolean isFirst=true;
+    private View mBackgroundGradient,mStatusBarBackground;
 
 
     @Override
@@ -99,6 +100,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 fullView= (ViewGroup) param.thisObject;
 
+                mBackgroundGradient= (View) XposedHelpers.getObjectField(param.thisObject,"mBackgroundGradient");
+                mStatusBarBackground= (View) XposedHelpers.getObjectField(param.thisObject,"mStatusBarBackground");
 
                 TypedValue typedValue = new TypedValue();
                 AndroidAppHelper.currentApplication().getTheme().resolveAttribute(android.R.attr.dialogCornerRadius, typedValue, true);
@@ -1208,6 +1211,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             shuHeader.setElevation(dp2px(4));
 
+            hideBackView();
+
         }
 
         if (hengHeader!=null&&hengHeader.getVisibility()==View.VISIBLE&&!isVertical){
@@ -1233,6 +1238,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             hengHeader.setLayoutParams(layoutParams);
 
             hengHeader.setElevation(dp2px(4));
+
+            hideBackView();
 
         }
 
@@ -1294,6 +1301,21 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dipValue,
                 AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
+    }
+
+    /**
+     * 隐藏一些无关紧要的view
+     */
+    private void hideBackView(){
+
+        if (mStatusBarBackground!=null){
+            mStatusBarBackground.setVisibility(View.GONE);
+        }
+
+        if (mBackgroundGradient!=null){
+            mBackgroundGradient.setVisibility(View.GONE);
+        }
+
     }
 
 }
