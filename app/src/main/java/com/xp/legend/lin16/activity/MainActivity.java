@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -29,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.xp.legend.lin16.R;
 import com.xp.legend.lin16.adapter.MainAdapter;
 import com.xp.legend.lin16.fragment.FullFragment;
@@ -37,7 +35,6 @@ import com.xp.legend.lin16.fragment.HeaderFragment;
 import com.xp.legend.lin16.utils.Conf;
 import com.xp.legend.lin16.utils.NotProguard;
 import com.xp.legend.lin16.utils.ReceiverAction;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -607,7 +604,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @NotProguard
     private boolean isModuleActive() {
 
         return false;

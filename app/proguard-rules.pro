@@ -22,12 +22,3 @@
 
 -keep class * implements de.robv.android.xposed.IXposedHookLoadPackage { *; }
 -keep class * implements android.os.Parcelable { *; }
-
-# keep annotated by NotProguard
--keep @com.xp.legend.lin15.utils.NotProguard class * {*;}
--keep class * {
-@com.xp.legend.lin15.utils.NotProguard <fields>;
-}
--keepclassmembers class * {
-@com.xp.legend.lin15.utils.NotProguard <methods>;
-}

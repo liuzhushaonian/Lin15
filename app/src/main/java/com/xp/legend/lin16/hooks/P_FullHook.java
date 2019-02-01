@@ -6,16 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +20,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.xp.legend.lin16.R;
 import com.xp.legend.lin16.bean.Full;
 import com.xp.legend.lin16.bean.Result;
 import com.xp.legend.lin16.utils.BaseHook;
 import com.xp.legend.lin16.utils.Conf;
-import com.xp.legend.lin16.utils.LogUtils;
 import com.xp.legend.lin16.utils.ReceiverAction;
 
 import java.io.File;
@@ -37,8 +32,6 @@ import java.io.FileOutputStream;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
