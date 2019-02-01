@@ -155,7 +155,7 @@
     <string name="open_log">打开日志</string>
     <string name="close_log">关闭日志</string>
 
-    <string name="exit">退出</string>
+    <string name="ignore_it">忽略</string>
 
     <string name="exit_info">xposed内尚未激活本模块\n
         请前往激活后再使用</string>

@@ -176,7 +176,7 @@ Please send me the log file\n
     <string name="close_log">Close the log</string>
 
     <string name="exit_info">This module has not been activated in xposed,Please go to activation before using</string>
-    <string name="exit">exit</string>
+    <string name="ignore_it">ignore</string>
 
     <string name="quest">something wrong?</string>
     <string name="moduel_info">Module for modifying lineageOS16</string>

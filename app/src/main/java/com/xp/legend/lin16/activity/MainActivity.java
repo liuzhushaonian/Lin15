@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {
         initTab();
         event();
 
-//        start();
+        start();
     }
 
 
@@ -621,9 +621,9 @@ public class MainActivity extends BaseActivity {
 
             AlertDialog.Builder builder=new AlertDialog.Builder(this);
 
-            builder.setTitle(getString(R.string.jing)).setMessage(R.string.exit_info).setPositiveButton(getString(R.string.exit),(dialog, which) -> {
+            builder.setTitle(getString(R.string.jing)).setMessage(R.string.exit_info).setPositiveButton(getString(R.string.ignore_it),(dialog, which) -> {
 
-                finishAndRemoveTask();
+
 
             }).create().show();
 
