@@ -8,8 +8,8 @@ android {
         applicationId "com.xp.legend.lin15"
         minSdkVersion 28
         targetSdkVersion 28
-        versionCode 9
-        versionName "2.3"
+        versionCode 1
+        versionName "0.1-beta"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -22,7 +22,7 @@ android {
     }
 
     android.applicationVariants.all { variant ->
-        def appName = "lin15_${defaultConfig.versionName}_${releaseTime()}"
+        def appName = "lin16_${defaultConfig.versionName}_${releaseTime()}"
 
         variant.outputs.all { output ->
             outputFileName = "${appName}.apk"
