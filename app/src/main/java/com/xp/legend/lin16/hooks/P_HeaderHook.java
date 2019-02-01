@@ -14,6 +14,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -109,7 +112,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
 
 
-                autoSetBg();
+//                autoSetBg();
 
 
 
@@ -393,6 +396,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         autoChangePosition();//自动调整位置
 
+
+
     }
 
     /**
@@ -498,6 +503,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
         autoChangePosition();//摆正位置
+
 
     }
 
@@ -795,28 +801,30 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             alpha = 0f;
         }
 
-        XposedBridge.log("header_alpha-->>"+alpha);
+        if (getNHeaderFile(Conf.VERTICAL).exists()) {
 
+            if (shuHeader != null && shuHeader.getVisibility() == View.VISIBLE && isVertical) {
 
-        if (shuHeader!=null&&shuHeader.getVisibility()==View.VISIBLE&&isVertical){
+                shuHeader.setAlpha(alpha);
 
-            shuHeader.setAlpha(alpha);
+                if (f == 1) {
+                    shuHeader.setAlpha(0f);
+                }
 
-            if (f==1){
-                shuHeader.setAlpha(0f);
             }
-
         }
 
+        if (getNHeaderFile(Conf.HORIZONTAL).exists()) {
 
-        if (hengHeader!=null&&hengHeader.getVisibility()==View.VISIBLE&&!isVertical){
+            if (hengHeader != null && hengHeader.getVisibility() == View.VISIBLE && !isVertical) {
 
-            hengHeader.setAlpha(alpha);
+                hengHeader.setAlpha(alpha);
 
-            if (f==1){
-                hengHeader.setAlpha(0f);
+                if (f == 1) {
+                    hengHeader.setAlpha(0f);
+                }
+
             }
-
         }
 
 
@@ -936,9 +944,9 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 case Conf.HORIZONTAL:
 
-                    int width1 = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_WIDTH, -1);
+                    int width1 = getWidth(false);
 
-                    int height1 = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, -1);
+                    int height1 = getHeight(false);
 
                     info.setHeight(height1);
 
@@ -1157,27 +1165,32 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         if (shuHeader!=null){
 
             shuHeader.setVisibility(View.GONE);
+
+            fullView.removeView(shuHeader);
+
             shuHeader=null;
         }
 
         if (hengHeader!=null){
             hengHeader.setVisibility(View.GONE);
+            fullView.removeView(hengHeader);
             hengHeader=null;
         }
 
     }
 
+
+
+
     private void autoChangePosition(){
 
-        if (shuHeader!=null&&shuHeader.getVisibility()==View.VISIBLE){
+        if (shuHeader!=null&&shuHeader.getVisibility()==View.VISIBLE&&isVertical){
 
-            int full_width=fullView.getWidth();
+            int full_width=sharedPreferences.getInt(Conf.F_V_W,0);
 
-            int bg_width=shuHeader.getWidth();
+            int bg_width=getWidth(true);
 
             int margin=(full_width-bg_width)/2;//计算距离两边的距离
-
-            XposedBridge.log("margin--->>>"+margin);
 
             int ii=AndroidAppHelper
                     .currentApplication()
@@ -1193,15 +1206,18 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             shuHeader.setLayoutParams(layoutParams);
 
+            shuHeader.setElevation(dp2px(4));
+
         }
 
-        if (hengHeader!=null&&hengHeader.getVisibility()==View.VISIBLE){
+        if (hengHeader!=null&&hengHeader.getVisibility()==View.VISIBLE&&!isVertical){
 
-            int full_width=fullView.getWidth();
+            int full_width=sharedPreferences.getInt(Conf.F_H_W,0);
 
-            int bg_width=hengHeader.getWidth();
+            int bg_width=getWidth(false);
 
             int margin=(full_width-bg_width)/2;//计算距离两边的距离
+
 
             int ii=AndroidAppHelper
                     .currentApplication()
@@ -1215,6 +1231,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             layoutParams.setMargins(margin, offset_height,margin,0);
 
             hengHeader.setLayoutParams(layoutParams);
+
+            hengHeader.setElevation(dp2px(4));
 
         }
 
@@ -1270,6 +1288,12 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         }
 
+    }
+
+    public static int dp2px(float dipValue) {
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dipValue,
+                AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
     }
 
 }

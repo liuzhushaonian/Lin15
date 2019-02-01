@@ -101,4 +101,10 @@ public class Conf {
 
     public static final String LOG="logs";
 
+    public static final String F_V_W="f_w";
+
+    public static final String F_H_W="f_h";
+
+
+
 }
