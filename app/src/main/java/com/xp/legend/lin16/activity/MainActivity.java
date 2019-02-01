@@ -33,7 +33,6 @@ import com.xp.legend.lin16.adapter.MainAdapter;
 import com.xp.legend.lin16.fragment.FullFragment;
 import com.xp.legend.lin16.fragment.HeaderFragment;
 import com.xp.legend.lin16.utils.Conf;
-import com.xp.legend.lin16.utils.NotProguard;
 import com.xp.legend.lin16.utils.ReceiverAction;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,7 +72,6 @@ public class MainActivity extends BaseActivity {
         initTab();
         event();
 
-        start();
     }
 
 
@@ -604,27 +602,5 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    private boolean isModuleActive() {
-
-        return false;
-
-    }
-
-    private void start(){
-
-        if (!isModuleActive()){
-
-
-            AlertDialog.Builder builder=new AlertDialog.Builder(this);
-
-            builder.setTitle(getString(R.string.jing)).setMessage(R.string.exit_info).setPositiveButton(getString(R.string.ignore_it),(dialog, which) -> {
-
-
-
-            }).create().show();
-
-        }
-
-    }
 
 }
