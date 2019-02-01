@@ -51,9 +51,6 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/release/output.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_FullHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_FullHook.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_HeaderHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_HeaderHook.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -120,7 +117,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="10" />
-          <entry key="java" value="7504" />
+          <entry key="java" value="7508" />
           <entry key="md" value="924" />
           <entry key="xml" value="269" />
           <entry key="xposed_init" value="2" />
@@ -129,7 +126,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="10" />
-          <entry key="JAVA" value="7504" />
+          <entry key="JAVA" value="7508" />
           <entry key="Markdown" value="924" />
           <entry key="PLAIN_TEXT" value="2" />
           <entry key="XML" value="269" />
@@ -145,11 +142,11 @@
           <provider editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_FullHook.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="483">
-              <caret line="1276" column="33" lean-forward="true" selection-start-line="1276" selection-start-column="33" selection-end-line="1276" selection-end-column="33" />
+            <state relative-caret-position="246">
+              <caret line="1267" column="68" lean-forward="true" selection-start-line="1267" selection-start-column="68" selection-end-line="1267" selection-end-column="68" />
               <folding>
                 <element signature="e#28847#28916#0" />
                 <element signature="e#29438#29469#0" />
@@ -158,11 +155,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_HeaderHook.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="1164" column="24" selection-start-line="1164" selection-start-column="24" selection-end-line="1164" selection-end-column="24" />
+            <state relative-caret-position="403">
+              <caret line="330" lean-forward="true" selection-start-line="330" selection-end-line="330" />
             </state>
           </provider>
         </entry>
@@ -2566,8 +2563,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_HeaderHook.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_FullHook.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_HeaderHook.java" />
       </list>
     </option>
   </component>
@@ -3168,21 +3165,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_HeaderHook.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="1164" column="24" selection-start-line="1164" selection-start-column="24" selection-end-line="1164" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_FullHook.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="1276" column="33" lean-forward="true" selection-start-line="1276" selection-start-column="33" selection-end-line="1276" selection-end-column="33" />
+        <state relative-caret-position="246">
+          <caret line="1267" column="68" lean-forward="true" selection-start-line="1267" selection-start-column="68" selection-end-line="1267" selection-end-column="68" />
           <folding>
             <element signature="e#28847#28916#0" />
             <element signature="e#29438#29469#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/xp/legend/lin16/hooks/P_HeaderHook.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="330" lean-forward="true" selection-start-line="330" selection-end-line="330" />
         </state>
       </provider>
     </entry>

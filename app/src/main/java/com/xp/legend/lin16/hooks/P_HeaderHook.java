@@ -328,10 +328,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (!file.exists()) {
 
-            if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则清除
-                cleanHeaderBg();
 
-            }
+            cleanHeaderBg();
 
             return;
         }
@@ -426,11 +424,9 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (!file.exists()) {//文件不存在
 
-            if (isFullExists(Conf.VERTICAL)) {//查看全局是否存在,存在则设置背景，不存在则
 
-                cleanHeaderBg();
+            cleanHeaderBg();
 
-            }
 
             return;
         }
