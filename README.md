@@ -1,6 +1,6 @@
-![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185210.png)
+![alt](https://github.com/liuzhushaonian/Lin15/blob/lin16/screen_short/46B643AB18B3F2514AF4B3E90A9E7D9B.png)
 
-![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185230.png)
+![alt](https://github.com/liuzhushaonian/Lin15/blob/lin16/screen_short/71B0A572E52036DEA32EA4A21B7B9D98.png)
 
 # lin16
 
