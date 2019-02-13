@@ -97,17 +97,10 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             return;
         }
 
-        XposedBridge.log("lin16--->>>"+lpparam.packageName);
-
         if (!lpparam.packageName.equals("com.android.systemui")) {
-
-
 
             return;
         }
-
-
-        XposedBridge.log("lin16--->>>这是MIUI");
 
 
         XposedHelpers.findAndHookMethod(CLASS2, lpparam.classLoader, METHOD, new XC_MethodHook() {
@@ -125,16 +118,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 mStatusBarBackground= (View) XposedHelpers.getObjectField(param.thisObject,"mStatusBarBackground");
 
                 fullView= (ViewGroup) param.thisObject;
-
-//                ViewGroup viewGroup= (ViewGroup) fullView.getChildAt(0);
-//
-//                for (int i=0;i<viewGroup.getChildCount();i++){
-//
-//                    XposedBridge.log("view---->>>>"+viewGroup.getChildAt(i).toString());
-//
-//                }
-
-
 
 
                 TypedValue typedValue = new TypedValue();
