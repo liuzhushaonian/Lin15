@@ -11,9 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -21,10 +19,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -32,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.xp.legend.lin15.R;
 import com.xp.legend.lin15.adapter.MainAdapter;
 import com.xp.legend.lin15.fragment.FullFragment;
@@ -40,7 +35,6 @@ import com.xp.legend.lin15.fragment.HeaderFragment;
 import com.xp.legend.lin15.utils.Conf;
 import com.xp.legend.lin15.utils.NotProguard;
 import com.xp.legend.lin15.utils.ReceiverAction;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
