@@ -2,6 +2,10 @@
 
 ![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185230.png)
 
+# 2.4更新内容
+
+- 增加圆角
+
 # 2.3更新内容
 
 - 增加模块激活认证
