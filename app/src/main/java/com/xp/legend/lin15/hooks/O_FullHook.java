@@ -15,6 +15,7 @@ import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,9 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private boolean isSlit=true;//是否卷轴背景
 
+    private int radius;
+
+    private boolean isRadius=false;
 
 
     @Override
@@ -109,6 +113,13 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 isScroll = sharedPreferences.getBoolean(Conf.FULL_SCROLL, false);
 
                 isSlit=sharedPreferences.getBoolean(Conf.SLIT,true);
+
+                isRadius=sharedPreferences.getBoolean(Conf.IS_RADIUS,false);
+
+                fullView.setBackgroundTintList(null);//消除tint
+
+                radius=sharedPreferences.getInt(Conf.RADIUS,0);
+
 
 
                 defaultDrawable = AndroidAppHelper
@@ -179,6 +190,10 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
             intentFilter.addAction(ReceiverAction.SEND_SLIT_INFO);
 
             intentFilter.addAction(ReceiverAction.SEND_LOGS);
+
+            intentFilter.addAction(ReceiverAction.RADIUS);
+
+            intentFilter.addAction(ReceiverAction.RADIUS_VALUE);
 
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter);
 
@@ -307,6 +322,20 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 case ReceiverAction.SEND_LOGS:
 
                     openLogs(intent);
+
+
+                case ReceiverAction.RADIUS:
+
+                    setIsRadius(intent);
+
+                    break;
+
+
+                case ReceiverAction.RADIUS_VALUE:
+
+                    setRadius(intent);
+
+                    break;
 
 
             }
@@ -683,13 +712,13 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             if (shuSlit!=null){
 
-                shuSlit.setAlpha(alphaValue);
+                shuSlit.setAlpha(getAlphaValue(alphaValue));
 
             }
 
             if (hengSlit!=null){
 
-                hengSlit.setAlpha(alphaValue);
+                hengSlit.setAlpha(getAlphaValue(alphaValue));
 
             }
 
@@ -1248,6 +1277,10 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             boolean slit=sharedPreferences.getBoolean(Conf.SLIT,true);
 
+            boolean isRadius=sharedPreferences.getBoolean(Conf.IS_RADIUS,false);
+
+            int radius=sharedPreferences.getInt(Conf.RADIUS,0);
+
             Result result = new Result();
 
             result.setAlpha(alpha);
@@ -1256,6 +1289,8 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
             result.setGaoValue(gaoValue);
             result.setScroll(scroll);
             result.setSlit(slit);
+            result.setRadius(isRadius);
+            result.setRadiusValue(radius);
 
             Intent intent1 = new Intent(ReceiverAction.FULL_TO_UI_INFO);
 
@@ -1458,13 +1493,25 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
             ((ViewGroup) fullView).addView(shuSlit, 0);
 
 
+            if (isRadius) {
+                shuSlit.setRadius(getRadius(radius));
+
+                fullView.setBackgroundColor(Color.TRANSPARENT);
+            }else {
+                shuSlit.setRadius(0);
+
+                fullView.setBackground(getDefaultDrawable());
+            }
+
             if (isGaoSi) {//是否高斯模糊
 
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                 bitmap = getBitmap(AndroidAppHelper.currentApplication(), bitmap, gaoValue);
 
-                shuSlit.setBitmap(bitmap);
-                shuSlit.setAlpha(alphaValue);
+                shuSlit.setImageBitmap(bitmap);
+//                shuSlit.setAlpha(alphaValue);
+
+                shuSlit.setAlpha(getAlphaValue(alphaValue));
 
                 logs("高斯模糊");
 
@@ -1472,8 +1519,8 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 
-                shuSlit.setBitmap(bitmap);
-                shuSlit.setAlpha(alphaValue);
+                shuSlit.setImageBitmap(bitmap);
+                shuSlit.setAlpha(getAlphaValue(alphaValue));
                 logs("非高斯模糊");
             }
 
@@ -1528,19 +1575,26 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
             ((ViewGroup) fullView).addView(hengSlit, 0);
 
 
+            if (isRadius) {//检测是否使用圆角
+                hengSlit.setRadius(getRadius(radius));
+                fullView.setBackgroundColor(Color.TRANSPARENT);
+            }else {
+                hengSlit.setRadius(0);
+                fullView.setBackground(getDefaultDrawable());
+            }
 
             if (isGaoSi) {
 
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
                 bitmap = getBitmap(AndroidAppHelper.currentApplication(), bitmap, gaoValue);
-                hengSlit.setBitmap(bitmap);
-                hengSlit.setAlpha(alphaValue);
+                hengSlit.setImageBitmap(bitmap);
+                hengSlit.setAlpha(getAlphaValue(alphaValue));
             } else {
 
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                hengSlit.setBitmap(bitmap);
-                hengSlit.setAlpha(alphaValue);
+                hengSlit.setImageBitmap(bitmap);
+                hengSlit.setAlpha(getAlphaValue(alphaValue));
 
             }
 
@@ -1635,6 +1689,8 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
             hengSlit=null;
 
         }
+
+        fullView.setBackground(getDefaultDrawable());//恢复默认背景
 
     }
 
@@ -1758,5 +1814,52 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
+    private float getRadius(int r){
+
+       return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, r,
+                AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
+    }
+
+    private void setRadius(Intent intent){
+
+        int r=intent.getIntExtra(Conf.RADIUS,0);
+
+        this.radius=r;
+
+        autoSetBg();
+
+        sharedPreferences.edit().putInt(Conf.RADIUS,r).apply();
+
+    }
+
+    private void setIsRadius(Intent intent){
+
+
+        boolean i=intent.getBooleanExtra(Conf.IS_RADIUS,false);
+
+        this.isRadius=i;
+
+        autoSetBg();
+
+        sharedPreferences.edit().putBoolean(Conf.IS_RADIUS,i).apply();
+
+    }
+
+    private float getAlphaValue(int v){
+
+        float f=v/255.0f;
+
+        if (f>1){
+            f=1f;
+        }
+
+        if (f<0){
+            f=0f;
+        }
+
+        return f;
+
+    }
 
 }

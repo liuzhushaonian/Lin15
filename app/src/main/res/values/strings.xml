@@ -183,4 +183,9 @@
 
     <string name="moduel_info">简单修改lineageOS15的小插件</string>
 
+    <string name="is_radius">使用圆角</string>
+
+    <string name="radius_value">圆角度数</string>
+
+
 </resources>

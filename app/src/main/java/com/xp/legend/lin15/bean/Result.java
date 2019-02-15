@@ -17,6 +17,10 @@ public class Result implements Parcelable{
 
     private boolean isSlit;
 
+    private boolean isRadius;
+
+    private int radiusValue;
+
     public Result() {
     }
 
@@ -28,6 +32,8 @@ public class Result implements Parcelable{
         gaoValue = in.readInt();
         isScroll = in.readByte() != 0;
         isSlit = in.readByte() != 0;
+        isRadius = in.readByte() != 0;
+        radiusValue = in.readInt();
     }
 
     public static final Creator<Result> CREATOR = new Creator<Result>() {
@@ -91,6 +97,22 @@ public class Result implements Parcelable{
         isSlit = slit;
     }
 
+    public boolean isRadius() {
+        return isRadius;
+    }
+
+    public void setRadius(boolean radius) {
+        isRadius = radius;
+    }
+
+    public int getRadiusValue() {
+        return radiusValue;
+    }
+
+    public void setRadiusValue(int radiusValue) {
+        this.radiusValue = radiusValue;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -104,5 +126,7 @@ public class Result implements Parcelable{
         dest.writeInt(gaoValue);
         dest.writeByte((byte) (isScroll ? 1 : 0));
         dest.writeByte((byte) (isSlit ? 1 : 0));
+        dest.writeByte((byte) (isRadius ? 1 : 0));
+        dest.writeInt(radiusValue);
     }
 }

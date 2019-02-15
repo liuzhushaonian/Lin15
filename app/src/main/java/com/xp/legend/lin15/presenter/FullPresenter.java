@@ -64,7 +64,6 @@ public class FullPresenter {
 
         activity.sendBroadcast(intent);
 
-        Log.d("sssss----->>>","发送成功！！！");
 
     }
 
@@ -134,6 +133,25 @@ public class FullPresenter {
 
         Intent intent=new Intent(ReceiverAction.SEND_SLIT_INFO);
         intent.putExtra(Conf.SLIT,slit);
+
+        activity.sendBroadcast(intent);
+
+    }
+
+    public void sendRadius(Activity activity,boolean radius){
+
+        Intent intent=new Intent(ReceiverAction.RADIUS);
+        intent.putExtra(Conf.IS_RADIUS,radius);
+
+        activity.sendBroadcast(intent);
+
+    }
+
+    public void sendRadiusValue(Activity activity,int radius){
+
+        Intent intent=new Intent(ReceiverAction.RADIUS_VALUE);
+
+        intent.putExtra(Conf.RADIUS,radius);
 
         activity.sendBroadcast(intent);
 

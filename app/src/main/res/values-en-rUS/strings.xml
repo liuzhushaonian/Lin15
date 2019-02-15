@@ -227,4 +227,7 @@ Please send me the log file\n
 
     <string name="quest">something wrong?</string>
     <string name="moduel_info">Module for modifying lineageOS15</string>
+
+    <string name="is_radius">use rounded</string>
+    <string name="radius_value">rounded value</string>
 </resources>

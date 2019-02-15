@@ -101,4 +101,9 @@ public class Conf {
 
     public static final String LOG="logs";
 
+
+    public static final String RADIUS="radius";//圆角
+
+    public static final String IS_RADIUS="is_radius";
+
 }

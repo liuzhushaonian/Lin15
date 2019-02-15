@@ -37,10 +37,10 @@ import com.xp.legend.lin15.utils.ReceiverAction;
  */
 public class FullFragment extends BaseFragment implements IFullFragment {
 
-    private TextView alphaInfo, gaoInfo;
-    private SeekBar seekBarAlpha, seekBarGao;
+    private TextView alphaInfo, gaoInfo,radiusInfo;
+    private SeekBar seekBarAlpha, seekBarGao,seekBarRadius;
     private ImageView heng, shu;
-    private Switch switchGao,switchScroll;
+    private Switch switchGao,switchScroll,switchRadius;
     private FullPresenter presenter;
     private boolean autoSet=false;
 
@@ -65,6 +65,9 @@ public class FullFragment extends BaseFragment implements IFullFragment {
     private FullReceiver fullReceiver;
     private Switch slit;
     private int count=0;
+
+
+
 
 
     public FullFragment() {
@@ -260,6 +263,12 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         switchScroll=view.findViewById(R.id.scrollSwitch);
         slit=view.findViewById(R.id.slit);
 
+        switchRadius=view.findViewById(R.id.switch3);
+
+        seekBarRadius=view.findViewById(R.id.radius_value);
+
+        radiusInfo=view.findViewById(R.id.radius_info);
+
     }
 
 
@@ -389,6 +398,39 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         });
 
 
+        //是否使用圆角开关
+        switchRadius.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+
+            presenter.sendRadius(getActivity(),isChecked);
+
+            seekBarRadius.setEnabled(isChecked);
+
+        }));
+
+        //圆角度数设置
+        seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+
+                radiusInfo.setText(getText(R.string.radius_value)+" "+progress+"dp");
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                presenter.sendRadiusValue(getActivity(),seekBar.getProgress());
+
+            }
+        });
+
+
     }
 
     @Override
@@ -500,6 +542,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
 
         switchGao.setChecked(result.isGao());
+
         seekBarGao.setProgress(result.getGaoValue());
         seekBarGao.setEnabled(result.isGao());
 
@@ -508,6 +551,12 @@ public class FullFragment extends BaseFragment implements IFullFragment {
         slit.setChecked(result.isSlit());
 
         seekBarAlpha.setProgress(a);
+
+        switchRadius.setChecked(result.isRadius());
+
+
+        seekBarRadius.setProgress(result.getRadiusValue());
+        seekBarRadius.setEnabled(result.isRadius());
 
         switch (type) {
 

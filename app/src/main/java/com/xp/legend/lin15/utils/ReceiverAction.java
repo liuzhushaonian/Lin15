@@ -137,4 +137,8 @@ public class ReceiverAction {
         public static final String SEND_SLIT_INFO="send_slit_info";
 
         public static final String SEND_LOGS="send_logs";
+
+        public static final String RADIUS="send_radius";
+
+        public static final String RADIUS_VALUE="send_radius_value";
 }
