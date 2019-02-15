@@ -673,14 +673,28 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             Toast.makeText(context, "清除成功", Toast.LENGTH_SHORT).show();
 
-            if (sharedPreferences.getBoolean(Conf.SLIT,false)){
+            if (isVertical&&isFullExists(Conf.VERTICAL)){
+
+
 
                 header.setBackgroundColor(Color.TRANSPARENT);
+
+
+
+
+            }else if (!isVertical&&isFullExists(Conf.HORIZONTAL)){
+
+
+
+                header.setBackgroundColor(Color.TRANSPARENT);
+
+
 
             }else {
 
                 setBg();
             }
+
         }
 
     }

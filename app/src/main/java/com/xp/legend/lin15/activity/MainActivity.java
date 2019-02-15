@@ -98,7 +98,7 @@ public class MainActivity extends BaseActivity {
 //        int color=getRandomColor();
 //
 //        if (color==-1){
-            int color=getResources().getColor(R.color.colorTeal500,getTheme());
+            int color=getResources().getColor(R.color.colorCP,getTheme());
 //        }
 
         toolbar.setBackgroundColor(color);
@@ -480,55 +480,6 @@ public class MainActivity extends BaseActivity {
 
         }).show();
 
-
-    }
-
-    private int getRandomColor(){
-
-        int color=-1;
-
-        Random random=new Random();
-
-        int r=random.nextInt(23);
-
-        List<Integer> colors=new ArrayList<>();
-
-        Resources resources=getResources();
-
-        XmlResourceParser xmlResourceParser=resources.getXml(R.xml.color_list);
-
-        try {
-            while (xmlResourceParser.getEventType()!=XmlResourceParser.END_DOCUMENT){
-
-                if (xmlResourceParser.getEventType()== XmlResourceParser.START_TAG){
-
-                    String name=xmlResourceParser.getName();
-                    if (name.equals("color")){
-                        String c=xmlResourceParser.nextText();
-
-                        int color_int= android.graphics.Color.parseColor(c);
-
-                        colors.add(color_int);
-                    }
-                }
-
-                xmlResourceParser.next();
-
-            }
-
-            if (r>colors.size()){
-                r=21%r;
-            }
-
-            color=colors.get(r);//随机颜色
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        return color;
 
     }
 

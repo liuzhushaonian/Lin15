@@ -244,101 +244,6 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
 
 
-//    /**
-//     * 监听屏幕横竖变化，改变快速设置面板的背景图
-//     */
-//    private class MyOrientationEventChangeListener extends OrientationEventListener {
-//
-//
-//        MyOrientationEventChangeListener(Context context, int rate) {
-//            super(context, rate);
-//        }
-//
-//        @Override
-//        public void onOrientationChanged(int orientation) {
-//
-//
-////            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
-////                return;  //手机平放时，检测不到有效的角度
-////            }//只检测是否有四个角度的改变
-//
-//
-//            if (orientation > 350 || orientation < 10) { //0度
-//
-//                saveHeaderWidthInfo();//保存宽度信息
-//
-//                saveHeaderHeightInfo();//保存高度信息
-//
-//
-//                if (rotation == 10) {
-//                    return;
-//                }
-//
-//                if (isVertical) {
-//
-//                    rotation = 10;
-//
-//                    autoSetBg();
-//                }
-//
-//
-//            } else if (orientation > 80 && orientation < 100) { //90度
-//
-//                saveHeaderWidthInfo();//保存宽度信息
-//
-//                saveHeaderHeightInfo();//保存高度信息
-//
-//                if (rotation == 20) {
-//                    return;
-//                }
-//
-//                if (!isVertical) {
-//
-//                    rotation = 20;//不一致时表示屏幕旋转，重新赋值
-//
-//                    autoSetBg();
-//                }
-//
-//
-//            } else if (orientation > 170 && orientation < 190) { //180度
-//
-//                saveHeaderWidthInfo();//保存宽度信息
-//
-//                saveHeaderHeightInfo();//保存高度信息
-//
-//                if (rotation == 30) {
-//                    return;
-//                }
-//
-//                if (isVertical) {
-//
-//                    rotation = 30;//不一致时表示屏幕旋转，重新赋值
-//
-//                    autoSetBg();
-//                }
-//
-//
-//            } else if (orientation > 265 && orientation < 275) { //270度
-//
-//                saveHeaderWidthInfo();//保存宽度信息
-//
-//                saveHeaderHeightInfo();//保存高度信息
-//
-//                if (rotation == 40) {
-//                    return;
-//                }
-//
-//                if (!isVertical) {
-//
-//                    rotation = 40;//不一致时表示屏幕旋转，重新赋值
-//
-//                    autoSetBg();
-//                }
-//
-//
-//            }
-//        }
-//    }
 
     /**
      * 获取并保存header的宽度信息
@@ -648,16 +553,32 @@ public class O_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             Toast.makeText(context, "清除成功", Toast.LENGTH_SHORT).show();
 
-            if (sharedPreferences.getBoolean(Conf.SLIT,false)){
+            if (isVertical&&isFullExists(Conf.VERTICAL)){
+
+
 
                 header.setBackgroundColor(Color.TRANSPARENT);
 
+
+
+
+            }else if (!isVertical&&isFullExists(Conf.HORIZONTAL)){
+
+
+
+                header.setBackgroundColor(Color.TRANSPARENT);
+
+
+
             }else {
+
                 setBg();
             }
         }
 
     }
+
+
 
     private boolean deleteFile(int type) {
 
