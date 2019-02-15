@@ -95,11 +95,11 @@ public class MainActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        int color=getRandomColor();
-
-        if (color==-1){
-            color=getResources().getColor(R.color.colorTeal500,getTheme());
-        }
+//        int color=getRandomColor();
+//
+//        if (color==-1){
+            int color=getResources().getColor(R.color.colorTeal500,getTheme());
+//        }
 
         toolbar.setBackgroundColor(color);
 
