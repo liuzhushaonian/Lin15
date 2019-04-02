@@ -9,6 +9,8 @@ import com.xp.legend.lin16.interfaces.IFullFragment;
 import com.xp.legend.lin16.utils.Conf;
 import com.xp.legend.lin16.utils.ReceiverAction;
 
+import de.robv.android.xposed.XposedBridge;
+
 public class FullPresenter {
 
     private IFullFragment fragment;
@@ -84,7 +86,6 @@ public class FullPresenter {
         intent.putExtra(Conf.N_FULL_VERTICAL_FILE,s);
 
         activity.sendBroadcast(intent);
-
 
     }
 

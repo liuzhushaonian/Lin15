@@ -43,10 +43,14 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     private static final String CLASS = "com.android.systemui.qs.QSContainerImpl";
+
+    private static final String CLASS2 = "com.android.systemui.qs.QSContainerImpl";
+
+
     private static final String METHOD = "onFinishInflate";
     private static final String METHOD2 = "updateExpansion";
-    private static final String METHOD3="onConfigurationChanged";
-    private static final String METHOD4="onLayout";
+    private static final String METHOD3 = "onConfigurationChanged";
+    private static final String METHOD4 = "onLayout";
     private N_HeaderReceiver receiver;
     private SharedPreferences sharedPreferences;
     private boolean isGAO = false;
@@ -63,17 +67,17 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     private int rotation = -101;
 
-    private SlitImageView shuHeader,hengHeader;
+    private SlitImageView shuHeader, hengHeader;
     private ViewGroup fullView;
     private int radius;
-    private boolean isFirst=true;
-    private View mBackgroundGradient,mStatusBarBackground;
+    private boolean isFirst = true;
+    private View mBackgroundGradient, mStatusBarBackground;
 
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
 
-        if (!isP()){
+        if (!isP()) {
             return;
         }
 
@@ -98,10 +102,10 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 gaoValue = sharedPreferences.getInt(Conf.N_HEADER_GAO_VALUE, 25);
 
-                fullView= (ViewGroup) param.thisObject;
+                fullView = (ViewGroup) param.thisObject;
 
-                mBackgroundGradient= (View) XposedHelpers.getObjectField(param.thisObject,"mBackgroundGradient");
-                mStatusBarBackground= (View) XposedHelpers.getObjectField(param.thisObject,"mStatusBarBackground");
+                mBackgroundGradient = (View) XposedHelpers.getObjectField(param.thisObject, "mBackgroundGradient");
+                mStatusBarBackground = (View) XposedHelpers.getObjectField(param.thisObject, "mStatusBarBackground");
 
                 TypedValue typedValue = new TypedValue();
                 AndroidAppHelper.currentApplication().getTheme().resolveAttribute(android.R.attr.dialogCornerRadius, typedValue, true);
@@ -110,25 +114,23 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 /**
                  * 获取圆角度数
                  */
-                radius=TypedValue.complexToDimensionPixelSize(typedValue.data,
+                radius = TypedValue.complexToDimensionPixelSize(typedValue.data,
                         AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
 
 
-
 //                autoSetBg();
-
 
 
             }
         });
 
 
-        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, METHOD3,Configuration.class, new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, METHOD3, Configuration.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 //                super.afterHookedMethod(param);
 
-                Configuration configuration= (Configuration) param.args[0];
+                Configuration configuration = (Configuration) param.args[0];
 
                 autoSetPosition(configuration.orientation);
 
@@ -264,7 +266,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 case ReceiverAction.DELETE_N_HEADER_BG://删除背景
 
-                    deleteBg(intent,context);
+                    deleteBg(intent, context);
 
                     break;
 
@@ -277,7 +279,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 case ReceiverAction.UI_GET_HEADER_INFO:
 
-                    sendAllInfo(intent,context);
+                    sendAllInfo(intent, context);
 
                     break;
                 case ReceiverAction.SEND_ORI://接收屏幕旋转信息
@@ -290,9 +292,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         }
     }
-
-
-
 
 
     /**
@@ -351,16 +350,16 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 initShuHeader();
             }
 
-            if (shuHeader == null||fullView==null) {
+            if (shuHeader == null || fullView == null) {
                 return;
             }
 
             //还原
-            if (hengHeader!=null){
+            if (hengHeader != null) {
                 fullView.removeView(hengHeader);
             }
             fullView.removeView(shuHeader);
-            fullView.addView(shuHeader,2);//0位置放着全部背景
+            fullView.addView(shuHeader, 2);//0位置放着全部背景
 
 
             shuHeader.setImageBitmap(bitmap);
@@ -368,24 +367,24 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             setAlpha(shuHeader);
 
 
-        }else {
+        } else {
 
             hideShuHeader();//隐藏竖屏头部
 
-            if (hengHeader==null){
+            if (hengHeader == null) {
                 initHengHeader();
             }
 
-            if (hengHeader==null||fullView==null){
+            if (hengHeader == null || fullView == null) {
                 return;
             }
 
-            if (shuHeader!=null){
+            if (shuHeader != null) {
                 fullView.removeView(shuHeader);
             }
 
             fullView.removeView(hengHeader);
-            fullView.addView(hengHeader,2);
+            fullView.addView(hengHeader, 2);
 
 
             hengHeader.setImageBitmap(bitmap);
@@ -396,7 +395,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
         autoChangePosition();//自动调整位置
-
 
 
     }
@@ -452,48 +450,48 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         showHeader();
 
-        if (isVertical){
+        if (isVertical) {
 
             hideHengHeader();
 
-            if (shuHeader==null){
+            if (shuHeader == null) {
                 initShuHeader();
             }
 
-            if (shuHeader==null||fullView==null){
+            if (shuHeader == null || fullView == null) {
                 return;
             }
 
             //还原
-            if (hengHeader!=null){
+            if (hengHeader != null) {
                 fullView.removeView(hengHeader);
             }
             fullView.removeView(shuHeader);
-            fullView.addView(shuHeader,2);//0位置放着全部背景
+            fullView.addView(shuHeader, 2);//0位置放着全部背景
 
 
             shuHeader.setImageBitmap(bitmap);
 
             setAlpha(shuHeader);
 
-        }else {
+        } else {
 
             hideShuHeader();
 
-            if (hengHeader==null){
+            if (hengHeader == null) {
                 initHengHeader();
             }
 
-            if (hengHeader==null||fullView==null){
+            if (hengHeader == null || fullView == null) {
                 return;
             }
 
-            if (shuHeader!=null){
+            if (shuHeader != null) {
                 fullView.removeView(shuHeader);
             }
 
             fullView.removeView(hengHeader);
-            fullView.addView(hengHeader,2);
+            fullView.addView(hengHeader, 2);
 
             hengHeader.setImageBitmap(bitmap);
 
@@ -519,10 +517,11 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     /**
      * 获取全局图片
+     *
      * @param type
      * @return
      */
-    private File getFullFile(int type){
+    private File getFullFile(int type) {
 
         String path = AndroidAppHelper.currentApplication().getFilesDir().getAbsolutePath();
 
@@ -549,6 +548,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 获取默认背景
      * 用自定义view作为背景，所以舍弃
+     *
      * @return
      */
     @Deprecated
@@ -568,12 +568,12 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
      *
      * @param intent
      */
-    private void deleteBg(Intent intent,Context context) {
+    private void deleteBg(Intent intent, Context context) {
 
 
         int type = intent.getIntExtra(Conf.N_HEADER_DELETE_TYPE, -1);
 
-        if (type==-1){
+        if (type == -1) {
             return;
         }
 
@@ -789,7 +789,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             return;
         }
 
-        float alpha =((1 - f) * (alpha_value/255.0f));
+        float alpha = ((1 - f) * (alpha_value / 255.0f));
 
         if (alpha > 1.0f) {
             alpha = 1.0f;
@@ -826,7 +826,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
 
-
     }
 
     /**
@@ -838,7 +837,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         int value = intent.getIntExtra(Conf.N_HEADER_ALPHA, -1);
 
-        if (value==-1){
+        if (value == -1) {
             return;
         }
 
@@ -855,8 +854,6 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         alpha_value = value;
 
         sharedPreferences.edit().putInt(Conf.N_HEADER_ALPHA, alpha_value).apply();
-
-
 
 
         autoSetBg();
@@ -881,7 +878,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         autoSetBg();
 
-        sharedPreferences.edit().putBoolean(Conf.N_HEADER_GAO,isGAO).apply();
+        sharedPreferences.edit().putBoolean(Conf.N_HEADER_GAO, isGAO).apply();
 
     }
 
@@ -898,7 +895,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
 //        setGaoSiImage();
 
-        if (isGAO){
+        if (isGAO) {
             setGaoSiImage();
         }
 
@@ -933,8 +930,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                     info.setWidth(width);
 
-                    logs("发送头部竖屏 height--->>>"+height);
-                    logs("发送头部竖屏 width--->>>"+width);
+                    logs("发送头部竖屏 height--->>>" + height);
+                    logs("发送头部竖屏 width--->>>" + width);
 
 //                    intent1.putExtra(Conf.N_HEADER_RESULT,VERTICAL);
 
@@ -950,8 +947,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                     info.setWidth(width1);
 
-                    logs("发送头部横屏 height--->>>"+height1);
-                    logs("发送头部横屏 width--->>>"+width1);
+                    logs("发送头部横屏 height--->>>" + height1);
+                    logs("发送头部横屏 width--->>>" + width1);
 
 //                    intent1.putExtra(Conf.N_HEADER_RESULT,HORIZONTAL);
 
@@ -972,6 +969,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     /**
      * 设置图片质量
+     *
      * @param intent
      */
     private void setImageQuality(Intent intent) {
@@ -980,39 +978,39 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         autoSetBg();
 
-        sharedPreferences.edit().putInt(Conf.N_HEADER_QUALITY,this.quality).apply();
+        sharedPreferences.edit().putInt(Conf.N_HEADER_QUALITY, this.quality).apply();
 
     }
 
-    private void sendAllInfo(Intent intent,Context context){
+    private void sendAllInfo(Intent intent, Context context) {
 
-        int sdk=intent.getIntExtra(Conf.SDK,-1);
+        int sdk = intent.getIntExtra(Conf.SDK, -1);
 
-        if (sdk<=0){
+        if (sdk <= 0) {
             return;
         }
 
         //取9.0
-        if (sdk==Build.VERSION_CODES.P){
+        if (sdk == Build.VERSION_CODES.P) {
 
-            int alpha=sharedPreferences.getInt(Conf.N_HEADER_ALPHA,255);
+            int alpha = sharedPreferences.getInt(Conf.N_HEADER_ALPHA, 255);
 
-            int quality=sharedPreferences.getInt(Conf.N_HEADER_QUALITY,Conf.LOW_QUALITY);
+            int quality = sharedPreferences.getInt(Conf.N_HEADER_QUALITY, Conf.LOW_QUALITY);
 
-            boolean gao=sharedPreferences.getBoolean(Conf.N_HEADER_GAO,false);
+            boolean gao = sharedPreferences.getBoolean(Conf.N_HEADER_GAO, false);
 
-            int gaoValue=sharedPreferences.getInt(Conf.N_HEADER_GAO_VALUE,25);
+            int gaoValue = sharedPreferences.getInt(Conf.N_HEADER_GAO_VALUE, 25);
 
-            Result result=new Result();
+            Result result = new Result();
 
             result.setAlpha(alpha);
             result.setGao(gao);
             result.setQuality(quality);
             result.setGaoValue(gaoValue);
 
-            Intent intent1=new Intent(ReceiverAction.HEADER_TO_UI_INFO);
+            Intent intent1 = new Intent(ReceiverAction.HEADER_TO_UI_INFO);
 
-            intent1.putExtra(Conf.HEADER_TO_UI_RESULT,result);
+            intent1.putExtra(Conf.HEADER_TO_UI_RESULT, result);
 
             context.sendBroadcast(intent1);
 
@@ -1038,11 +1036,11 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             case Configuration.ORIENTATION_LANDSCAPE://横屏
 
-                if (!isVertical){//避免重复
+                if (!isVertical) {//避免重复
                     return;
                 }
-                
-                isVertical=false;
+
+                isVertical = false;
 
                 autoSetBg();
 
@@ -1051,12 +1049,12 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             case Configuration.ORIENTATION_PORTRAIT://竖屏
             default:
 
-                if (isVertical){//避免重复
+                if (isVertical) {//避免重复
                     return;
                 }
 
 
-                isVertical=true;
+                isVertical = true;
 
                 autoSetBg();
 
@@ -1068,24 +1066,24 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     }
 
     //初始化竖屏头部，宽度取保存好的数值
-    private void initShuHeader(){
+    private void initShuHeader() {
 
-        if (shuHeader!=null){
+        if (shuHeader != null) {
             return;
         }
 
-        int width=getWidth(true);
-        int height=getHeight(true);
+        int width = getWidth(true);
+        int height = getHeight(true);
 
-        if (width<=0||height<=0){
+        if (width <= 0 || height <= 0) {
             logs("竖屏头部信息");
-            logs("width-->>>"+width);
-            logs("height-->>>"+height);
+            logs("width-->>>" + width);
+            logs("height-->>>" + height);
             return;
         }
 
-        shuHeader=new SlitImageView(AndroidAppHelper.currentApplication());
-        ViewGroup.LayoutParams layoutParams=new FrameLayout.LayoutParams(width,height);
+        shuHeader = new SlitImageView(AndroidAppHelper.currentApplication());
+        ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
 
         shuHeader.setLayoutParams(layoutParams);
 
@@ -1096,24 +1094,24 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 初始化横屏头部
      */
-    private void initHengHeader(){
+    private void initHengHeader() {
 
-        if (hengHeader!=null){
+        if (hengHeader != null) {
             return;
         }
 
-        int width=getWidth(false);
-        int height=getHeight(false);
+        int width = getWidth(false);
+        int height = getHeight(false);
 
-        if (width<=0||height<=0){
+        if (width <= 0 || height <= 0) {
             logs("横屏头部信息");
-            logs("width--->>>"+width);
-            logs("height-->>>"+height);
+            logs("width--->>>" + width);
+            logs("height-->>>" + height);
             return;
         }
 
-        hengHeader=new SlitImageView(AndroidAppHelper.currentApplication());
-        ViewGroup.LayoutParams layoutParams=new FrameLayout.LayoutParams(width,height);
+        hengHeader = new SlitImageView(AndroidAppHelper.currentApplication());
+        ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
         hengHeader.setLayoutParams(layoutParams);
         hengHeader.setRadius(this.radius);//设置上圆角度数
 
@@ -1121,15 +1119,16 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     /**
      * 获取宽度
+     *
      * @return 返回保存好的宽度值
      */
-    private int getWidth(boolean isV){
+    private int getWidth(boolean isV) {
 
-        if (isV){
+        if (isV) {
 
-            return sharedPreferences.getInt(Conf.FULL_SHU_WIDTH,-1);
+            return sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
 
-        }else {
+        } else {
 
 
             return sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
@@ -1140,15 +1139,16 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     /**
      * 获取高度
+     *
      * @return 返回保存好的高度值
      */
-    private int getHeight(boolean isV){
+    private int getHeight(boolean isV) {
 
-        if (isV){
+        if (isV) {
 
-            return sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_HEIGHT,-1);
+            return sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_HEIGHT, -1);
 
-        }else {
+        } else {
 
             return sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, -1);
         }
@@ -1158,39 +1158,37 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 清除整个头部的背景，还原
      */
-    private void cleanHeaderBg(){
+    private void cleanHeaderBg() {
 
-        if (shuHeader!=null){
+        if (shuHeader != null) {
 
             shuHeader.setVisibility(View.GONE);
 
             fullView.removeView(shuHeader);
 
-            shuHeader=null;
+            shuHeader = null;
         }
 
-        if (hengHeader!=null){
+        if (hengHeader != null) {
             hengHeader.setVisibility(View.GONE);
             fullView.removeView(hengHeader);
-            hengHeader=null;
+            hengHeader = null;
         }
 
     }
 
 
+    private void autoChangePosition() {
 
+        if (shuHeader != null && shuHeader.getVisibility() == View.VISIBLE && isVertical) {
 
-    private void autoChangePosition(){
+            int full_width = sharedPreferences.getInt(Conf.F_V_W, 0);
 
-        if (shuHeader!=null&&shuHeader.getVisibility()==View.VISIBLE&&isVertical){
+            int bg_width = getWidth(true);
 
-            int full_width=sharedPreferences.getInt(Conf.F_V_W,0);
+            int margin = (full_width - bg_width) / 2;//计算距离两边的距离
 
-            int bg_width=getWidth(true);
-
-            int margin=(full_width-bg_width)/2;//计算距离两边的距离
-
-            int ii=AndroidAppHelper
+            int ii = AndroidAppHelper
                     .currentApplication()
                     .getResources()
                     .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
@@ -1199,8 +1197,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             int offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
 
 
-            FrameLayout.LayoutParams layoutParams= (FrameLayout.LayoutParams) shuHeader.getLayoutParams();
-            layoutParams.setMargins(margin, offset_height,margin,0);
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) shuHeader.getLayoutParams();
+            layoutParams.setMargins(margin, offset_height, margin, 0);
 
             shuHeader.setLayoutParams(layoutParams);
 
@@ -1210,16 +1208,16 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         }
 
-        if (hengHeader!=null&&hengHeader.getVisibility()==View.VISIBLE&&!isVertical){
+        if (hengHeader != null && hengHeader.getVisibility() == View.VISIBLE && !isVertical) {
 
-            int full_width=sharedPreferences.getInt(Conf.F_H_W,0);
+            int full_width = sharedPreferences.getInt(Conf.F_H_W, 0);
 
-            int bg_width=getWidth(false);
+            int bg_width = getWidth(false);
 
-            int margin=(full_width-bg_width)/2;//计算距离两边的距离
+            int margin = (full_width - bg_width) / 2;//计算距离两边的距离
 
 
-            int ii=AndroidAppHelper
+            int ii = AndroidAppHelper
                     .currentApplication()
                     .getResources()
                     .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
@@ -1227,8 +1225,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             int offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
 
 
-            FrameLayout.LayoutParams layoutParams= (FrameLayout.LayoutParams) hengHeader.getLayoutParams();
-            layoutParams.setMargins(margin, offset_height,margin,0);
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) hengHeader.getLayoutParams();
+            layoutParams.setMargins(margin, offset_height, margin, 0);
 
             hengHeader.setLayoutParams(layoutParams);
 
@@ -1241,14 +1239,14 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
-    private void showHeader(){
+    private void showHeader() {
 
-        if (shuHeader!=null&&shuHeader.getVisibility()==View.GONE&&isVertical){
+        if (shuHeader != null && shuHeader.getVisibility() == View.GONE && isVertical) {
             shuHeader.setVisibility(View.VISIBLE);
         }
 
 
-        if (hengHeader!=null&&hengHeader.getVisibility()==View.GONE&&!isVertical){
+        if (hengHeader != null && hengHeader.getVisibility() == View.GONE && !isVertical) {
 
             hengHeader.setVisibility(View.VISIBLE);
 
@@ -1256,34 +1254,34 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
-    private void hideShuHeader(){
+    private void hideShuHeader() {
 
-        if (shuHeader!=null&&shuHeader.getVisibility()==View.VISIBLE){
+        if (shuHeader != null && shuHeader.getVisibility() == View.VISIBLE) {
             shuHeader.setVisibility(View.GONE);
         }
 
     }
 
-    private void hideHengHeader(){
+    private void hideHengHeader() {
 
-        if (hengHeader!=null&&hengHeader.getVisibility()==View.VISIBLE){
+        if (hengHeader != null && hengHeader.getVisibility() == View.VISIBLE) {
             hengHeader.setVisibility(View.GONE);
         }
 
     }
 
-    private void setAlpha(View view){
+    private void setAlpha(View view) {
 
-        if (view!=null){
+        if (view != null) {
 
-            float f=alpha_value/255.0f;
+            float f = alpha_value / 255.0f;
 
-            if (f>1f){
-                f=1.0f;
+            if (f > 1f) {
+                f = 1.0f;
             }
 
-            if (f<0f){
-                f=0f;
+            if (f < 0f) {
+                f = 0f;
             }
 
             view.setAlpha(f);
@@ -1301,13 +1299,13 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 隐藏一些无关紧要的view
      */
-    private void hideBackView(){
+    private void hideBackView() {
 
-        if (mStatusBarBackground!=null){
+        if (mStatusBarBackground != null) {
             mStatusBarBackground.setVisibility(View.GONE);
         }
 
-        if (mBackgroundGradient!=null){
+        if (mBackgroundGradient != null) {
             mBackgroundGradient.setVisibility(View.GONE);
         }
 
