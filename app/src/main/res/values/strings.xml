@@ -164,4 +164,15 @@
 
     <string name="moduel_info">简单修改快速设置面板背景的小插件</string>
 
+    <string name="about_this">面板信息</string>
+
+    <string name="panel_info_content">这是关于你面板的宽高信息\n
+        如果面板信息不对，则可以通过重置systemUI功能将其重置，再按照说明获取正确的宽高\n
+        首先是竖屏宽高，只需要在竖屏情况下将面板下拉至最底部即可获得。\n
+        横屏宽高信息也一样，将手机设置为横屏之后，将面板拉到最底部，横屏宽高信息也即可记录。\n
+        如果数值为0或是-1，则表示该数值未被获取过。\n
+        以下是你的具体信息\n
+
+    </string>
+
 </resources>

@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +26,12 @@ import com.xp.legend.lin16.bean.Result;
 import com.xp.legend.lin16.utils.BaseHook;
 import com.xp.legend.lin16.utils.Conf;
 import com.xp.legend.lin16.utils.ReceiverAction;
+import com.xp.legend.lin16.utils.ReflectUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.lang.reflect.Field;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -48,18 +51,14 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  * lin16头部也是自定义View，只需要设置好位置即可，大小则是参考0.0时背景view的大小来定，设定其位于全部背景的前面，避免被全部遮挡
  * 另外，需要居中显示，所以要设置好margin，margin计算是整个(快速设置面板的宽度-背景view的宽度)/2，margin是给左右两边设置的。
  * 距离顶部也有一定的距离，所以顶部也需要设置一个margin，此margin是android:dimen/quick_qs_offset_height，经过反射获取其值，最后再设置上即可。
- *
- *
- *
- *
  */
 public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private static final String METHOD = "onFinishInflate";
     private static final String CLASS2 = "com.android.systemui.qs.QSContainerImpl";
     private static final String METHOD2 = "updateExpansion";
-    private static final String METHOD3="onConfigurationChanged";
-    private static final String METHOD4="onLayout";
+    private static final String METHOD3 = "onConfigurationChanged";
+    private static final String METHOD4 = "onLayout";
 
     private ViewGroup fullView;
     private FullReceiver receiver;
@@ -78,16 +77,15 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private boolean isScroll = false;//是否滚动背景
 
-    private boolean isSlit=true;//是否卷轴背景
+    private boolean isSlit = true;//是否卷轴背景
 
     private View bg;
 
-    private int radius=0;
+    private int radius = 0;
 
-    private View mBackgroundGradient,mStatusBarBackground;
+    private View mBackgroundGradient, mStatusBarBackground;
 
-    private boolean isFirst=true;
-
+    private boolean isFirst = true;
 
 
     @Override
@@ -110,34 +108,68 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 //注册广播、
                 register();
 
-                bg=(View) XposedHelpers.getObjectField(param.thisObject,"mBackground");
+//                sharedPreferences = AndroidAppHelper.currentApplication().getSharedPreferences(Conf.SHARE, Context.MODE_PRIVATE);
 
-                bg.setBackgroundTintList(null);
+                initPs();
 
-                mBackgroundGradient= (View) XposedHelpers.getObjectField(param.thisObject,"mBackgroundGradient");
-                mStatusBarBackground= (View) XposedHelpers.getObjectField(param.thisObject,"mStatusBarBackground");
+                Class s=lpparam.classLoader.loadClass(CLASS2);
 
-                fullView= (ViewGroup) param.thisObject;
+                if(isFiledExist("mBackground",s)){
+
+                    bg = (View) XposedHelpers.getObjectField(param.thisObject, "mBackground");
+
+                    bg.setBackgroundTintList(null);
+
+                    //bg.setBackgroundColor(Color.GREEN);
+
+                }
+
+                if (isFiledExist("mBackgroundGradient",s)){
+
+                    mBackgroundGradient= (View) XposedHelpers.getObjectField(param.thisObject,"mBackgroundGradient");
+
+                }
+
+                if (isFiledExist("mStatusBarBackground",s)){
+
+                    mStatusBarBackground= (View) XposedHelpers.getObjectField(param.thisObject,"mStatusBarBackground");
+
+                }
+
+//                mBackgroundGradient= (View) XposedHelpers.getObjectField(param.thisObject,"mBackgroundGradient");
+//                mStatusBarBackground= (View) XposedHelpers.getObjectField(param.thisObject,"mStatusBarBackground");
+
+                fullView = (ViewGroup) param.thisObject;
 
 
-                TypedValue typedValue = new TypedValue();
-                AndroidAppHelper.currentApplication().getTheme().resolveAttribute(android.R.attr.dialogCornerRadius, typedValue, true);
+                //三星
+                if (isRom("samsung")){
+
+                    int id=ReflectUtil.getDimenId(AndroidAppHelper.currentApplication(),"notification_panel_background_radius");
+
+                    radius= (int) AndroidAppHelper.currentApplication().getResources().getDimension(id);
+
+                }else {//其他ROM
 
 
-                /**
-                 * 获取圆角度数
-                 */
-                radius=TypedValue.complexToDimensionPixelSize(typedValue.data,
-                        AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
+                    TypedValue typedValue = new TypedValue();
+                    AndroidAppHelper.currentApplication().getTheme().resolveAttribute(android.R.attr.dialogCornerRadius, typedValue, true);
 
 
-                sharedPreferences = AndroidAppHelper.currentApplication().getSharedPreferences(Conf.SHARE, Context.MODE_PRIVATE);
+                    /**
+                     * 获取圆角度数
+                     */
+                    radius = TypedValue.complexToDimensionPixelSize(typedValue.data,
+                            AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
+
+                }
+
 
                 alphaValue = sharedPreferences.getInt(Conf.FULL_ALPHA_VALUE, 100);
 
                 isScroll = sharedPreferences.getBoolean(Conf.FULL_SCROLL, false);
 
-                isSlit=sharedPreferences.getBoolean(Conf.SLIT,true);
+                isSlit = sharedPreferences.getBoolean(Conf.SLIT, true);
 
 
                 defaultDrawable = AndroidAppHelper
@@ -151,11 +183,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 gaoValue = sharedPreferences.getInt(Conf.FULL_GAO_VALUE, 25);
 
-                saveFullWidthInfo();
+//                saveFullWidthInfo();
 
                 hideBackView();
 
 //                autoSetBg();
+
+                saveVerticalWidth();//率先保存竖屏宽度
 
 
             }
@@ -177,12 +211,12 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         });
 
 
-        XposedHelpers.findAndHookMethod(CLASS2, lpparam.classLoader, METHOD3,Configuration.class, new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(CLASS2, lpparam.classLoader, METHOD3, Configuration.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 //                super.afterHookedMethod(param);
 
-                Configuration configuration= (Configuration) param.args[0];
+                Configuration configuration = (Configuration) param.args[0];
 
                 autoSetPosition(configuration.orientation);
 
@@ -238,13 +272,14 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             intentFilter.addAction(ReceiverAction.SEND_LOGS);
 
+            intentFilter.addAction(ReceiverAction.SEND_INFO_TO_ACTIVITY);
+
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter);
 
 
         }
 
     }
-
 
 
     class FullReceiver extends BroadcastReceiver {
@@ -353,6 +388,12 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     openLogs(intent);
 
+                case ReceiverAction.SEND_INFO_TO_ACTIVITY://获取面板全部信息
+
+                    sendInfoToActivity();
+
+                    break;
+
 
             }
 
@@ -366,8 +407,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         File file = new File(path);
 
         if (file.exists()) {
-            file.delete();
-
+            if (file.delete())
             Toast.makeText(AndroidAppHelper.currentApplication(), "重置设置(reset success)", Toast.LENGTH_SHORT).show();
         }
 
@@ -501,7 +541,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 //        if (this.isSlit){//卷轴模式
 
-            setSlitImage();
+        setSlitImage();
 
 //        }
 
@@ -513,102 +553,201 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
-    /**
-     * 保存宽度信息
-     */
-    private void saveFullWidthInfo() {
 
-        int horizontal_width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
+    /**
+     * 保存竖屏宽度
+     */
+    private void saveVerticalWidth(){
+
+        if (sharedPreferences==null){
+            initPs();
+        }
 
         int vertical_width = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
 
-        int full_v_width=sharedPreferences.getInt(Conf.F_V_W,-1);//全部竖屏时的宽度
+        if (vertical_width<=0) {
 
-        int full_h_width=sharedPreferences.getInt(Conf.F_H_W,-1);//全部横屏时的宽度
+            if (fullView==null){
+                return;
+            }
 
-        if ((horizontal_width <= 0 && !isVertical)) {
-
-
-            horizontal_width = bg.getWidth();
-
-            sharedPreferences.edit().putInt(Conf.FULL_HENG_WIDTH, horizontal_width).apply();
-
-        }
-
-        if ((vertical_width <= 0 && isVertical)) {
+            if (bg==null){
+                return;
+            }
 
             vertical_width = bg.getWidth();
 
             sharedPreferences.edit().putInt(Conf.FULL_SHU_WIDTH, vertical_width).apply();
 
+            int full_v_width = fullView.getWidth();
+
+            sharedPreferences.edit().putInt(Conf.F_V_W, full_v_width).apply();
+
+            logs("保存竖屏宽度---->>>" + vertical_width);
         }
-
-        if (full_v_width<=0&&isVertical){
-
-
-            full_v_width=fullView.getWidth();
-
-            sharedPreferences.edit().putInt(Conf.F_V_W,full_v_width).apply();
-
-        }
-
-        if (full_h_width<=0&&!isVertical){
-
-            full_h_width=fullView.getWidth();
-            sharedPreferences.edit().putInt(Conf.F_H_W,full_h_width).apply();
-
-
-        }
-
-
-
-
 
     }
 
-    private void saveFullHeightInfo(){
+    /**
+     * 保存横屏宽度
+     */
+    private void saveHorizontalWidth(){
 
-        int horizontal_height=sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT,-1);
-        int vertical_height=sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT,-1);
+        if (sharedPreferences==null){
+            initPs();
+        }
 
-        if (horizontal_height<=0&&!isVertical){//保存横屏高度
+        int horizontal_width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
 
-            horizontal_height=bg.getHeight();
+        if (horizontal_width<=0) {
 
-            sharedPreferences.edit().putInt(Conf.FULL_HENG_HEIGHT,horizontal_height).apply();
+            if (fullView==null){
+                return;
+            }
+
+            if (bg==null){
+                return;
+            }
+
+            horizontal_width = bg.getWidth();
+
+            sharedPreferences.edit().putInt(Conf.FULL_HENG_WIDTH, horizontal_width).apply();
+
+            int full_h_width = fullView.getWidth();
+            sharedPreferences.edit().putInt(Conf.F_H_W, full_h_width).apply();
+
+            logs("保存横屏宽度---->>>" + horizontal_width);
+
+            Toast.makeText(AndroidAppHelper.currentApplication(), "已保存横屏宽度", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
+
+    /**
+     * 保存宽度信息
+     */
+//    private void saveFullWidthInfo() {
+//
+//
+//        if (fullView==null){
+//            return;
+//        }
+//
+//        if (sharedPreferences==null){
+//            initPs();
+//        }
+//
+//        int horizontal_width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
+//
+//        int vertical_width = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
+//
+//        int full_v_width = sharedPreferences.getInt(Conf.F_V_W, -1);//全部竖屏时的宽度
+//
+//        int full_h_width = sharedPreferences.getInt(Conf.F_H_W, -1);//全部横屏时的宽度
+//
+//        if (!isVertical) {
+//
+//            horizontal_width = bg.getWidth();
+//
+//            sharedPreferences.edit().putInt(Conf.FULL_HENG_WIDTH, horizontal_width).apply();
+//
+//        }
+//
+//        if ((vertical_width <= 0 && isVertical)) {
+//
+//            vertical_width = bg.getWidth();
+//
+//            sharedPreferences.edit().putInt(Conf.FULL_SHU_WIDTH, vertical_width).apply();
+//
+//        }
+//
+//        if (full_v_width <= 0 && isVertical) {
+//
+//
+//            full_v_width = fullView.getWidth();
+//
+//            sharedPreferences.edit().putInt(Conf.F_V_W, full_v_width).apply();
+//
+//        }
+//
+//        if (full_h_width <= 0 && !isVertical) {
+//
+//            full_h_width = fullView.getWidth();
+//            sharedPreferences.edit().putInt(Conf.F_H_W, full_h_width).apply();
+//
+//
+//        }
+//
+//
+//    }
+
+    /**
+     * 保存高度
+     */
+    private void saveFullHeightInfo() {
+
+        if (sharedPreferences == null) {
+            initPs();
+//            return;
+        }
+
+        int horizontal_height = sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT, -1);
+        int vertical_height = sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT, -1);
+
+        if (!isVertical) {//保存横屏高度
+
+            horizontal_height = bg.getHeight();
+
+            sharedPreferences.edit().putInt(Conf.FULL_HENG_HEIGHT, horizontal_height).apply();
+
+            saveHorizontalWidth();
+
+            logs("保存横屏高度---->>>"+horizontal_height);
 
         }
 
-        if (vertical_height<=0&&isVertical){//保存竖屏高度
+        if (isVertical) {//保存竖屏高度
 
-            vertical_height=bg.getHeight();
+            vertical_height = bg.getHeight();
 
-            sharedPreferences.edit().putInt(Conf.FULL_SHU_HEIGHT,vertical_height).apply();
+            sharedPreferences.edit().putInt(Conf.FULL_SHU_HEIGHT, vertical_height).apply();
+
+            saveVerticalWidth();
+
+            logs("保存竖屏高度---->>>"+vertical_height);
 
         }
     }
 
 
     //保存头部高度
-    private void saveHeaderHeight(){
+    private void saveHeaderHeight() {
 
-        int header_vertical_height=sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_HEIGHT,-1);
+        if (sharedPreferences == null) {
+            initPs();
+//            return;
+        }
 
-        int header_horizontal_height=sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_HEIGHT,-1);
+        int header_vertical_height = sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_HEIGHT, -1);
 
-        if (header_vertical_height<=0&&isVertical){
+        int header_horizontal_height = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, -1);
 
-            header_vertical_height=bg.getHeight();
+        if (header_vertical_height <= 0 && isVertical) {
 
-            sharedPreferences.edit().putInt(Conf.N_HEADER_VERTICAL_HEIGHT,header_vertical_height).apply();
+            header_vertical_height = bg.getHeight();
+
+            sharedPreferences.edit().putInt(Conf.N_HEADER_VERTICAL_HEIGHT, header_vertical_height).apply();
 
         }
 
-        if (header_horizontal_height<=0&&!isVertical){
+        if (header_horizontal_height <= 0 && !isVertical) {
 
-            header_horizontal_height=bg.getHeight();
+            header_horizontal_height = bg.getHeight();
 
-            sharedPreferences.edit().putInt(Conf.N_HEADER_HORIZONTAL_HEIGHT,header_horizontal_height).apply();
+            sharedPreferences.edit().putInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, header_horizontal_height).apply();
         }
 
 
@@ -807,23 +946,21 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 
     //统一设置背景透明度
-    private void setViewAlpha(int alpha){
+    private void setViewAlpha(int alpha) {
 
-            if (shuSlit!=null){
+        if (shuSlit != null) {
 
-                shuSlit.setImageAlpha(alpha);
+            shuSlit.setImageAlpha(alpha);
 
-            }
+        }
 
-            if (hengSlit!=null){
+        if (hengSlit != null) {
 
-                hengSlit.setImageAlpha(alpha);
+            hengSlit.setImageAlpha(alpha);
 
-            }
+        }
 
     }
-
-
 
 
     /**
@@ -890,7 +1027,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 设置滚动背景
      * 舍弃，因为不再需要
-     *
      */
     @Deprecated
     private void setScrollBg() {
@@ -986,8 +1122,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
 
-
-
         } else {//横屏
 
             logs("设置横屏滚动背景");
@@ -1060,7 +1194,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     /**
      * 自动判断并设置背景
-     *
+     * <p>
      * 普通的设置背景，在这里舍弃掉，不再使用
      */
     @Deprecated
@@ -1132,7 +1266,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         if (isGaoSi) {
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
-            bitmap=getBitmap(AndroidAppHelper.currentApplication(),bitmap,gaoValue);
+            bitmap = getBitmap(AndroidAppHelper.currentApplication(), bitmap, gaoValue);
 
             fullView.setBackground(bitmap2Drawable(bitmap));
 
@@ -1187,6 +1321,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     private void sendInfo(Intent intent, Context context) {
 
 
+        if (isVertical){
+
+            saveVerticalWidth();
+
+        }
+
+
         int type = intent.getIntExtra(Conf.FULL_INFO, -1);
 
         if (type == -1) {
@@ -1200,17 +1341,16 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             case Conf.VERTICAL:
 
-                int w = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH,-1);
+                int w = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
 
                 int h = sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT, -1);
-
 
 
                 full.setWidth(w);
                 full.setHeight(h);
 
-                logs("发送全部竖屏 w--->>"+w);
-                logs("发送全部竖屏 h--->>"+h);
+                logs("发送全部竖屏 w--->>" + w);
+                logs("发送全部竖屏 h--->>" + h);
 
                 break;
 
@@ -1222,12 +1362,11 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 int h1 = sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT, -1);
 
 
-
                 full.setWidth(w1);
                 full.setHeight(h1);
 
-                logs("发送全部横屏 w--->>"+w1);
-                logs("发送全部横屏 h--->>"+h1);
+                logs("发送全部横屏 w--->>" + w1);
+                logs("发送全部横屏 h--->>" + h1);
 
                 break;
 
@@ -1239,7 +1378,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         context.sendBroadcast(intent1);
 
-        saveFullWidthInfo();
+//        saveFullWidthInfo();
 
     }
 
@@ -1255,12 +1394,12 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 //        XposedBridge.log("bg_width---->>"+bg.getWidth());
 
-        if (shuSlit != null&&shuSlit.getVisibility()==View.VISIBLE) {
+        if (shuSlit != null && shuSlit.getVisibility() == View.VISIBLE) {
 
             shuSlit.change(bg.getHeight());
         }
 
-        if (hengSlit!=null&&hengSlit.getVisibility()==View.VISIBLE){
+        if (hengSlit != null && hengSlit.getVisibility() == View.VISIBLE) {
             hengSlit.change(bg.getHeight());
         }
 
@@ -1268,8 +1407,10 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             //下拉到最底下的时候保存信息
             //完全下拉状态，保存高度
 
-            saveFullWidthInfo();
+//            saveFullWidthInfo();
             saveFullHeightInfo();
+
+
 
         }
 
@@ -1289,8 +1430,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 //        }
 
 
-
-
 //        if (f == 1.0) {
 //            //下拉到最底下的时候保存信息
 //            //完全下拉状态，保存高度
@@ -1300,7 +1439,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 //
 //        }
 
-        if (f==0){//没下拉状态
+        if (f == 0) {//没下拉状态
 
 
             saveHeaderHeight();//保存头部的高度
@@ -1315,7 +1454,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         int sdk = intent.getIntExtra(Conf.SDK, -1);
 
-        //取8.0或8.1
+        //取9.0
         if (sdk == Build.VERSION_CODES.P) {
 
             int alpha = sharedPreferences.getInt(Conf.FULL_ALPHA_VALUE, 255);
@@ -1328,7 +1467,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             boolean scroll = sharedPreferences.getBoolean(Conf.FULL_SCROLL, true);
 
-            boolean slit=sharedPreferences.getBoolean(Conf.SLIT,true);
+            boolean slit = sharedPreferences.getBoolean(Conf.SLIT, true);
 
             Result result = new Result();
 
@@ -1496,13 +1635,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 
         if (isVertical) {//竖屏
-            if (hengSlit!=null&&hengSlit.getVisibility()==View.VISIBLE){//隐藏横向图
+            if (hengSlit != null && hengSlit.getVisibility() == View.VISIBLE) {//隐藏横向图
                 hengSlit.setVisibility(View.GONE);
             }
 
             file = getNFullFile(Conf.VERTICAL);
 
-            if (!file.exists()){//文件不存在
+            if (!file.exists()) {//文件不存在
 
 //                cleanScrollImage();
                 cleanSlitImage();
@@ -1514,20 +1653,19 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
 
-
             if (shuSlit == null) {
 //                shuSlit = new SlitImageView(AndroidAppHelper.currentApplication());
 
                 initShuSlitView();
 
-                if (shuSlit==null){
+                if (shuSlit == null) {
 
                     logs("初始化卷轴背景失败，有可能是宽高获取不正确");
 
                     return;
                 }
 
-            }else if (shuSlit.getVisibility()==View.GONE){//存在但是被隐藏
+            } else if (shuSlit.getVisibility() == View.GONE) {//存在但是被隐藏
                 shuSlit.setVisibility(View.VISIBLE);
             }
 
@@ -1540,8 +1678,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 //
 //            shuSlit.setOffset_height(offset_height);
             ((ViewGroup) fullView).removeView(shuSlit);
-            ((ViewGroup) fullView).addView(shuSlit, 1);
-
+            ((ViewGroup) fullView).addView(shuSlit,0);
 
 
             if (isGaoSi) {//是否高斯模糊
@@ -1549,10 +1686,8 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                 bitmap = getBitmap(AndroidAppHelper.currentApplication(), bitmap, gaoValue);
 
-                shuSlit.setBitmap(bitmap,radius);
+                shuSlit.setBitmap(bitmap, radius);
 //                shuSlit.setImageAlpha(alphaValue);
-
-
 
 
                 logs("高斯模糊");
@@ -1561,14 +1696,14 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 
-                shuSlit.setBitmap(bitmap,radius);
+                shuSlit.setBitmap(bitmap, radius);
 //                shuSlit.setImageAlpha(alphaValue);
 
 
                 logs("非高斯模糊");
             }
 
-            shuSlit.setBackgroundColor(Color.TRANSPARENT);//设置透明背景
+//            shuSlit.setBackgroundColor(Color.TRANSPARENT);//设置透明背景
 
             setAlpha(shuSlit);
 
@@ -1579,13 +1714,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             logs("设置横屏卷轴背景");
 
-            if (shuSlit!=null&&shuSlit.getVisibility()==View.VISIBLE){
+            if (shuSlit != null && shuSlit.getVisibility() == View.VISIBLE) {
                 shuSlit.setVisibility(View.GONE);
             }
 
-            file=getNFullFile(Conf.HORIZONTAL);
+            file = getNFullFile(Conf.HORIZONTAL);
 
-            if (!file.exists()){//文件不存在
+            if (!file.exists()) {//文件不存在
 
 //                cleanScrollImage();
                 cleanSlitImage();
@@ -1597,20 +1732,19 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
 
-
-            if (hengSlit==null){
+            if (hengSlit == null) {
 //                hengSlit=new SlitImageView(AndroidAppHelper.currentApplication());
 
                 initHengSlitView();
 
-                if (hengSlit==null){
+                if (hengSlit == null) {
 
                     logs("横屏卷轴背景初始化失败");
 
                     return;
                 }
 
-            }else if (hengSlit.getVisibility()==View.GONE){
+            } else if (hengSlit.getVisibility() == View.GONE) {
                 hengSlit.setVisibility(View.VISIBLE);
             }
 
@@ -1619,9 +1753,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             cleanBg();
 
             ((ViewGroup) fullView).removeView(hengSlit);
-            ((ViewGroup) fullView).addView(hengSlit, 1);
-
-
+            ((ViewGroup) fullView).addView(hengSlit,0);
 
 
             //设置高斯模糊
@@ -1630,17 +1762,17 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
                 bitmap = getBitmap(AndroidAppHelper.currentApplication(), bitmap, gaoValue);
-                hengSlit.setBitmap(bitmap,radius);
+                hengSlit.setBitmap(bitmap, radius);
 
             } else {
 
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                hengSlit.setBitmap(bitmap,radius);
+                hengSlit.setBitmap(bitmap, radius);
 
 
             }
 
-            hengSlit.setBackgroundColor(Color.TRANSPARENT);
+//            hengSlit.setBackgroundColor(Color.TRANSPARENT);
 
             setAlpha(hengSlit);
 
@@ -1649,8 +1781,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         setSlitHeader();//设置卷轴头部
 
 
-
-//        bg.setBackgroundColor(Color.TRANSPARENT);//设置成功，将原先的背景给设置为透明，避免遮挡
+        bg.setBackgroundColor(Color.TRANSPARENT);//设置成功，将原先的背景给设置为透明，避免遮挡
 
         autoChangePosition();//设置背景居中，避免歪掉，可以的话尽量搞个线程，睡个几秒钟再居中
 
@@ -1676,13 +1807,15 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 //                mBackgroundGradient.setVisibility(View.GONE);
 
-                if (!isVertical){//避免重复
+                if (!isVertical) {//避免重复
                     return;
                 }
 
-                isVertical=false;
+                isVertical = false;
 
                 autoSetBg();
+
+//                saveHorizontalWidth();//保存横屏宽度
 
                 break;
 
@@ -1691,19 +1824,21 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 //                mBackgroundGradient.setVisibility(View.GONE);
 
-                if (isVertical){//避免重复
+                if (isVertical) {//避免重复
                     return;
                 }
 
-                isVertical=true;
+                isVertical = true;
 
                 autoSetBg();
+
+                saveVerticalWidth();//保存竖屏宽度
 
                 break;
 
         }
 
-        saveFullWidthInfo();
+//        saveFullWidthInfo();
 //        saveFullHeightInfo();
 
 
@@ -1711,44 +1846,48 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     //清除滚动背景
     @Deprecated
-    private void cleanScrollImage(){
+    private void cleanScrollImage() {
 
-        if (bgView!=null){
+        if (bgView != null) {
             ((ViewGroup) fullView).removeView(bgView);
-            bgView=null;
+            bgView = null;
         }
 
-        if (hengBgView!=null){
+        if (hengBgView != null) {
             ((ViewGroup) fullView).removeView(hengBgView);
-            hengBgView=null;
+            hengBgView = null;
 
         }
 
     }
 
     //清除卷轴背景
-    private void cleanSlitImage(){
+    private void cleanSlitImage() {
 
-        if (shuSlit!=null){
+        if (shuSlit != null) {
 
             fullView.removeView(shuSlit);
-            shuSlit=null;
+            shuSlit = null;
         }
 
-        if (hengSlit!=null){
+        if (hengSlit != null) {
 
             fullView.removeView(hengSlit);
-            hengSlit=null;
+            hengSlit = null;
 
+        }
+
+        if (bg!=null){
+            bg.setBackground(getDefaultDrawable());
         }
 
     }
 
-    private void getSlitInfo(Intent intent){
+    private void getSlitInfo(Intent intent) {
 
-        this.isSlit=intent.getBooleanExtra(Conf.SLIT,true);
+        this.isSlit = intent.getBooleanExtra(Conf.SLIT, true);
 
-        sharedPreferences.edit().putBoolean(Conf.SLIT,isSlit).apply();//保存
+        sharedPreferences.edit().putBoolean(Conf.SLIT, isSlit).apply();//保存
 
         autoSetBg();
 
@@ -1757,23 +1896,23 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 在卷轴模式下，可选对头部进行显示
      */
-    private void setSlitHeader(){
+    private void setSlitHeader() {
 
-        if (header==null){
+        if (header == null) {
             return;
         }
 
-        if (isVertical){//
+        if (isVertical) {//
 
-            if (!getHeaderFile(Conf.VERTICAL).exists()){
+            if (!getHeaderFile(Conf.VERTICAL).exists()) {
 
                 header.setBackgroundColor(Color.TRANSPARENT);
 
             }
 
-        }else {
+        } else {
 
-            if (!getHeaderFile(Conf.HORIZONTAL).exists()){
+            if (!getHeaderFile(Conf.HORIZONTAL).exists()) {
                 header.setBackgroundColor(Color.TRANSPARENT);
             }
 
@@ -1785,28 +1924,28 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 初始化
      */
-    private void initShuSlitView(){
+    private void initShuSlitView() {
 
-        if (shuSlit==null){
+        if (shuSlit == null) {
 
-            int height=sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT,-1);
+            int height = sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT, -1);
 
-            int width=sharedPreferences.getInt(Conf.FULL_SHU_WIDTH,-1);
+            int width = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
 
 
-            if (height<=0||width<=0){
+            if (height <= 0 || width <= 0) {
 
-                logs("获取竖屏height--->>"+height);
-                logs("获取竖屏width--->>"+width);
+                logs("获取竖屏height--->>" + height);
+                logs("获取竖屏width--->>" + width);
                 logs("由此返回，初始化卷轴背景失败");
 
                 return;
             }
 
 
-            shuSlit=new SlitImageView(AndroidAppHelper.currentApplication());
+            shuSlit = new SlitImageView(AndroidAppHelper.currentApplication());
 
-            ViewGroup.LayoutParams layoutParams=new FrameLayout.LayoutParams(width,height);
+            ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
 
             shuSlit.setLayoutParams(layoutParams);
 
@@ -1815,26 +1954,26 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     }
 
 
-    private void initHengSlitView(){
+    private void initHengSlitView() {
 
-        if (hengSlit==null){
+        if (hengSlit == null) {
 
-            int height=sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT,-1);
+            int height = sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT, -1);
 
-            int width=sharedPreferences.getInt(Conf.FULL_HENG_WIDTH,-1);
+            int width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
 
-            if (height<=0||width<=0){
+            if (height <= 0 || width <= 0) {
 
-                logs("获取横屏的height--->>"+height);
-                logs("获取横屏width--->>"+width);
+                logs("获取横屏的height--->>" + height);
+                logs("获取横屏width--->>" + width);
                 logs("由此返回，初始化卷轴背景失败");
 
                 return;
             }
 
-            hengSlit=new SlitImageView(AndroidAppHelper.currentApplication());
+            hengSlit = new SlitImageView(AndroidAppHelper.currentApplication());
 
-            ViewGroup.LayoutParams layoutParams=new FrameLayout.LayoutParams(width,height);
+            ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
 
             hengSlit.setLayoutParams(layoutParams);
 
@@ -1843,7 +1982,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     }
 
     //清除背景，还原
-    private void cleanBg(){
+    private void cleanBg() {
 
         showBackView();
 
@@ -1853,65 +1992,80 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
      * 自动恢复背景位置，避免背景歪掉
      * 另外，背景图在重启后可能会歪掉，原因是重启时初始化速度太快，程序无法跟上节奏，所以这部分的代码直接失效，所以这一部分必须在之后才能调用
      */
-    private void autoChangePosition(){
+    private void autoChangePosition() {
 
 
         int offset_height = 0;
-        if (shuSlit!=null&&shuSlit.getVisibility()==View.VISIBLE){
+        if (shuSlit != null && shuSlit.getVisibility() == View.VISIBLE) {
 
-            int full_width=fullView.getWidth();
+            int full_width = fullView.getWidth();
 
-            int bg_width=bg.getWidth();
+            int bg_width = bg.getWidth();
 
-            int margin=(full_width-bg_width)/2;//计算距离两边的距离
+            int margin = (full_width - bg_width) / 2;//计算距离两边的距离
 
-            int ii=AndroidAppHelper
+            int ii = AndroidAppHelper
                     .currentApplication()
                     .getResources()
                     .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
 
 
-
             offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
 
+            if (isRom("samsung")) {
 
-            FrameLayout.LayoutParams layoutParams= (FrameLayout.LayoutParams) shuSlit.getLayoutParams();
-            layoutParams.setMargins(margin, offset_height,margin,0);
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) bg.getLayoutParams();
+
+                offset_height = params.topMargin;
+            }
+
+
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) shuSlit.getLayoutParams();
+            layoutParams.setMargins(margin, offset_height, margin, 0);
 
             shuSlit.setLayoutParams(layoutParams);
 
-
-
-            shuSlit.setElevation(dp2px(4));
+            shuSlit.setElevation(bg.getElevation());
 
             hideBackView();
 
         }
 
 
-        if (hengSlit!=null&&hengSlit.getVisibility()==View.VISIBLE){
+        if (hengSlit != null && hengSlit.getVisibility() == View.VISIBLE) {
 
             //设置居中
 
-            int full_width=fullView.getWidth();
+            int full_width = fullView.getWidth();
 
-            int bg_width=bg.getWidth();
+            int bg_width = bg.getWidth();
 
-            int margin=(full_width-bg_width)/2;//计算距离两边的距离
+            int margin = (full_width - bg_width) / 2;//计算距离两边的距离
 
-            int ii=AndroidAppHelper
+            if (margin<0){
+                margin=0;
+            }
+
+            int ii = AndroidAppHelper
                     .currentApplication()
                     .getResources()
                     .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
 
             offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
 
-            FrameLayout.LayoutParams layoutParams= (FrameLayout.LayoutParams) hengSlit.getLayoutParams();
-            layoutParams.setMargins(margin, offset_height,margin,0);
+            if (isRom("samsung")) {
+
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) bg.getLayoutParams();
+
+                offset_height = params.topMargin;
+            }
+
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) hengSlit.getLayoutParams();
+            layoutParams.setMargins(margin, offset_height, margin, 0);
 
             hengSlit.setLayoutParams(layoutParams);
 
-            hengSlit.setElevation(dp2px(4));
+            hengSlit.setElevation(bg.getElevation());
 
             hideBackView();
 
@@ -1923,42 +2077,42 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 隐藏一些无关紧要的view
      */
-    private void hideBackView(){
+    private void hideBackView() {
 
-        if (mStatusBarBackground!=null){
+        if (mStatusBarBackground != null) {
             mStatusBarBackground.setVisibility(View.GONE);
         }
 
-        if (mBackgroundGradient!=null){
+        if (mBackgroundGradient != null) {
             mBackgroundGradient.setVisibility(View.GONE);
         }
 
     }
 
-    private void showBackView(){
+    private void showBackView() {
 
-        if (mStatusBarBackground!=null){
+        if (mStatusBarBackground != null) {
             mStatusBarBackground.setVisibility(View.VISIBLE);
         }
 
-        if (mBackgroundGradient!=null){
+        if (mBackgroundGradient != null) {
             mBackgroundGradient.setVisibility(View.VISIBLE);
         }
 
     }
 
-    private void setAlpha(View view){
+    private void setAlpha(View view) {
 
-        if (view!=null){
+        if (view != null) {
 
-            float f=alphaValue/100.0f;
+            float f = alphaValue / 100.0f;
 
-            if (f>1f){
-                f=1.0f;
+            if (f > 1f) {
+                f = 1.0f;
             }
 
-            if (f<0f){
-                f=0f;
+            if (f < 0f) {
+                f = 0f;
             }
 
             view.setAlpha(f);
@@ -1971,6 +2125,76 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dipValue,
                 AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
+    }
+
+
+    private void initPs(){
+
+        if (sharedPreferences==null){
+            sharedPreferences=AndroidAppHelper.currentApplication().getSharedPreferences(Conf.SHARE, Context.MODE_PRIVATE);
+        }
+
+    }
+
+    private boolean isFiledExist(String name,Class s){
+
+        Field[] fields=s.getDeclaredFields();
+
+        boolean b=false;
+
+        for (Field field:fields){
+
+            if (field.getName().equals(name)){
+                b=true;
+                break;
+            }
+
+        }
+
+        return b;
+
+    }
+
+    private boolean isClassExist(String clazz){
+
+        try {
+            Class.forName(clazz);
+
+            return true;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
+    }
+
+    private boolean isRom(String rom){
+
+        return Build.MANUFACTURER.toLowerCase().contains(rom);
+
+    }
+
+    private void sendInfoToActivity(){
+
+        initPs();
+
+        int vertical_width = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
+        int horizontal_width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
+
+        int horizontal_height = sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT, -1);
+        int vertical_height = sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT, -1);
+
+        Intent intent=new Intent(ReceiverAction.GET_INFO_TO_ACTIVITY);
+
+        intent.putExtra("vertical_width",vertical_width);
+        intent.putExtra("horizontal_width",horizontal_width);
+        intent.putExtra("horizontal_height",horizontal_height);
+        intent.putExtra("vertical_height",vertical_height);
+
+        AndroidAppHelper.currentApplication().sendBroadcast(intent);
+
+
     }
 
 }

@@ -30,6 +30,6 @@
     <color name="colorDeepOrange">#ff5722</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorMi">#dfdfdf</color>
-    <color name="colorButton">#c1c1c1</color>
+    <color name="colorButton">#ffeeeeee</color>
 
 </resources>

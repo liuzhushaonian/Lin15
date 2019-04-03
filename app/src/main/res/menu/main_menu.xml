@@ -5,14 +5,22 @@
 
     <item android:id="@+id/diy_height"
         android:title="@string/diyHeight"
+        app:showAsAction="never"
         />
     <item
         android:id="@+id/logs_switch"
         android:title="@string/logs_switch"
+        app:showAsAction="never"
         />
 
     <item android:title="@string/clean"
         android:id="@+id/clean"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:title="@string/about_this"
+        android:id="@+id/panel_infos"
         app:showAsAction="never"
         />
 

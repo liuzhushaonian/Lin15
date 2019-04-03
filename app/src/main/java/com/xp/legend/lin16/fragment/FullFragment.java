@@ -26,6 +26,8 @@ import com.xp.legend.lin16.presenter.FullPresenter;
 import com.xp.legend.lin16.utils.Conf;
 import com.xp.legend.lin16.utils.ReceiverAction;
 
+import de.robv.android.xposed.XposedBridge;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -415,6 +417,9 @@ public class FullFragment extends BaseFragment implements IFullFragment {
             case CUT_SHU_IMAGE:
 
                 if (data==null||data.getData()==null){
+
+                    XposedBridge.log("lin16------>>>>data is null or data.getData is null!!!!");
+
                     return;
                 }
 
