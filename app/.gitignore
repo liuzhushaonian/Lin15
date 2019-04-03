@@ -2,7 +2,7 @@
 /.idea
 /.gradle
 /app/build
-/app/release
+/app/release/
 
 .idea/
 
