@@ -87,12 +87,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private boolean isFirst = true;
 
-    private int rom=ORDINARY;
-
-    private static final int SAMSUNG=0x001000;
-    private static final int ORDINARY=0x001001;
-
-
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
@@ -126,7 +120,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     bg.setBackgroundTintList(null);
 
-                    bg.setBackgroundColor(Color.GREEN);
+                    //bg.setBackgroundColor(Color.GREEN);
 
                 }
 
@@ -154,8 +148,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                     int id=ReflectUtil.getDimenId(AndroidAppHelper.currentApplication(),"notification_panel_background_radius");
 
                     radius= (int) AndroidAppHelper.currentApplication().getResources().getDimension(id);
-
-                    XposedBridge.log("圆角度数---->>>>"+radius);
 
                 }else {//其他ROM
 
@@ -196,6 +188,8 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 hideBackView();
 
 //                autoSetBg();
+
+                saveVerticalWidth();//率先保存竖屏宽度
 
 
             }
@@ -243,33 +237,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
         });
 
-
-        if (isRom("samsung")){
-
-
-            XposedHelpers.findAndHookConstructor("com.android.systemui.statusbar.stack.NotificationStackScrollLayout", lpparam.classLoader,
-                    Context.class, AttributeSet.class, int.class, int.class, new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                            super.afterHookedMethod(param);
-
-                            int color=XposedHelpers.getIntField(param.thisObject,"mBgColor");
-
-                            XposedBridge.log("color------>>>>"+color);
-
-                            color=Color.TRANSPARENT;
-
-                            XposedHelpers.setIntField(param,"mBgColor",color);
-
-                            XposedBridge.log("color------>>>>"+color);
-
-                        }
-                    });
-
-
-        }
-
-
     }
 
 
@@ -304,6 +271,8 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             intentFilter.addAction(ReceiverAction.SEND_SLIT_INFO);
 
             intentFilter.addAction(ReceiverAction.SEND_LOGS);
+
+            intentFilter.addAction(ReceiverAction.SEND_INFO_TO_ACTIVITY);
 
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter);
 
@@ -419,6 +388,12 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     openLogs(intent);
 
+                case ReceiverAction.SEND_INFO_TO_ACTIVITY://获取面板全部信息
+
+                    sendInfoToActivity();
+
+                    break;
+
 
             }
 
@@ -434,8 +409,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         if (file.exists()) {
             if (file.delete())
             Toast.makeText(AndroidAppHelper.currentApplication(), "重置设置(reset success)", Toast.LENGTH_SHORT).show();
-
-            XposedBridge.log("path----->>>>"+path);
         }
 
 
@@ -580,61 +553,140 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
+
     /**
-     * 保存宽度信息
+     * 保存竖屏宽度
      */
-    private void saveFullWidthInfo() {
+    private void saveVerticalWidth(){
 
-        if (sharedPreferences == null || fullView == null) {
-
+        if (sharedPreferences==null){
             initPs();
-            return;
         }
-
-        int horizontal_width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
 
         int vertical_width = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
 
-        int full_v_width = sharedPreferences.getInt(Conf.F_V_W, -1);//全部竖屏时的宽度
+        if (vertical_width<=0) {
 
-        int full_h_width = sharedPreferences.getInt(Conf.F_H_W, -1);//全部横屏时的宽度
+            if (fullView==null){
+                return;
+            }
 
-        if (!isVertical) {
-
-            horizontal_width = bg.getWidth();
-
-            sharedPreferences.edit().putInt(Conf.FULL_HENG_WIDTH, horizontal_width).apply();
-
-        }
-
-        if ((vertical_width <= 0 && isVertical)) {
+            if (bg==null){
+                return;
+            }
 
             vertical_width = bg.getWidth();
 
             sharedPreferences.edit().putInt(Conf.FULL_SHU_WIDTH, vertical_width).apply();
 
-        }
-
-        if (full_v_width <= 0 && isVertical) {
-
-
-            full_v_width = fullView.getWidth();
+            int full_v_width = fullView.getWidth();
 
             sharedPreferences.edit().putInt(Conf.F_V_W, full_v_width).apply();
 
+            logs("保存竖屏宽度---->>>" + vertical_width);
         }
-
-        if (full_h_width <= 0 && !isVertical) {
-
-            full_h_width = fullView.getWidth();
-            sharedPreferences.edit().putInt(Conf.F_H_W, full_h_width).apply();
-
-
-        }
-
 
     }
 
+    /**
+     * 保存横屏宽度
+     */
+    private void saveHorizontalWidth(){
+
+        if (sharedPreferences==null){
+            initPs();
+        }
+
+        int horizontal_width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
+
+        if (horizontal_width<=0) {
+
+            if (fullView==null){
+                return;
+            }
+
+            if (bg==null){
+                return;
+            }
+
+            horizontal_width = bg.getWidth();
+
+            sharedPreferences.edit().putInt(Conf.FULL_HENG_WIDTH, horizontal_width).apply();
+
+            int full_h_width = fullView.getWidth();
+            sharedPreferences.edit().putInt(Conf.F_H_W, full_h_width).apply();
+
+            logs("保存横屏宽度---->>>" + horizontal_width);
+
+            Toast.makeText(AndroidAppHelper.currentApplication(), "已保存横屏宽度", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
+
+    /**
+     * 保存宽度信息
+     */
+//    private void saveFullWidthInfo() {
+//
+//
+//        if (fullView==null){
+//            return;
+//        }
+//
+//        if (sharedPreferences==null){
+//            initPs();
+//        }
+//
+//        int horizontal_width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
+//
+//        int vertical_width = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
+//
+//        int full_v_width = sharedPreferences.getInt(Conf.F_V_W, -1);//全部竖屏时的宽度
+//
+//        int full_h_width = sharedPreferences.getInt(Conf.F_H_W, -1);//全部横屏时的宽度
+//
+//        if (!isVertical) {
+//
+//            horizontal_width = bg.getWidth();
+//
+//            sharedPreferences.edit().putInt(Conf.FULL_HENG_WIDTH, horizontal_width).apply();
+//
+//        }
+//
+//        if ((vertical_width <= 0 && isVertical)) {
+//
+//            vertical_width = bg.getWidth();
+//
+//            sharedPreferences.edit().putInt(Conf.FULL_SHU_WIDTH, vertical_width).apply();
+//
+//        }
+//
+//        if (full_v_width <= 0 && isVertical) {
+//
+//
+//            full_v_width = fullView.getWidth();
+//
+//            sharedPreferences.edit().putInt(Conf.F_V_W, full_v_width).apply();
+//
+//        }
+//
+//        if (full_h_width <= 0 && !isVertical) {
+//
+//            full_h_width = fullView.getWidth();
+//            sharedPreferences.edit().putInt(Conf.F_H_W, full_h_width).apply();
+//
+//
+//        }
+//
+//
+//    }
+
+    /**
+     * 保存高度
+     */
     private void saveFullHeightInfo() {
 
         if (sharedPreferences == null) {
@@ -645,19 +697,27 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         int horizontal_height = sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT, -1);
         int vertical_height = sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT, -1);
 
-        if (horizontal_height <= 0 && !isVertical) {//保存横屏高度
+        if (!isVertical) {//保存横屏高度
 
             horizontal_height = bg.getHeight();
 
             sharedPreferences.edit().putInt(Conf.FULL_HENG_HEIGHT, horizontal_height).apply();
 
+            saveHorizontalWidth();
+
+            logs("保存横屏高度---->>>"+horizontal_height);
+
         }
 
-        if (vertical_height <= 0 && isVertical) {//保存竖屏高度
+        if (isVertical) {//保存竖屏高度
 
             vertical_height = bg.getHeight();
 
             sharedPreferences.edit().putInt(Conf.FULL_SHU_HEIGHT, vertical_height).apply();
+
+            saveVerticalWidth();
+
+            logs("保存竖屏高度---->>>"+vertical_height);
 
         }
     }
@@ -1261,6 +1321,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     private void sendInfo(Intent intent, Context context) {
 
 
+        if (isVertical){
+
+            saveVerticalWidth();
+
+        }
+
+
         int type = intent.getIntExtra(Conf.FULL_INFO, -1);
 
         if (type == -1) {
@@ -1311,7 +1378,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         context.sendBroadcast(intent1);
 
-        saveFullWidthInfo();
+//        saveFullWidthInfo();
 
     }
 
@@ -1340,8 +1407,10 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             //下拉到最底下的时候保存信息
             //完全下拉状态，保存高度
 
-            saveFullWidthInfo();
+//            saveFullWidthInfo();
             saveFullHeightInfo();
+
+
 
         }
 
@@ -1746,6 +1815,8 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 autoSetBg();
 
+//                saveHorizontalWidth();//保存横屏宽度
+
                 break;
 
             case Configuration.ORIENTATION_PORTRAIT://竖屏
@@ -1761,11 +1832,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 autoSetBg();
 
+                saveVerticalWidth();//保存竖屏宽度
+
                 break;
 
         }
 
-        saveFullWidthInfo();
+//        saveFullWidthInfo();
 //        saveFullHeightInfo();
 
 
@@ -1802,6 +1875,10 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             fullView.removeView(hengSlit);
             hengSlit = null;
 
+        }
+
+        if (bg!=null){
+            bg.setBackground(getDefaultDrawable());
         }
 
     }
@@ -1927,17 +2004,20 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             int margin = (full_width - bg_width) / 2;//计算距离两边的距离
 
-//            int ii = AndroidAppHelper
-//                    .currentApplication()
-//                    .getResources()
-//                    .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
+            int ii = AndroidAppHelper
+                    .currentApplication()
+                    .getResources()
+                    .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
 
 
-//            offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
+            offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
 
-            FrameLayout.LayoutParams params= (FrameLayout.LayoutParams) bg.getLayoutParams();
+            if (isRom("samsung")) {
 
-            offset_height=params.topMargin;
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) bg.getLayoutParams();
+
+                offset_height = params.topMargin;
+            }
 
 
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) shuSlit.getLayoutParams();
@@ -1966,18 +2046,19 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 margin=0;
             }
 
-            XposedBridge.log("lin16--margin-->>>"+margin);
+            int ii = AndroidAppHelper
+                    .currentApplication()
+                    .getResources()
+                    .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
 
-//            int ii = AndroidAppHelper
-//                    .currentApplication()
-//                    .getResources()
-//                    .getIdentifier("android:dimen/quick_qs_offset_height", "dimen", AndroidAppHelper.currentPackageName());
-//
-//            offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
+            offset_height = (int) AndroidAppHelper.currentApplication().getResources().getDimension(ii);
 
-            FrameLayout.LayoutParams params= (FrameLayout.LayoutParams) bg.getLayoutParams();
+            if (isRom("samsung")) {
 
-            offset_height=params.topMargin;
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) bg.getLayoutParams();
+
+                offset_height = params.topMargin;
+            }
 
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) hengSlit.getLayoutParams();
             layoutParams.setMargins(margin, offset_height, margin, 0);
@@ -2091,6 +2172,28 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     private boolean isRom(String rom){
 
         return Build.MANUFACTURER.toLowerCase().contains(rom);
+
+    }
+
+    private void sendInfoToActivity(){
+
+        initPs();
+
+        int vertical_width = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
+        int horizontal_width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
+
+        int horizontal_height = sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT, -1);
+        int vertical_height = sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT, -1);
+
+        Intent intent=new Intent(ReceiverAction.GET_INFO_TO_ACTIVITY);
+
+        intent.putExtra("vertical_width",vertical_width);
+        intent.putExtra("horizontal_width",horizontal_width);
+        intent.putExtra("horizontal_height",horizontal_height);
+        intent.putExtra("vertical_height",vertical_height);
+
+        AndroidAppHelper.currentApplication().sendBroadcast(intent);
+
 
     }
 

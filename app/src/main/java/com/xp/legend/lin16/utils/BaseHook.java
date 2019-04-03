@@ -101,7 +101,7 @@ public abstract class BaseHook {
 
         if (sharedPreferences.getBoolean(Conf.LOG,false)) {//判断是否开启了log
 
-            XposedBridge.log("lin15---->>>"+infos);
+            XposedBridge.log("lin16---->>>"+infos);
         }
 
     }

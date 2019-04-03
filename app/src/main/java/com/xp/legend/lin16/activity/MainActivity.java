@@ -1,8 +1,11 @@
 package com.xp.legend.lin16.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
@@ -42,6 +45,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import static com.xp.legend.lin16.utils.ReceiverAction.GET_INFO_TO_ACTIVITY;
+import static com.xp.legend.lin16.utils.ReceiverAction.SEND_INFO_TO_ACTIVITY;
+
 public class MainActivity extends BaseActivity {
 
     private Toolbar toolbar;
@@ -52,6 +58,8 @@ public class MainActivity extends BaseActivity {
 
     private MainAdapter adapter;
     private TextView shang;
+
+    private BroadcastReceiver receiver;
 
     private static final String[] permissionStrings =
             new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -71,6 +79,8 @@ public class MainActivity extends BaseActivity {
 
         initTab();
         event();
+
+        initReceiver();
 
     }
 
@@ -447,6 +457,12 @@ public class MainActivity extends BaseActivity {
 
                 break;
 
+            case R.id.panel_infos:
+
+                getPanelInfos();
+
+                break;
+
 
         }
 
@@ -601,6 +617,75 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * 获取宽高信息
+     */
+    private void getPanelInfos(){
 
+        Intent intent=new Intent(SEND_INFO_TO_ACTIVITY);
+
+        sendBroadcast(intent);
+
+    }
+
+    private void initReceiver(){
+
+        receiver=new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+
+                if (intent==null||intent.getAction()==null){
+                    return;
+                }
+
+                switch (intent.getAction()){
+
+                    case GET_INFO_TO_ACTIVITY:
+
+                        showPanelInfos(intent);
+
+                        break;
+
+                }
+
+            }
+        };
+
+        IntentFilter intentFilter=new IntentFilter();
+        intentFilter.addAction(GET_INFO_TO_ACTIVITY);
+
+        registerReceiver(receiver,intentFilter);
+
+    }
+
+    private void showPanelInfos(Intent intent){
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+
+        int vertical_width=intent.getIntExtra("vertical_width",-1);
+        int horizontal_width=intent.getIntExtra("horizontal_width",-1);
+        int horizontal_height=intent.getIntExtra("horizontal_height",-1);
+        int vertical_height=intent.getIntExtra("vertical_height",-1);
+
+        Locale locale=getResources().getConfiguration().getLocales().get(0);
+
+        String content=getString(R.string.panel_info_content);
+
+        if (locale.getCountry().equals("CN")||locale.getCountry().equals("TW")) {
+
+            content=content+"竖屏宽度："+vertical_width+"\n竖屏高度："+vertical_height+"\n横屏宽度："
+                    +horizontal_width+"\n横屏高度："+horizontal_height;
+
+        }else {
+
+            content=content+"vertical_width："+vertical_width+"\nvertical_height："+vertical_height+"\nhorizontal_width："
+                    +horizontal_width+"\nhorizontal_height："+horizontal_height;
+
+        }
+
+        builder.setTitle(getString(R.string.about_this)).setMessage(content).show();
+
+    }
 
 }

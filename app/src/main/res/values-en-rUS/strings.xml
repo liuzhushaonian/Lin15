@@ -180,4 +180,17 @@ Please send me the log file\n
 
     <string name="quest">something wrong?</string>
     <string name="moduel_info">Module for modifying lineageOS16</string>
+
+    <string name="about_this">Panel Info</string>
+
+    <string name="panel_info_content">This is about the width and height of your panel\n
+        If the panel information is incorrect, you can reset it by resetting the systemUI function, and then follow the instructions to get the correct width and height.
+        The first is the vertical screen width and height, you only need to pull the panel down to the bottom in the case of vertical screen. \n
+The
+        horizontal screen width and height information is also the same. After the mobile phone is set to the horizontal screen, the panel is pulled to the bottom, and the horizontal screen width and height information can also be recorded. \n
+        If the value is 0 or -1, it means that the value has not been obtained. \n
+The
+        following is your specific information\n
+
+    </string>
 </resources>
