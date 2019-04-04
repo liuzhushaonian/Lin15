@@ -189,7 +189,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 //                autoSetBg();
 
-                saveVerticalWidth();//率先保存竖屏宽度
+//                saveVerticalWidth();//率先保存竖屏宽度
 
 
             }
@@ -388,6 +388,8 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     openLogs(intent);
 
+                    break;
+
                 case ReceiverAction.SEND_INFO_TO_ACTIVITY://获取面板全部信息
 
                     sendInfoToActivity();
@@ -405,6 +407,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         String path = "/data/user_de/0/" + AndroidAppHelper.currentApplication().getPackageName() + "/shared_prefs/" + Conf.SHARE + ".xml";
 
         File file = new File(path);
+
+        initPs();
+
+        sharedPreferences.edit().putInt(Conf.FULL_SHU_HEIGHT,-1).apply();
+        sharedPreferences.edit().putInt(Conf.FULL_SHU_WIDTH,-1).apply();
+        sharedPreferences.edit().putInt(Conf.FULL_HENG_HEIGHT,-1).apply();
+        sharedPreferences.edit().putInt(Conf.FULL_HENG_WIDTH,-1).apply();
 
         if (file.exists()) {
             if (file.delete())
@@ -1320,14 +1329,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void sendInfo(Intent intent, Context context) {
 
-
-        if (isVertical){
-
-            saveVerticalWidth();
-
-        }
-
-
         int type = intent.getIntExtra(Conf.FULL_INFO, -1);
 
         if (type == -1) {
@@ -1724,7 +1725,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 //                cleanScrollImage();
                 cleanSlitImage();
-                cleanBg();
+//                cleanBg();
 
                 logs("文件不存在");
 
@@ -1832,7 +1833,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 autoSetBg();
 
-                saveVerticalWidth();//保存竖屏宽度
+//                saveVerticalWidth();//保存竖屏宽度
 
                 break;
 

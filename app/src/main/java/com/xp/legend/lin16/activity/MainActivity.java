@@ -84,7 +84,14 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (receiver!=null) {
+            unregisterReceiver(receiver);
+        }
 
+    }
     private void getComponent(){
 
         toolbar=findViewById(R.id.main_toolbar);
@@ -598,7 +605,8 @@ public class MainActivity extends BaseActivity {
 
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
 
-        builder.setTitle(getString(R.string.jing)).setMessage(getString(R.string.logs_about)).setPositiveButton(getString(R.string.open_log),(dialog, which) -> {
+        builder.setTitle(getString(R.string.jing)).setMessage(getString(R.string.logs_about))
+                .setPositiveButton(getString(R.string.open_log),(dialog, which) -> {
 
             Intent intent=new Intent(ReceiverAction.SEND_LOGS);
             intent.putExtra(Conf.LOG,true);
@@ -658,6 +666,8 @@ public class MainActivity extends BaseActivity {
         registerReceiver(receiver,intentFilter);
 
     }
+
+
 
     private void showPanelInfos(Intent intent){
 

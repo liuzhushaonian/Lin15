@@ -8,8 +8,8 @@ android {
         applicationId "com.xp.legend.lin16"
         minSdkVersion 28
         targetSdkVersion 28
-        versionCode 3
-        versionName "0.3-beta"
+        versionCode 4
+        versionName "0.4-beta"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
