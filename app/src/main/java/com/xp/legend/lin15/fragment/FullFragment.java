@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -444,7 +445,22 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                     return;
                 }
 
-               startCropImage(data.getData(),shu_width,shu_height,CUT_SHU_IMAGE);
+                Uri u=null;
+
+                try {
+                    u=getFileUri(saveAsFile(data.getData()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (u==null){
+
+                    Log.d("u-->>","uri is null");
+
+                    return;
+                }
+
+               startCropImage(u,shu_width,shu_height,CUT_SHU_IMAGE);
 
                 break;
 
@@ -454,7 +470,22 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                     return;
                 }
 
-                startCropImage(data.getData(),heng_width,heng_height,CUT_HENG_IMAGE);
+                Uri u1=null;
+
+                try {
+                    u1=getFileUri(saveAsFile(data.getData()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (u1==null){
+
+                    Log.d("u-->>","uri is null");
+
+                    return;
+                }
+
+                startCropImage(u1,heng_width,heng_height,CUT_HENG_IMAGE);
 
                 break;
 
