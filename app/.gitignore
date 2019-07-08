@@ -1,10 +1,7 @@
 /build
-/.idea
 /.gradle
 /app/build
 /app/release/
-
-.idea/
 
 # Created by https://www.gitignore.io/api/androidstudio
 # Edit at https://www.gitignore.io/?templates=androidstudio
