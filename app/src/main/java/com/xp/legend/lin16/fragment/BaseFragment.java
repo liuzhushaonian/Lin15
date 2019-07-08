@@ -14,14 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.xp.legend.lin16.R;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,16 +84,6 @@ public class BaseFragment extends Fragment {
 //        BitmapFactory.Options options = null;
         try {
 
-                // downscale to maxWidth/maxHeight of display
-                in = getContext().getContentResolver().openInputStream(uri);
-//                options = new BitmapFactory.Options();
-//                options.inJustDecodeBounds = true;
-//                BitmapFactory.decodeStream(in, null, options);
-//                options.inSampleSize = calculateInSampleSize(
-//                        options, w, h);
-//                options.inJustDecodeBounds = false;
-                in.close();
-
             // save bitmap
             in = getContext().getContentResolver().openInputStream(uri);
             Bitmap bitmap = BitmapFactory.decodeStream(in, null, null);
@@ -111,26 +98,6 @@ public class BaseFragment extends Fragment {
         return outFile;
 
 
-    }
-
-    private int calculateInSampleSize(BitmapFactory.Options options,
-                                            int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            // Calculate ratios of height and width to requested height and width
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-            // Choose the smallest ratio as inSampleSize value, this will guarantee
-            // a final image with both dimensions larger than or equal to the
-            // requested height and width.
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-        }
-
-        return inSampleSize;
     }
 
     protected Uri getFileUri(File file){
