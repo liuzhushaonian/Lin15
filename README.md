@@ -2,6 +2,12 @@
 
 ![alt](https://github.com/liuzhushaonian/Lin15/blob/be5e2a9f0ef55b20d0aa052f6700d34c45e2d9f6/screen_short/Screenshot_Trebuchet_20180624-185230.png)
 
+# 2.5
+
+- 修复Google相册无法剪切图片bug
+- 周年版正在规划中，敬请期待
+
+
 # 2.4更新内容
 
 - 增加圆角
