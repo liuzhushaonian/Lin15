@@ -134,6 +134,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     mStatusBarBackground= (View) XposedHelpers.getObjectField(param.thisObject,"mStatusBarBackground");
 
+
                 }
 
 //                mBackgroundGradient= (View) XposedHelpers.getObjectField(param.thisObject,"mBackgroundGradient");
