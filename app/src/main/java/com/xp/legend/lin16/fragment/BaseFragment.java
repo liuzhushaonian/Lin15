@@ -73,7 +73,7 @@ public class BaseFragment extends Fragment {
      */
     protected File saveAsFile(Uri uri) throws Exception {
 
-        File outFile = new File(getContext().getFilesDir()+"/lin16",System.currentTimeMillis()+"");
+        File outFile = new File(getContext().getFilesDir()+"/lin16","pic");//临时文件
 
         if (!outFile.getParentFile().exists()){
             outFile.getParentFile().mkdirs();

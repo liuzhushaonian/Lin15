@@ -13,6 +13,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -35,6 +38,7 @@ import java.lang.reflect.Field;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -120,7 +124,9 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     bg.setBackgroundTintList(null);
 
-                    //bg.setBackgroundColor(Color.GREEN);
+//                    bg.setVisibility(View.GONE);
+
+//                    bg.setBackgroundColor(Color.GREEN);
 
                 }
 
@@ -188,13 +194,24 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 hideBackView();
 
-//                autoSetBg();
+                //开个线程，睡眠500毫秒后再设置背景，专治一加
+                new Thread(){
 
-//                saveVerticalWidth();//率先保存竖屏宽度
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
+                        fullView.post(P_FullHook.this::autoSetBg);
+
+                    }
+                }.start();
 
             }
-
 
         });
 
@@ -231,14 +248,23 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 if (isFirst) {
                     isFirst = false;
-                    autoSetBg();
+//                    autoSetBg();
 
                 }
 
             }
         });
 
+
+//        XposedHelpers.findAndHookMethod(CLASS2, lpparam.classLoader, "updateThemeColor", new XC_MethodReplacement() {
+//            @Override
+//            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+//                return null;
+//            }
+//        });
+
     }
+
 
 
     private void register() {
@@ -355,7 +381,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 case ReceiverAction.SEND_FULL_SCROLL:
 
-                    setScroll(intent);
+//                    setScroll(intent);
 
                     break;
 
@@ -1701,7 +1727,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 shuSlit.setBitmap(bitmap, radius);
 //                shuSlit.setImageAlpha(alphaValue);
 
-                logs("bitmap-->>"+bitmap.toString());
+                logs("bitmap--width-->>"+bitmap.getWidth()+"\nheight--->>"+bitmap.getHeight());
 
 
                 logs("非高斯模糊");
