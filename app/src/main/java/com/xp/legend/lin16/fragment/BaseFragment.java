@@ -3,15 +3,25 @@ package com.xp.legend.lin16.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xp.legend.lin16.R;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,11 +65,92 @@ public class BaseFragment extends Fragment {
         //裁剪之后的数据是通过Intent返回
         intent.putExtra("return-data", false);
 
-        intent.putExtra("outImage", Bitmap.CompressFormat.JPEG.toString());
+//        intent.putExtra("outImage", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("noFaceDetection",true);
 //        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
         startActivityForResult(intent, code);
     }
 
+    /**
+     * 保存为文件，注意申请权限
+     */
+    protected File saveAsFile(Uri uri) throws Exception {
+
+        File outFile = new File(getContext().getFilesDir()+"/lin16",System.currentTimeMillis()+"");
+
+        if (!outFile.getParentFile().exists()){
+            outFile.getParentFile().mkdirs();
+        }
+
+        InputStream in = null;
+        FileOutputStream out = null;
+//        BitmapFactory.Options options = null;
+        try {
+
+                // downscale to maxWidth/maxHeight of display
+                in = getContext().getContentResolver().openInputStream(uri);
+//                options = new BitmapFactory.Options();
+//                options.inJustDecodeBounds = true;
+//                BitmapFactory.decodeStream(in, null, options);
+//                options.inSampleSize = calculateInSampleSize(
+//                        options, w, h);
+//                options.inJustDecodeBounds = false;
+                in.close();
+
+            // save bitmap
+            in = getContext().getContentResolver().openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(in, null, null);
+            out = new FileOutputStream(outFile);
+            bitmap.compress(Bitmap.CompressFormat.WEBP, 100, out);
+            out.flush();
+            bitmap.recycle();
+        } finally {
+            try { in.close(); } catch (Exception ignored) { }
+            try { out.close(); } catch (Exception ignored) { }
+        }
+        return outFile;
+
+
+    }
+
+    private int calculateInSampleSize(BitmapFactory.Options options,
+                                            int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            // Calculate ratios of height and width to requested height and width
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will guarantee
+            // a final image with both dimensions larger than or equal to the
+            // requested height and width.
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+
+        return inSampleSize;
+    }
+
+    protected Uri getFileUri(File file){
+
+        if (file==null){
+
+            Log.d("file-->>","file is null");
+
+            return null;
+        }
+
+        try {
+            return Uri.parse(MediaStore.Images.Media.insertImage(
+                    getContext().getContentResolver(), file.getAbsolutePath(), null, null));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
 
 }

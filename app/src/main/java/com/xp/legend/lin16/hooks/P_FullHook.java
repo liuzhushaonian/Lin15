@@ -1701,6 +1701,8 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 shuSlit.setBitmap(bitmap, radius);
 //                shuSlit.setImageAlpha(alphaValue);
 
+                logs("bitmap-->>"+bitmap.toString());
+
 
                 logs("非高斯模糊");
             }
@@ -2154,20 +2156,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
         return b;
-
-    }
-
-    private boolean isClassExist(String clazz){
-
-        try {
-            Class.forName(clazz);
-
-            return true;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
-            return false;
-        }
 
     }
 

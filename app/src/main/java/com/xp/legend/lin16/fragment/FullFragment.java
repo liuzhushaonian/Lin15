@@ -5,9 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +27,6 @@ import com.xp.legend.lin16.interfaces.IFullFragment;
 import com.xp.legend.lin16.presenter.FullPresenter;
 import com.xp.legend.lin16.utils.Conf;
 import com.xp.legend.lin16.utils.ReceiverAction;
-
-import de.robv.android.xposed.XposedBridge;
 
 
 /**
@@ -399,7 +399,22 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                     return;
                 }
 
-               startCropImage(data.getData(),shu_width,shu_height,CUT_SHU_IMAGE);
+                Uri u=null;
+
+                try {
+                    u=getFileUri(saveAsFile(data.getData()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (u==null){
+
+                    Log.d("u-->>","uri is null");
+
+                    return;
+                }
+
+                startCropImage(u,shu_width,shu_height,CUT_SHU_IMAGE);
 
                 break;
 
@@ -409,7 +424,22 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                     return;
                 }
 
-                startCropImage(data.getData(),heng_width,heng_height,CUT_HENG_IMAGE);
+                Uri u1=null;
+
+                try {
+                    u1=getFileUri(saveAsFile(data.getData()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (u1==null){
+
+                    Log.d("u-->>","uri is null");
+
+                    return;
+                }
+
+                startCropImage(u1,heng_width,heng_height,CUT_HENG_IMAGE);
 
                 break;
 
@@ -418,7 +448,9 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                 if (data==null||data.getData()==null){
 
-                    XposedBridge.log("lin16------>>>>data is null or data.getData is null!!!!");
+//                    XposedBridge.log("lin16------>>>>data is null or data.getData is null!!!!");
+
+                    Log.d("lin16------>>>>","data is null or data.getData is null!!!!");
 
                     return;
                 }

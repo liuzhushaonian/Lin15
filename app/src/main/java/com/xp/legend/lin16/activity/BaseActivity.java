@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -51,10 +52,14 @@ public class BaseActivity extends AppCompatActivity {
         intent.putExtra("outputY", h);
 
         //裁剪之后的数据是通过Intent返回
-        intent.putExtra("return-data", true);
+        intent.putExtra("return-data", false);
 
-        intent.putExtra("outImage", Bitmap.CompressFormat.JPEG.toString());
+//        intent.putExtra("outImage", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("noFaceDetection",true);
+
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
 //        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
         startActivityForResult(intent, code);
     }

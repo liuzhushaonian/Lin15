@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -352,7 +353,22 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                     return;
                 }
 
-                startCropImage(data.getData(), this.shu_width, this.shu_height, CUT_SHU_IMAGE);
+                Uri u=null;
+
+                try {
+                    u=getFileUri(saveAsFile(data.getData()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (u==null){
+
+                    Log.d("u-->>","uri is null");
+
+                    return;
+                }
+
+                startCropImage(u, this.shu_width, this.shu_height, CUT_SHU_IMAGE);
 
 
                 break;
@@ -364,8 +380,22 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                     return;
                 }
 
+                Uri u1=null;
 
-                startCropImage(data.getData(), this.heng_width, this.heng_height, CUT_HENG_IMAGE);
+                try {
+                    u1=getFileUri(saveAsFile(data.getData()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (u1==null){
+
+                    Log.d("u-->>","uri is null");
+
+                    return;
+                }
+
+                startCropImage(u1, this.heng_width, this.heng_height, CUT_HENG_IMAGE);
 
 
                 break;

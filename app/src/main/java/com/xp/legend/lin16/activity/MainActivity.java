@@ -82,6 +82,8 @@ public class MainActivity extends BaseActivity {
 
         initReceiver();
 
+//        check(-1);//检测权限
+
     }
 
     @Override
@@ -274,7 +276,7 @@ public class MainActivity extends BaseActivity {
 
             t=-1;
 
-            saveImage(type);
+            saveImage(t);
 
         }
 
