@@ -74,6 +74,8 @@ public class MainActivity extends BaseActivity {
         event();
 
         start();
+
+        check(-1);
     }
 
 
@@ -282,6 +284,10 @@ public class MainActivity extends BaseActivity {
 
                 } else {
                     Toast.makeText(this, getString(R.string.save_info), Toast.LENGTH_SHORT).show();
+
+//                    finishAndRemoveTask();
+//
+//                    System.exit(0);
                 }
 
 

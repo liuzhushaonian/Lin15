@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -74,7 +75,7 @@ public class BaseFragment extends Fragment {
      */
     protected File saveAsFile(Uri uri) throws Exception {
 
-        File outFile = new File(getContext().getFilesDir()+"/lin15","pic");
+        File outFile = new File(Environment.getExternalStorageDirectory() +"/lin15","pic");
 
         if (!outFile.getParentFile().exists()){
             outFile.getParentFile().mkdirs();

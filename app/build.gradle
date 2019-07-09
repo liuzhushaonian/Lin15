@@ -10,8 +10,8 @@ android {
         applicationId "com.xp.legend.lin15"
         minSdkVersion 24
         targetSdkVersion 27
-        versionCode 10
-        versionName "2.4"
+        versionCode 11
+        versionName "2.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
