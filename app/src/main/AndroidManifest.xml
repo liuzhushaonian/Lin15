@@ -25,6 +25,7 @@
 
         <activity android:name="com.xp.legend.lin16.activity.MainActivity"
             android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

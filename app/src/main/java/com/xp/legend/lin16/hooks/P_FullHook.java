@@ -660,66 +660,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     }
 
 
-
-
-    /**
-     * 保存宽度信息
-     */
-//    private void saveFullWidthInfo() {
-//
-//
-//        if (fullView==null){
-//            return;
-//        }
-//
-//        if (sharedPreferences==null){
-//            initPs();
-//        }
-//
-//        int horizontal_width = sharedPreferences.getInt(Conf.FULL_HENG_WIDTH, -1);
-//
-//        int vertical_width = sharedPreferences.getInt(Conf.FULL_SHU_WIDTH, -1);
-//
-//        int full_v_width = sharedPreferences.getInt(Conf.F_V_W, -1);//全部竖屏时的宽度
-//
-//        int full_h_width = sharedPreferences.getInt(Conf.F_H_W, -1);//全部横屏时的宽度
-//
-//        if (!isVertical) {
-//
-//            horizontal_width = bg.getWidth();
-//
-//            sharedPreferences.edit().putInt(Conf.FULL_HENG_WIDTH, horizontal_width).apply();
-//
-//        }
-//
-//        if ((vertical_width <= 0 && isVertical)) {
-//
-//            vertical_width = bg.getWidth();
-//
-//            sharedPreferences.edit().putInt(Conf.FULL_SHU_WIDTH, vertical_width).apply();
-//
-//        }
-//
-//        if (full_v_width <= 0 && isVertical) {
-//
-//
-//            full_v_width = fullView.getWidth();
-//
-//            sharedPreferences.edit().putInt(Conf.F_V_W, full_v_width).apply();
-//
-//        }
-//
-//        if (full_h_width <= 0 && !isVertical) {
-//
-//            full_h_width = fullView.getWidth();
-//            sharedPreferences.edit().putInt(Conf.F_H_W, full_h_width).apply();
-//
-//
-//        }
-//
-//
-//    }
-
     /**
      * 保存高度
      */
@@ -1665,6 +1605,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         if (isVertical) {//竖屏
             if (hengSlit != null && hengSlit.getVisibility() == View.VISIBLE) {//隐藏横向图
                 hengSlit.setVisibility(View.GONE);
+                fullView.removeView(hengSlit);
             }
 
             file = getNFullFile(Conf.VERTICAL);
@@ -1702,11 +1643,16 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             cleanBg();
 
 
-//
-//
-//            shuSlit.setOffset_height(offset_height);
-            ((ViewGroup) fullView).removeView(shuSlit);
-            ((ViewGroup) fullView).addView(shuSlit,0);
+            fullView.removeView(shuSlit);
+
+            ViewGroup viewGroup= (ViewGroup) shuSlit.getParent();
+
+
+            if (viewGroup!=null) {
+                viewGroup.removeView(shuSlit);
+            }
+
+            fullView.addView(shuSlit,0);
 
 
             if (isGaoSi) {//是否高斯模糊
@@ -1715,8 +1661,6 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 bitmap = getBitmap(AndroidAppHelper.currentApplication(), bitmap, gaoValue);
 
                 shuSlit.setBitmap(bitmap, radius);
-//                shuSlit.setImageAlpha(alphaValue);
-
 
                 logs("高斯模糊");
 
@@ -1746,15 +1690,15 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             if (shuSlit != null && shuSlit.getVisibility() == View.VISIBLE) {
                 shuSlit.setVisibility(View.GONE);
+                fullView.removeView(shuSlit);
             }
 
             file = getNFullFile(Conf.HORIZONTAL);
 
             if (!file.exists()) {//文件不存在
 
-//                cleanScrollImage();
+
                 cleanSlitImage();
-//                cleanBg();
 
                 logs("文件不存在");
 
@@ -1778,12 +1722,19 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 hengSlit.setVisibility(View.VISIBLE);
             }
 
-
-//            cleanScrollImage();
             cleanBg();
 
-            ((ViewGroup) fullView).removeView(hengSlit);
-            ((ViewGroup) fullView).addView(hengSlit,0);
+            fullView.removeView(hengSlit);
+
+            ViewGroup viewGroup= (ViewGroup) hengSlit.getParent();
+
+            if (viewGroup!=null) {
+
+                viewGroup.removeView(hengSlit);
+            }
+
+
+            fullView.addView(hengSlit,0);
 
 
             //设置高斯模糊
@@ -1825,17 +1776,10 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void autoSetPosition(int p) {
 
-//        int p = intent.getIntExtra("ori", -1);
-
-//        if (p == -1) {
-//            return;
-//        }
 
         switch (p) {
 
             case Configuration.ORIENTATION_LANDSCAPE://横屏
-
-//                mBackgroundGradient.setVisibility(View.GONE);
 
                 if (!isVertical) {//避免重复
                     return;
@@ -1845,14 +1789,10 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 autoSetBg();
 
-//                saveHorizontalWidth();//保存横屏宽度
-
                 break;
 
             case Configuration.ORIENTATION_PORTRAIT://竖屏
             default:
-
-//                mBackgroundGradient.setVisibility(View.GONE);
 
                 if (isVertical) {//避免重复
                     return;
@@ -1862,14 +1802,9 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                 autoSetBg();
 
-//                saveVerticalWidth();//保存竖屏宽度
-
                 break;
 
         }
-
-//        saveFullWidthInfo();
-//        saveFullHeightInfo();
 
 
     }
