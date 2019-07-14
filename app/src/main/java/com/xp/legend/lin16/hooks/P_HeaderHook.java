@@ -43,10 +43,6 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     private static final String CLASS = "com.android.systemui.qs.QSContainerImpl";
-
-    private static final String CLASS2 = "com.android.systemui.qs.QSContainerImpl";
-
-
     private static final String METHOD = "onFinishInflate";
     private static final String METHOD2 = "updateExpansion";
     private static final String METHOD3 = "onConfigurationChanged";
@@ -664,6 +660,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                         }
 
                         Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
+                        deleteUriFile(uri,context);
 
                     }
 
@@ -714,9 +711,13 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                         autoSetBg();
 
+                        Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
+
+                        deleteUriFile(uri,context);
+
                     }
 
-                    Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
+
 
                 } else {
 
