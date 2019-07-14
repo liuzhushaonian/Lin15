@@ -64,19 +64,6 @@ public class SlitImageView extends android.support.v7.widget.AppCompatImageView 
         } else if (radius > 0) {
 
 
-
-//            Bitmap bitmapFrame = makeRoundRectFrame(width, limitHeight);
-//
-//            int sc = canvas.saveLayer(0, 0, width, limitHeight, null, Canvas.ALL_SAVE_FLAG);
-//
-//            canvas.drawBitmap(bitmapFrame, 0, 0, paint);
-//            // 利用Xfermode取交集（利用bitmapFrame作为画框来裁剪bitmapOriginal）
-//            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-//            canvas.drawBitmap(drawableToBitamp(getDrawable()), 0, 0, paint);
-//
-//            paint.setXfermode(null);
-//            canvas.restoreToCount(sc);
-
             //四个角：右上，右下，左下，左上
 
             int sc = canvas.saveLayer(0, 0, width, limitHeight, null);
@@ -93,13 +80,6 @@ public class SlitImageView extends android.support.v7.widget.AppCompatImageView 
             // 还原混合模式
             paint.setXfermode(null);
             canvas.restoreToCount(sc);
-
-            // 利用画笔绘制底部圆角
-//            targetCanvas.drawRoundRect(new RectF(0, outHeight - 2 * radius, outWidth, outWidth), radius, radius, paint);
-
-            // 利用画笔绘制顶部上面直角部分
-
-
 
 
 
@@ -125,32 +105,6 @@ public class SlitImageView extends android.support.v7.widget.AppCompatImageView 
         postInvalidate();//刷新
     }
 
-
-    //需要圆角
-    public void setBitmap(Bitmap bitmap, int radius) {
-        this.bitmap = bitmap;
-        this.radius = radius;
-
-        setImageBitmap(bitmap);
-
-
-//        this.bitmap=roundBottomBitmapByShader(bitmap,bitmap.getWidth(),bitmap.getHeight(),radius);
-
-
-//        scaleBitmap();
-        postInvalidate();
-
-
-    }
-
-    //    //不需要圆角
-    public void setBitmap(Bitmap bitmap) {
-
-        this.bitmap = bitmap;
-
-        postInvalidate();
-
-    }
 
     private void init() {
 
@@ -185,18 +139,5 @@ public class SlitImageView extends android.support.v7.widget.AppCompatImageView 
         postInvalidate();
     }
 
-    private Bitmap makeRoundRectFrame(int w, int h) {
-        Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
-        Canvas c = new Canvas(bm);
-        Path path = new Path();
-        path.addRoundRect(new RectF(0, 0, w, h), radiusArray, Path.Direction.CW);
-        Paint bitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        bitmapPaint.setColor(Color.GREEN); // 颜色随意，不要有透明度。
-        c.drawPath(path, bitmapPaint);
-
-        XposedBridge.log("lin16---->>>"+bm.getByteCount());
-
-        return bm;
-    }
 
 }

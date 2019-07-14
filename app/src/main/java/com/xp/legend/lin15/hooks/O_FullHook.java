@@ -416,9 +416,13 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                         autoSetBg();
 
-                        Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
+
 
                     }
+
+                    Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
+
+                    deleteUriFile(uri,context);
                 } else {
 
                     logs("文件或许不是图片格式");
@@ -464,6 +468,7 @@ public class O_FullHook extends BaseHook implements IXposedHookLoadPackage {
                     }
 
                     Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
+                    deleteUriFile(uri,context);
                 } else {
 
                     Toast.makeText(context, "设置失败，保存失败", Toast.LENGTH_SHORT).show();

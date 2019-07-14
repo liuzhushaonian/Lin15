@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -104,6 +105,12 @@ public abstract class BaseHook {
 
             XposedBridge.log("lin15---->>>"+infos);
         }
+
+    }
+
+    protected void deleteUriFile(Uri uri, Context context){
+
+        context.getContentResolver().delete(uri,null,null);
 
     }
 

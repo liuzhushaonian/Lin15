@@ -331,6 +331,7 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                         }
 
                         Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
+                        deleteUriFile(uri,context);
 
                     }
 
@@ -390,6 +391,7 @@ public class N_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                     }
 
                     Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
+                    deleteUriFile(uri,context);
 
                 } else {
 
