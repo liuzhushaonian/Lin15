@@ -21,12 +21,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BaseFragment extends Fragment {
 
+    protected List<Uri> uriList=new ArrayList<>();
 
     public BaseFragment() {
         // Required empty public constructor
@@ -119,6 +123,18 @@ public class BaseFragment extends Fragment {
         }
 
         return null;
+
+    }
+
+    protected void cleanUri(){
+
+        for (int i=0;i<uriList.size();i++){
+
+            Objects.requireNonNull(getContext()).getContentResolver().delete(uriList.get(i),null,null);
+
+        }
+
+        uriList.clear();//清除
 
     }
 

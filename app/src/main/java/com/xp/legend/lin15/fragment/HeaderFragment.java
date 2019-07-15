@@ -146,6 +146,12 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
                     break;
 
+                case ReceiverAction.DELETE_IMG_CALL:
+
+                    cleanUri();
+
+                    break;
+
 
             }
 
@@ -163,6 +169,8 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
             intentFilter.addAction(ReceiverAction.SEND_N_HEADER_INFO);//获取
             intentFilter.addAction(ReceiverAction.HEADER_TO_UI_INFO);//获取全部信息
+
+            intentFilter.addAction(ReceiverAction.DELETE_IMG_CALL);
 
             getContext().registerReceiver(resultReceiver, intentFilter);
 

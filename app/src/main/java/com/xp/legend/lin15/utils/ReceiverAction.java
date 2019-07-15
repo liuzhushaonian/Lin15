@@ -141,4 +141,6 @@ public class ReceiverAction {
         public static final String RADIUS="send_radius";
 
         public static final String RADIUS_VALUE="send_radius_value";
+
+        public static final String DELETE_IMG_CALL="delete_img_call_lin15";
 }

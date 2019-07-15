@@ -451,6 +451,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
                     Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
 
                     deleteUriFile(uri,context);
+                    Intent intent1=new Intent(ReceiverAction.DELETE_IMG_CALL);
+
+                    AndroidAppHelper.currentApplication().sendBroadcast(intent1);
                 } else {
 
                     logs("图片初始化错误，该文件或许不是图片");
@@ -498,6 +501,9 @@ public class N_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
                     deleteUriFile(uri,context);
+                    Intent intent1=new Intent(ReceiverAction.DELETE_IMG_CALL);
+
+                    AndroidAppHelper.currentApplication().sendBroadcast(intent1);
                 } else {
 
                     Toast.makeText(context, "设置失败，保存失败", Toast.LENGTH_SHORT).show();

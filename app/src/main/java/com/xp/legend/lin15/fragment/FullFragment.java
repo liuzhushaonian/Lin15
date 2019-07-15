@@ -174,6 +174,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                             break;
 
+
+
                     }
 
 
@@ -186,6 +188,13 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                     Result result=intent.getParcelableExtra(Conf.FULL_TO_UI_RESULT);
 
                     initUi(result);
+
+                    break;
+
+
+                case ReceiverAction.DELETE_IMG_CALL:
+
+                    cleanUri();
 
                     break;
 
@@ -240,6 +249,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
             intentFilter.addAction(ReceiverAction.SEND_FULL_INFO);
 
             intentFilter.addAction(ReceiverAction.FULL_TO_UI_INFO);
+            intentFilter.addAction(ReceiverAction.DELETE_IMG_CALL);
 
             getActivity().registerReceiver(fullReceiver,intentFilter);
         }
