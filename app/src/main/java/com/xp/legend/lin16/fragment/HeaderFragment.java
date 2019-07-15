@@ -360,7 +360,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
             case SELECT_SHU_IMAGE:
 
                 if (data == null || data.getData() == null) {
-                    cleanUri();
+
                     return;
                 }
 
@@ -375,14 +375,12 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                 if (u==null){
 
                     Log.d("u-->>","uri is null");
-                    cleanUri();
+
 
                     return;
                 }
 
                 startCropImage(u, this.shu_width, this.shu_height, CUT_SHU_IMAGE);
-
-                uriList.add(u);
 
                 break;
 
@@ -390,7 +388,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
             case SELECT_HENG_IMAGE:
 
                 if (data == null || data.getData() == null) {
-                    cleanUri();
+
                     return;
                 }
 
@@ -405,14 +403,12 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                 if (u1==null){
 
                     Log.d("u-->>","uri is null");
-                    cleanUri();
+
 
                     return;
                 }
 
                 startCropImage(u1, this.heng_width, this.heng_height, CUT_HENG_IMAGE);
-
-                uriList.add(u1);
 
                 break;
 
@@ -420,7 +416,9 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
             case CUT_SHU_IMAGE:
 
                 if (data == null || data.getData() == null) {
+
                     cleanUri();
+
                     return;
                 }
 
@@ -434,7 +432,9 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
             case CUT_HENG_IMAGE:
 
                 if (data == null || data.getData() == null) {
+
                     cleanUri();
+
                     return;
                 }
 
@@ -511,5 +511,9 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
     }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        cleanUri();
+    }
 }

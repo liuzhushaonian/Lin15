@@ -106,6 +106,8 @@ public class BaseFragment extends Fragment {
 
     protected Uri getFileUri(File file){
 
+        Uri uri=null;
+
         if (file==null){
 
             Log.d("file-->>","file is null");
@@ -114,13 +116,16 @@ public class BaseFragment extends Fragment {
         }
 
         try {
-            return Uri.parse(MediaStore.Images.Media.insertImage(
+            uri= Uri.parse(MediaStore.Images.Media.insertImage(
                     getContext().getContentResolver(), file.getAbsolutePath(), null, null));
+
+            uriList.add(uri);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return uri;
 
     }
 

@@ -30,6 +30,7 @@ import com.xp.legend.lin16.utils.ReceiverAction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -407,7 +408,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
             case SELECT_SHU_IMAGE:
 
                 if (data==null||data.getData()==null){
-                    cleanUri();
+
                     return;
                 }
 
@@ -422,14 +423,14 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 if (u==null){
 
                     Log.d("u-->>","uri is null");
-                    cleanUri();
+
 
                     return;
                 }
 
                 startCropImage(u,shu_width,shu_height,CUT_SHU_IMAGE);
 
-                uriList.add(u);
+
 
 //                getContext().getContentResolver().delete(u,null,null);//删除
 
@@ -438,7 +439,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
             case SELECT_HENG_IMAGE:
 
                 if (data==null||data.getData()==null){
-                    cleanUri();
+
                     return;
                 }
 
@@ -453,12 +454,10 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 if (u1==null){
 
                     Log.d("u-->>","uri is null");
-                    cleanUri();
+
 
                     return;
                 }
-
-                uriList.add(u1);
 
                 startCropImage(u1,heng_width,heng_height,CUT_HENG_IMAGE);
 
@@ -474,6 +473,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                     Log.d("lin16------>>>>","data is null or data.getData is null!!!!");
                     cleanUri();
 
+
                     return;
                 }
 
@@ -486,7 +486,9 @@ public class FullFragment extends BaseFragment implements IFullFragment {
             case CUT_HENG_IMAGE:
 
                 if (data==null||data.getData()==null){
+
                     cleanUri();
+
                     return;
                 }
 
@@ -514,7 +516,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
     /**
      * 恢复界面 从full处获取数据并恢复
-     * @param result
+     * @param result s
      */
     private void initUi(Result result) {
 
@@ -585,12 +587,17 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
     private void showDialog(){
 
-        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder=new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
 
         builder.setTitle(getString(R.string.tip)).setMessage(getString(R.string.tip_content)).show();
 
 
     }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        cleanUri();
+        Log.d("lin--->>","clean");
+    }
 }
