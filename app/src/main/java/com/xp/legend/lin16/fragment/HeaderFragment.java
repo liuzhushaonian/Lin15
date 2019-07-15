@@ -28,6 +28,9 @@ import com.xp.legend.lin16.presenter.HeaderPresenter;
 import com.xp.legend.lin16.utils.Conf;
 import com.xp.legend.lin16.utils.ReceiverAction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,6 +63,8 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
     private static final int CUT_HENG_IMAGE = 50;
 
     private RadioGroup radioGroup;
+
+    private List<Uri> uriList=new ArrayList<>();
 
 
     public HeaderFragment() {
@@ -146,6 +151,12 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
                     break;
 
+                case ReceiverAction.DELETE_IMG_CALL:
+
+                    cleanUri();
+
+                    break;
+
 
             }
 
@@ -163,6 +174,8 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
             intentFilter.addAction(ReceiverAction.SEND_N_HEADER_INFO);//获取
             intentFilter.addAction(ReceiverAction.HEADER_TO_UI_INFO);//获取全部信息
+
+            intentFilter.addAction(ReceiverAction.DELETE_IMG_CALL);
 
             getContext().registerReceiver(resultReceiver, intentFilter);
 
@@ -370,6 +383,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
                 startCropImage(u, this.shu_width, this.shu_height, CUT_SHU_IMAGE);
 
+                uriList.add(u);
 
                 break;
 
@@ -397,6 +411,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
                 startCropImage(u1, this.heng_width, this.heng_height, CUT_HENG_IMAGE);
 
+                uriList.add(u1);
 
                 break;
 
@@ -490,6 +505,18 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
         seekBarGao.setProgress(result.getGaoValue());
         seekBarGao.setEnabled(result.isGao());
+
+    }
+
+    private void cleanUri(){
+
+        for (int i=0;i<uriList.size();i++){
+
+            getContext().getContentResolver().delete(uriList.get(i),null,null);
+
+        }
+
+        uriList.clear();//清除
 
     }
 

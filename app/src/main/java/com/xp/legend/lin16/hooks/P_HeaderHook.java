@@ -661,6 +661,9 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                         Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
                         deleteUriFile(uri,context);
+                        Intent intent1=new Intent(ReceiverAction.DELETE_IMG_CALL);
+
+                        AndroidAppHelper.currentApplication().sendBroadcast(intent1);
 
                     }
 
@@ -718,6 +721,9 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                     Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
 
                     deleteUriFile(uri,context);
+                    Intent intent1=new Intent(ReceiverAction.DELETE_IMG_CALL);
+
+                    AndroidAppHelper.currentApplication().sendBroadcast(intent1);
 
 
 

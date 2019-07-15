@@ -141,4 +141,6 @@ public class ReceiverAction {
         public static final String SEND_INFO_TO_ACTIVITY="send_info_to_activity";
 
     public static final String GET_INFO_TO_ACTIVITY="get_info_to_activity";
+
+    public static final String DELETE_IMG_CALL="delete_img_call";
 }

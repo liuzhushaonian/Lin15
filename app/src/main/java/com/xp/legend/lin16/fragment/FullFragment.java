@@ -28,6 +28,9 @@ import com.xp.legend.lin16.presenter.FullPresenter;
 import com.xp.legend.lin16.utils.Conf;
 import com.xp.legend.lin16.utils.ReceiverAction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,6 +65,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
     private FullReceiver fullReceiver;
     private Switch slit;
     private int count=0;
+
+    private List<Uri> uriList=new ArrayList<>();
 
 
     public FullFragment() {
@@ -182,6 +187,12 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                     break;
 
+                case ReceiverAction.DELETE_IMG_CALL:
+
+                    cleanUri();
+
+                    break;
+
             }
 
         }
@@ -233,6 +244,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
             intentFilter.addAction(ReceiverAction.SEND_FULL_INFO);
 
             intentFilter.addAction(ReceiverAction.FULL_TO_UI_INFO);
+
+            intentFilter.addAction(ReceiverAction.DELETE_IMG_CALL);
 
             getActivity().registerReceiver(fullReceiver,intentFilter);
         }
@@ -416,6 +429,10 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                 startCropImage(u,shu_width,shu_height,CUT_SHU_IMAGE);
 
+                uriList.add(u);
+
+//                getContext().getContentResolver().delete(u,null,null);//删除
+
                 break;
 
             case SELECT_HENG_IMAGE:
@@ -438,6 +455,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                     return;
                 }
+
+                uriList.add(u1);
 
                 startCropImage(u1,heng_width,heng_height,CUT_HENG_IMAGE);
 
@@ -566,6 +585,18 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         builder.setTitle(getString(R.string.tip)).setMessage(getString(R.string.tip_content)).show();
 
+
+    }
+
+    private void cleanUri(){
+
+        for (int i=0;i<uriList.size();i++){
+
+            getContext().getContentResolver().delete(uriList.get(i),null,null);
+
+        }
+
+        uriList.clear();//清除
 
     }
 
