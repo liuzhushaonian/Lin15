@@ -62,7 +62,7 @@ public class BaseFragment extends Fragment {
         intent.putExtra("outputY", h);
 
         //裁剪之后的数据是通过Intent返回
-        intent.putExtra("return-data", false);
+        intent.putExtra("return-data", true);
 
 //        intent.putExtra("outImage", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("noFaceDetection",true);
