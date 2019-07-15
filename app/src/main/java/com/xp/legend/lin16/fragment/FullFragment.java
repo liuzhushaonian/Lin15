@@ -407,6 +407,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
             case SELECT_SHU_IMAGE:
 
                 if (data==null||data.getData()==null){
+                    cleanUri();
                     return;
                 }
 
@@ -421,6 +422,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 if (u==null){
 
                     Log.d("u-->>","uri is null");
+                    cleanUri();
 
                     return;
                 }
@@ -436,6 +438,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
             case SELECT_HENG_IMAGE:
 
                 if (data==null||data.getData()==null){
+                    cleanUri();
                     return;
                 }
 
@@ -450,6 +453,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 if (u1==null){
 
                     Log.d("u-->>","uri is null");
+                    cleanUri();
 
                     return;
                 }
@@ -468,6 +472,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 //                    XposedBridge.log("lin16------>>>>data is null or data.getData is null!!!!");
 
                     Log.d("lin16------>>>>","data is null or data.getData is null!!!!");
+                    cleanUri();
 
                     return;
                 }
@@ -481,6 +486,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
             case CUT_HENG_IMAGE:
 
                 if (data==null||data.getData()==null){
+                    cleanUri();
                     return;
                 }
 

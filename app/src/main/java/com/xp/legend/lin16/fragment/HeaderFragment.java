@@ -360,6 +360,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
             case SELECT_SHU_IMAGE:
 
                 if (data == null || data.getData() == null) {
+                    cleanUri();
                     return;
                 }
 
@@ -374,6 +375,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                 if (u==null){
 
                     Log.d("u-->>","uri is null");
+                    cleanUri();
 
                     return;
                 }
@@ -388,6 +390,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
             case SELECT_HENG_IMAGE:
 
                 if (data == null || data.getData() == null) {
+                    cleanUri();
                     return;
                 }
 
@@ -402,6 +405,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                 if (u1==null){
 
                     Log.d("u-->>","uri is null");
+                    cleanUri();
 
                     return;
                 }
@@ -416,6 +420,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
             case CUT_SHU_IMAGE:
 
                 if (data == null || data.getData() == null) {
+                    cleanUri();
                     return;
                 }
 
@@ -429,6 +434,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
             case CUT_HENG_IMAGE:
 
                 if (data == null || data.getData() == null) {
+                    cleanUri();
                     return;
                 }
 
