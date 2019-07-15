@@ -19,11 +19,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BaseFragment extends Fragment {
+
+    protected List<Uri> uriList=new ArrayList<>();
 
 
     public BaseFragment() {
@@ -117,6 +121,18 @@ public class BaseFragment extends Fragment {
         }
 
         return null;
+
+    }
+
+    protected void cleanUri(){
+
+        for (int i=0;i<uriList.size();i++){
+
+            getContext().getContentResolver().delete(uriList.get(i),null,null);
+
+        }
+
+        uriList.clear();//清除
 
     }
 

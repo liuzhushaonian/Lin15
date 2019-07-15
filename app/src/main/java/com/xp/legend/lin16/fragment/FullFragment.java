@@ -66,8 +66,6 @@ public class FullFragment extends BaseFragment implements IFullFragment {
     private Switch slit;
     private int count=0;
 
-    private List<Uri> uriList=new ArrayList<>();
-
 
     public FullFragment() {
         // Required empty public constructor
@@ -585,18 +583,6 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
         builder.setTitle(getString(R.string.tip)).setMessage(getString(R.string.tip_content)).show();
 
-
-    }
-
-    private void cleanUri(){
-
-        for (int i=0;i<uriList.size();i++){
-
-            getContext().getContentResolver().delete(uriList.get(i),null,null);
-
-        }
-
-        uriList.clear();//清除
 
     }
 

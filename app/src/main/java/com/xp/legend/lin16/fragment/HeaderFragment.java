@@ -64,9 +64,6 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
     private RadioGroup radioGroup;
 
-    private List<Uri> uriList=new ArrayList<>();
-
-
     public HeaderFragment() {
         // Required empty public constructor
     }
@@ -508,16 +505,5 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
     }
 
-    private void cleanUri(){
-
-        for (int i=0;i<uriList.size();i++){
-
-            getContext().getContentResolver().delete(uriList.get(i),null,null);
-
-        }
-
-        uriList.clear();//清除
-
-    }
 
 }
