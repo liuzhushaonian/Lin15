@@ -838,11 +838,24 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL:
 
+                try {
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_FULL_VERTICAL_FILE,Context.MODE_PRIVATE);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
                 file = new File(path + "/" + Conf.N_FULL_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL:
+
+                try {
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_FULL_HORIZONTAL_FILE,Context.MODE_PRIVATE);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
 
                 file = new File(path + "/" + Conf.N_FULL_HORIZONTAL_FILE);
 
@@ -851,7 +864,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(file);
+            outputStream = new FileOutputStream(file,false);
             bitmap.compress(Bitmap.CompressFormat.WEBP, 100, outputStream);
 
             result = 1;

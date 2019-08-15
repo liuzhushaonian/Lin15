@@ -463,7 +463,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 fullView.removeView(hengHeader);
             }
             fullView.removeView(shuHeader);
-            fullView.addView(shuHeader, 2);//0位置放着全部背景
+            fullView.addView(shuHeader);//0位置放着全部背景
 
 
             shuHeader.setImageBitmap(bitmap);
@@ -487,7 +487,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
             fullView.removeView(hengHeader);
-            fullView.addView(hengHeader, 2);
+            fullView.addView(hengHeader);
 
             hengHeader.setImageBitmap(bitmap);
 
@@ -761,11 +761,23 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL:
 
+                try {
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_HEADER_VERTICAL_FILE,Context.MODE_PRIVATE);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
                 file = new File(path + "/" + Conf.N_HEADER_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL:
+
+                try {
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_HEADER_HORIZONTAL_FILE,Context.MODE_PRIVATE);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                 file = new File(path + "/" + Conf.N_HEADER_HORIZONTAL_FILE);
 
@@ -774,7 +786,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
         FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(file);
+            outputStream = new FileOutputStream(file,false);
             bitmap.compress(Bitmap.CompressFormat.WEBP, 100, outputStream);
 
             result = 1;
