@@ -113,6 +113,26 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 radius = TypedValue.complexToDimensionPixelSize(typedValue.data,
                         AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
 
+                new Thread(){
+
+                    @Override
+                    public void run() {
+                        super.run();
+
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        Runnable runnable= P_HeaderHook.this::autoSetBg;
+
+                        fullView.post(runnable);
+
+
+                    }
+                }.start();
+
 
 //                autoSetBg();
 
@@ -145,19 +165,19 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             }
         });
 
-        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, METHOD4, boolean.class, int.class, int.class, int.class, int.class, new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                super.afterHookedMethod(param);
-
-                if (isFirst) {
-                    isFirst = false;
-                    autoSetBg();
-
-                }
-
-            }
-        });
+//        XposedHelpers.findAndHookMethod(CLASS, lpparam.classLoader, METHOD4, boolean.class, int.class, int.class, int.class, int.class, new XC_MethodHook() {
+//            @Override
+//            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//                super.afterHookedMethod(param);
+//
+//                if (isFirst) {
+//                    isFirst = false;
+//                    autoSetBg();
+//
+//                }
+//
+//            }
+//        });
 
 
     }
@@ -355,7 +375,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 fullView.removeView(hengHeader);
             }
             fullView.removeView(shuHeader);
-            fullView.addView(shuHeader, 2);//0位置放着全部背景
+
+            fullView.addView(shuHeader,1);
 
 
             shuHeader.setImageBitmap(bitmap);
@@ -380,8 +401,8 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
             fullView.removeView(hengHeader);
-            fullView.addView(hengHeader, 2);
 
+            fullView.addView(hengHeader,1);
 
             hengHeader.setImageBitmap(bitmap);
 
@@ -463,7 +484,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 fullView.removeView(hengHeader);
             }
             fullView.removeView(shuHeader);
-            fullView.addView(shuHeader);//0位置放着全部背景
+            fullView.addView(shuHeader,1);//位置放着全部背景
 
 
             shuHeader.setImageBitmap(bitmap);
@@ -487,7 +508,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
             fullView.removeView(hengHeader);
-            fullView.addView(hengHeader);
+            fullView.addView(hengHeader,1);
 
             hengHeader.setImageBitmap(bitmap);
 
@@ -852,7 +873,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     /**
      * 接收透明度
      *
-     * @param intent
+     * @param intent ？
      */
     private void getAlphaValue(Intent intent) {
 
@@ -1185,14 +1206,18 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             shuHeader.setVisibility(View.GONE);
 
-            fullView.removeView(shuHeader);
+            if (fullView!=null) {
+                fullView.removeView(shuHeader);
+            }
 
             shuHeader = null;
         }
 
         if (hengHeader != null) {
             hengHeader.setVisibility(View.GONE);
-            fullView.removeView(hengHeader);
+            if (fullView!=null) {
+                fullView.removeView(hengHeader);
+            }
             hengHeader = null;
         }
 
@@ -1311,7 +1336,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     }
 
-    public static int dp2px(float dipValue) {
+    private static int dp2px(float dipValue) {
         return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dipValue,
                 AndroidAppHelper.currentApplication().getResources().getDisplayMetrics());
