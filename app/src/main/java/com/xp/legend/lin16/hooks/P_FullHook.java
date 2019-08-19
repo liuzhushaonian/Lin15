@@ -120,7 +120,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     bg = (View) XposedHelpers.getObjectField(param.thisObject, "mBackground");
 
-                    bg.setBackgroundTintList(null);
+//                    bg.setBackgroundTintList(null);
 
                 }
 
@@ -231,19 +231,19 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
         });
 
-        XposedHelpers.findAndHookMethod(CLASS2, lpparam.classLoader, METHOD4, boolean.class, int.class, int.class, int.class, int.class, new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                super.afterHookedMethod(param);
-
-                if (isFirst) {
-                    isFirst = false;
-                    autoSetBg();
-
-                }
-
-            }
-        });
+//        XposedHelpers.findAndHookMethod(CLASS2, lpparam.classLoader, METHOD4, boolean.class, int.class, int.class, int.class, int.class, new XC_MethodHook() {
+//            @Override
+//            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//                super.afterHookedMethod(param);
+//
+//                if (isFirst) {
+//                    isFirst = false;
+//                    autoSetBg();
+//
+//                }
+//
+//            }
+//        });
 
 
     }
@@ -694,24 +694,24 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 //            return;
         }
 
-        int header_vertical_height = sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_HEIGHT, -1);
+//        int header_vertical_height = sharedPreferences.getInt(Conf.N_HEADER_VERTICAL_HEIGHT, -1);
+//
+//        int header_horizontal_height = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, -1);
 
-        int header_horizontal_height = sharedPreferences.getInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, -1);
+//        if (header_vertical_height <= 0 && isVertical) {
 
-        if (header_vertical_height <= 0 && isVertical) {
-
-            header_vertical_height = bg.getHeight();
+        int header_vertical_height = bg.getHeight();
 
             sharedPreferences.edit().putInt(Conf.N_HEADER_VERTICAL_HEIGHT, header_vertical_height).apply();
 
-        }
+//        }
 
-        if (header_horizontal_height <= 0 && !isVertical) {
+//        if (header_horizontal_height <= 0 && !isVertical) {
 
-            header_horizontal_height = bg.getHeight();
+        int header_horizontal_height = bg.getHeight();
 
             sharedPreferences.edit().putInt(Conf.N_HEADER_HORIZONTAL_HEIGHT, header_horizontal_height).apply();
-        }
+//        }
 
 
     }
@@ -1390,7 +1390,9 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         setSlitHeader();//设置卷轴头部
 
 
-        bg.setBackgroundColor(Color.TRANSPARENT);//设置成功，将原先的背景给设置为透明，避免遮挡
+//        bg.setBackgroundColor(Color.TRANSPARENT);//设置成功，将原先的背景给设置为透明，避免遮挡
+
+        bg.setVisibility(View.INVISIBLE);
 
         autoChangePosition();//设置背景居中，避免歪掉，可以的话尽量搞个线程，睡个几秒钟再居中
 
@@ -1455,7 +1457,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
         if (bg!=null){
-            bg.setBackground(getDefaultDrawable());
+            bg.setVisibility(View.VISIBLE);
         }
 
     }
