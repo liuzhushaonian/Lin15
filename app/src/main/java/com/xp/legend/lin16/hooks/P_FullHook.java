@@ -1406,6 +1406,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void autoSetPosition(int p) {
 
+//        hideBackView();
 
         switch (p) {
 

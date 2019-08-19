@@ -376,6 +376,12 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             }
             fullView.removeView(shuHeader);
 
+            ViewGroup viewGroup= (ViewGroup) shuHeader.getParent();
+            if (viewGroup!=null){
+                viewGroup.removeView(shuHeader);
+            }
+
+
             fullView.addView(shuHeader,1);
 
 
@@ -401,6 +407,11 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
             fullView.removeView(hengHeader);
+
+            ViewGroup viewGroup= (ViewGroup) hengHeader.getParent();
+            if (viewGroup!=null){
+                viewGroup.removeView(hengHeader);
+            }
 
             fullView.addView(hengHeader,1);
 
@@ -484,6 +495,12 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                 fullView.removeView(hengHeader);
             }
             fullView.removeView(shuHeader);
+
+            ViewGroup viewGroup= (ViewGroup) shuHeader.getParent();
+            if (viewGroup!=null){
+                viewGroup.removeView(shuHeader);
+            }
+
             fullView.addView(shuHeader,1);//位置放着全部背景
 
 
@@ -508,6 +525,12 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
             fullView.removeView(hengHeader);
+
+            ViewGroup viewGroup= (ViewGroup) hengHeader.getParent();
+            if (viewGroup!=null){
+                viewGroup.removeView(hengHeader);
+            }
+
             fullView.addView(hengHeader,1);
 
             hengHeader.setImageBitmap(bitmap);
