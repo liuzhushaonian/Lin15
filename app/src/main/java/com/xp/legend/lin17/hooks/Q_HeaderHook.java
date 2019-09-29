@@ -1,4 +1,4 @@
-package com.xp.legend.lin16.hooks;
+package com.xp.legend.lin17.hooks;
 
 import android.app.AndroidAppHelper;
 import android.content.BroadcastReceiver;
@@ -6,29 +6,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.xp.legend.lin16.bean.HeaderInfo;
-import com.xp.legend.lin16.bean.Result;
-import com.xp.legend.lin16.utils.BaseHook;
-import com.xp.legend.lin16.utils.Conf;
-import com.xp.legend.lin16.utils.ReceiverAction;
+import com.xp.legend.lin17.bean.HeaderInfo;
+import com.xp.legend.lin17.bean.Result;
+import com.xp.legend.lin17.utils.BaseHook;
+import com.xp.legend.lin17.utils.Conf;
+import com.xp.legend.lin17.utils.ReceiverAction;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,11 +30,10 @@ import java.io.FileOutputStream;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
+public class Q_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
     private static final String CLASS = "com.android.systemui.qs.QSContainerImpl";
     private static final String METHOD = "onFinishInflate";
@@ -73,7 +66,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
 
-        if (!isP()) {
+        if (!isQ()) {
             return;
         }
 
@@ -125,7 +118,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
                             e.printStackTrace();
                         }
 
-                        Runnable runnable= P_HeaderHook.this::autoSetBg;
+                        Runnable runnable= Q_HeaderHook.this::autoSetBg;
 
                         fullView.post(runnable);
 

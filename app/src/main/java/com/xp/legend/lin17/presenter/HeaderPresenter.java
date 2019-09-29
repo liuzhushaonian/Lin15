@@ -1,12 +1,12 @@
-package com.xp.legend.lin16.presenter;
+package com.xp.legend.lin17.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 
-import com.xp.legend.lin16.interfaces.IHeaderFragment;
-import com.xp.legend.lin16.utils.Conf;
-import com.xp.legend.lin16.utils.ReceiverAction;
+import com.xp.legend.lin17.interfaces.IHeaderFragment;
+import com.xp.legend.lin17.utils.Conf;
+import com.xp.legend.lin17.utils.ReceiverAction;
 
 public class HeaderPresenter {
 

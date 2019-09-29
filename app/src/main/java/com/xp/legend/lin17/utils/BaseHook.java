@@ -1,4 +1,4 @@
-package com.xp.legend.lin16.utils;
+package com.xp.legend.lin17.utils;
 
 import android.app.AndroidAppHelper;
 import android.content.Context;
@@ -102,7 +102,7 @@ public abstract class BaseHook {
 
         if (sharedPreferences.getBoolean(Conf.LOG,false)) {//判断是否开启了log
 
-            XposedBridge.log("lin16---->>>"+infos);
+            XposedBridge.log("lin17---->>>"+infos);
         }
 
     }
@@ -114,9 +114,9 @@ public abstract class BaseHook {
 
     }
 
-    protected boolean isP(){
+    protected boolean isQ(){
 
-        return Build.VERSION.SDK_INT == Build.VERSION_CODES.P;
+        return Build.VERSION.SDK_INT != Build.VERSION_CODES.Q;
 
     }
 

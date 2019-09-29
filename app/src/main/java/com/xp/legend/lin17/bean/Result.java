@@ -1,4 +1,4 @@
-package com.xp.legend.lin16.bean;
+package com.xp.legend.lin17.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;

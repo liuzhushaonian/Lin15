@@ -1,4 +1,4 @@
-package com.xp.legend.lin16.fragment;
+package com.xp.legend.lin17.fragment;
 
 
 import android.content.BroadcastReceiver;
@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +20,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xp.legend.lin16.R;
-import com.xp.legend.lin16.bean.HeaderInfo;
-import com.xp.legend.lin16.bean.Result;
-import com.xp.legend.lin16.interfaces.IHeaderFragment;
-import com.xp.legend.lin16.presenter.HeaderPresenter;
-import com.xp.legend.lin16.utils.Conf;
-import com.xp.legend.lin16.utils.ReceiverAction;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.xp.legend.lin17.R;
+import com.xp.legend.lin17.bean.HeaderInfo;
+import com.xp.legend.lin17.bean.Result;
+import com.xp.legend.lin17.interfaces.IHeaderFragment;
+import com.xp.legend.lin17.presenter.HeaderPresenter;
+import com.xp.legend.lin17.utils.Conf;
+import com.xp.legend.lin17.utils.ReceiverAction;
 
 
 /**

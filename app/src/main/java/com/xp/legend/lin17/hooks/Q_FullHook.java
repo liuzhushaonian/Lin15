@@ -1,4 +1,4 @@
-package com.xp.legend.lin16.hooks;
+package com.xp.legend.lin17.hooks;
 
 import android.app.AndroidAppHelper;
 import android.content.BroadcastReceiver;
@@ -13,10 +13,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +20,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.xp.legend.lin16.bean.Full;
-import com.xp.legend.lin16.bean.Result;
-import com.xp.legend.lin16.utils.BaseHook;
-import com.xp.legend.lin16.utils.Conf;
-import com.xp.legend.lin16.utils.ReceiverAction;
-import com.xp.legend.lin16.utils.ReflectUtil;
+import com.xp.legend.lin17.bean.Full;
+import com.xp.legend.lin17.bean.Result;
+import com.xp.legend.lin17.utils.BaseHook;
+import com.xp.legend.lin17.utils.Conf;
+import com.xp.legend.lin17.utils.ReceiverAction;
+import com.xp.legend.lin17.utils.ReflectUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,8 +34,6 @@ import java.lang.reflect.Field;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -56,7 +50,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  * 另外，需要居中显示，所以要设置好margin，margin计算是整个(快速设置面板的宽度-背景view的宽度)/2，margin是给左右两边设置的。
  * 距离顶部也有一定的距离，所以顶部也需要设置一个margin，此margin是android:dimen/quick_qs_offset_height，经过反射获取其值，最后再设置上即可。
  */
-public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
+public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private static final String METHOD = "onFinishInflate";
     private static final String CLASS2 = "com.android.systemui.qs.QSContainerImpl";
@@ -93,7 +87,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
 
-        if (!isP()) {
+        if (!isQ()) {
             return;
         }
 
@@ -196,7 +190,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
                             e.printStackTrace();
                         }
 
-                        fullView.post(P_FullHook.this::autoSetBg);
+                        fullView.post(Q_FullHook.this::autoSetBg);
 
                     }
                 }.start();

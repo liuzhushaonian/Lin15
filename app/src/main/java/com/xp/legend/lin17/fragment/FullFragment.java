@@ -1,4 +1,4 @@
-package com.xp.legend.lin16.fragment;
+package com.xp.legend.lin17.fragment;
 
 
 import android.content.BroadcastReceiver;
@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +20,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xp.legend.lin16.R;
-import com.xp.legend.lin16.bean.Full;
-import com.xp.legend.lin16.bean.Result;
-import com.xp.legend.lin16.interfaces.IFullFragment;
-import com.xp.legend.lin16.presenter.FullPresenter;
-import com.xp.legend.lin16.utils.Conf;
-import com.xp.legend.lin16.utils.ReceiverAction;
+import com.xp.legend.lin17.R;
+import com.xp.legend.lin17.bean.Full;
+import com.xp.legend.lin17.bean.Result;
+import com.xp.legend.lin17.interfaces.IFullFragment;
+import com.xp.legend.lin17.presenter.FullPresenter;
+import com.xp.legend.lin17.utils.Conf;
+import com.xp.legend.lin17.utils.ReceiverAction;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 

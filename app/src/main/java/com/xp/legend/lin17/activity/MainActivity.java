@@ -1,4 +1,4 @@
-package com.xp.legend.lin16.activity;
+package com.xp.legend.lin17.activity;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -14,14 +14,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,12 +31,12 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.xp.legend.lin16.R;
-import com.xp.legend.lin16.adapter.MainAdapter;
-import com.xp.legend.lin16.fragment.FullFragment;
-import com.xp.legend.lin16.fragment.HeaderFragment;
-import com.xp.legend.lin16.utils.Conf;
-import com.xp.legend.lin16.utils.ReceiverAction;
+import com.xp.legend.lin17.R;
+import com.xp.legend.lin17.adapter.MainAdapter;
+import com.xp.legend.lin17.fragment.FullFragment;
+import com.xp.legend.lin17.fragment.HeaderFragment;
+import com.xp.legend.lin17.utils.Conf;
+import com.xp.legend.lin17.utils.ReceiverAction;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -45,8 +45,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import static com.xp.legend.lin16.utils.ReceiverAction.GET_INFO_TO_ACTIVITY;
-import static com.xp.legend.lin16.utils.ReceiverAction.SEND_INFO_TO_ACTIVITY;
+import static com.xp.legend.lin17.utils.ReceiverAction.GET_INFO_TO_ACTIVITY;
+import static com.xp.legend.lin17.utils.ReceiverAction.SEND_INFO_TO_ACTIVITY;
 
 public class MainActivity extends BaseActivity {
 

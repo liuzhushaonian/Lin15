@@ -1,15 +1,12 @@
-package com.xp.legend.lin16.presenter;
+package com.xp.legend.lin17.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
-import com.xp.legend.lin16.interfaces.IFullFragment;
-import com.xp.legend.lin16.utils.Conf;
-import com.xp.legend.lin16.utils.ReceiverAction;
-
-import de.robv.android.xposed.XposedBridge;
+import com.xp.legend.lin17.interfaces.IFullFragment;
+import com.xp.legend.lin17.utils.Conf;
+import com.xp.legend.lin17.utils.ReceiverAction;
 
 public class FullPresenter {
 

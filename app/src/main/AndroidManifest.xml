@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.xp.legend.lin16">
+    package="com.xp.legend.lin17">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -11,7 +11,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/LinStyle"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:requestLegacyExternalStorage="true"
+        >
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
@@ -23,7 +25,7 @@
             android:value="82" />
 
 
-        <activity android:name="com.xp.legend.lin16.activity.MainActivity"
+        <activity android:name="com.xp.legend.lin17.activity.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|keyboardHidden|screenSize"
             >
@@ -33,7 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.xp.legend.lin16.activity.BaseActivity">
+        <activity android:name="com.xp.legend.lin17.activity.BaseActivity">
 
         </activity>
     </application>
