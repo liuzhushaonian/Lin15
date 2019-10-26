@@ -120,7 +120,16 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
                     bg = (View) XposedHelpers.getObjectField(param.thisObject, "mBackground");
 
+                    if (bg!=null){
+
+                        logs(bg.toString());
+                    }
+
 //                    bg.setBackgroundTintList(null);
+
+                }else {
+
+                    logs("the bgsss--->> is null");
 
                 }
 
@@ -591,10 +600,12 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         if (vertical_width<=0) {
 
             if (fullView==null){
+                logs("fullView is null");
                 return;
             }
 
             if (bg==null){
+                logs("bg is null");
                 return;
             }
 
@@ -629,6 +640,9 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
             if (bg==null){
+
+                logs("bg is null!!");
+
                 return;
             }
 
@@ -641,7 +655,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             logs("保存横屏宽度---->>>" + horizontal_width);
 
-            Toast.makeText(AndroidAppHelper.currentApplication(), "已保存横屏宽度", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(AndroidAppHelper.currentApplication(), "已保存横屏宽度", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -656,6 +670,8 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             initPs();
 //            return;
         }
+
+        logs("vv--->>>"+isVertical);
 
         int horizontal_height = sharedPreferences.getInt(Conf.FULL_HENG_HEIGHT, -1);
         int vertical_height = sharedPreferences.getInt(Conf.FULL_SHU_HEIGHT, -1);
@@ -1098,18 +1114,18 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             hengSlit.change(bg.getHeight());
         }
 
+        logs("ff------>>>"+f);
+
         if (f == 1.0) {
             //下拉到最底下的时候保存信息
             //完全下拉状态，保存高度
 
             saveFullHeightInfo();
 
-
-
         }
 
 
-        if (f == 0) {//没下拉状态
+        if (f == 0.0) {//没下拉状态
 
 
             saveHeaderHeight();//保存头部的高度
