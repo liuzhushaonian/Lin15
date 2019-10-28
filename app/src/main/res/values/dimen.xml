@@ -2,5 +2,6 @@
 <resources>
 
     <dimen name="tab_height">2dp</dimen>
+    <dimen name="item_space">16dp</dimen>
 
 </resources>

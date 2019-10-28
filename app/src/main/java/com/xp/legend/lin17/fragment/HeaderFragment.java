@@ -501,10 +501,10 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
 
         }
 
-        switchGao.setChecked(result.isGao());
+        switchGao.setChecked(result.getGao()==1);
 
         seekBarGao.setProgress(result.getGaoValue());
-        seekBarGao.setEnabled(result.isGao());
+        seekBarGao.setEnabled(result.getGao()==1);
 
     }
 

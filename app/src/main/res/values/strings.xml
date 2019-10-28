@@ -113,9 +113,9 @@
         如果用户不希望这些资料残留在手机内，即可使用本功能将残留的痕迹删除。注意，使用本功能后，请卸载APP后再重启手机。\n
         本功能还有另一个作用，那就是清除旧痕迹，重置所有设定，届时您的手机将会还原成从未安装过lin16的样子，一切重新开始，墙裂建议重置后重启手机\n
     </string>
-    
+
     <string name="diyHeight">自定义设置图片高度</string>
-    
+
     <string name="custom_height">自定义高度</string>
 
     <string name="edit_tip">输入0清除自定义高度</string>

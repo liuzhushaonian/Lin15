@@ -3,17 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xp.legend.lin17">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/LinStyle"
         tools:ignore="GoogleAppIndexingWarning"
-        android:requestLegacyExternalStorage="true"
+        android:name=".utils.LinApp"
         >
+        <activity android:name=".activity.ListActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+        </activity>
+
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
@@ -22,20 +34,28 @@
             android:value="@string/moduel_info" />
         <meta-data
             android:name="xposedminversion"
-            android:value="82" />
+            android:value="82" /> <!-- 共享文件 -->
+        <provider
+            android:name=".utils.LinProvider"
+            android:authorities="com.legend.lin17_provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
 
-
-        <activity android:name="com.xp.legend.lin17.activity.MainActivity"
-            android:windowSoftInputMode="adjustPan"
+        <activity
+            android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:windowSoftInputMode="adjustPan">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
-        <activity android:name="com.xp.legend.lin17.activity.BaseActivity">
+        <activity android:name=".activity.BaseActivity">
 
         </activity>
     </application>

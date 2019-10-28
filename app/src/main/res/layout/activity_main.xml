@@ -14,7 +14,7 @@
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:background="@color/colorCP"
+        android:background="@color/colorTeal"
         android:elevation="5dp"
         >
 

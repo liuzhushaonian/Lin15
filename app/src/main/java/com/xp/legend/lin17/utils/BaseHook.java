@@ -116,7 +116,7 @@ public abstract class BaseHook {
 
     protected boolean isQ(){
 
-        return Build.VERSION.SDK_INT != Build.VERSION_CODES.Q;
+        return Build.VERSION.SDK_INT == Build.VERSION_CODES.Q;
 
     }
 

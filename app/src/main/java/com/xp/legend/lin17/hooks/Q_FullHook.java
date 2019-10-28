@@ -34,6 +34,7 @@ import java.lang.reflect.Field;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -121,14 +122,11 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
                 if (isFiledExist("mBackgroundGradient",s)){
 
                     mBackgroundGradient= (View) XposedHelpers.getObjectField(param.thisObject,"mBackgroundGradient");
-
                 }
 
                 if (isFiledExist("mStatusBarBackground",s)){
 
                     mStatusBarBackground= (View) XposedHelpers.getObjectField(param.thisObject,"mStatusBarBackground");
-
-
                 }
 
 
@@ -176,7 +174,7 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 //                saveFullWidthInfo();
 
-                hideBackView();
+//                hideBackView();
 
                 //开个线程，睡眠500毫秒后再设置背景，专治一加
                 new Thread(){
@@ -191,7 +189,7 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
                         }
 
                         fullView.post(Q_FullHook.this::autoSetBg);
-
+                        fullView.post(Q_FullHook.this::hideBackView);
                     }
                 }.start();
 
@@ -456,7 +454,7 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void setFullVerticalImage(Intent intent, Context context) {
 
-        String s = intent.getStringExtra(Conf.N_FULL_VERTICAL_FILE);
+        String s = intent.getStringExtra(Conf.FULL_VERTICAL_FILE);
 
         if (s == null || s.isEmpty()) {
 
@@ -511,7 +509,7 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private void setFullHorizontalImage(Context context, Intent intent) {
 
-        String s = intent.getStringExtra(Conf.N_FULL_HORIZONTAL_FILE);
+        String s = intent.getStringExtra(Conf.FULL_HORIZONTAL_FILE);
 
         if (s == null || s.isEmpty()) {
             return;
@@ -725,13 +723,13 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL://竖屏图
 
-                file = new File(path + "/" + Conf.N_FULL_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.FULL_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL://横屏图
 
-                file = new File(path + "/" + Conf.N_FULL_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.FULL_HORIZONTAL_FILE);
 
                 break;
         }
@@ -797,13 +795,13 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL://竖屏图
 
-                file = new File(path + "/" + Conf.N_HEADER_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL://横屏图
 
-                file = new File(path + "/" + Conf.N_HEADER_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_HORIZONTAL_FILE);
 
                 break;
         }
@@ -833,25 +831,25 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
             case Conf.VERTICAL:
 
                 try {
-                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_FULL_VERTICAL_FILE,Context.MODE_PRIVATE);
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.FULL_VERTICAL_FILE,Context.MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                file = new File(path + "/" + Conf.N_FULL_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.FULL_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL:
 
                 try {
-                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_FULL_HORIZONTAL_FILE,Context.MODE_PRIVATE);
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.FULL_HORIZONTAL_FILE,Context.MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
 
 
-                file = new File(path + "/" + Conf.N_FULL_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.FULL_HORIZONTAL_FILE);
 
                 break;
         }
@@ -1125,13 +1123,10 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
             int quality = sharedPreferences.getInt(Conf.FULL_QUALITY, Conf.LOW_QUALITY);
 
-            boolean gao = sharedPreferences.getBoolean(Conf.FULL_GAO, false);
+            int gao = sharedPreferences.getInt(Conf.FULL_GAO, 0);
 
             int gaoValue = sharedPreferences.getInt(Conf.FULL_GAO_VALUE, 25);
 
-            boolean scroll = sharedPreferences.getBoolean(Conf.FULL_SCROLL, true);
-
-            boolean slit = sharedPreferences.getBoolean(Conf.SLIT, true);
 
             Result result = new Result();
 
@@ -1139,8 +1134,7 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
             result.setGao(gao);
             result.setQuality(quality);
             result.setGaoValue(gaoValue);
-            result.setScroll(scroll);
-            result.setSlit(slit);
+
 
             Intent intent1 = new Intent(ReceiverAction.FULL_TO_UI_INFO);
 
@@ -1655,10 +1649,12 @@ public class Q_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (mStatusBarBackground != null) {
             mStatusBarBackground.setVisibility(View.GONE);
+
         }
 
         if (mBackgroundGradient != null) {
             mBackgroundGradient.setVisibility(View.GONE);
+
         }
 
     }

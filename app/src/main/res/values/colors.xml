@@ -31,5 +31,6 @@
     <color name="colorTransparent">#00000000</color>
     <color name="colorMi">#dfdfdf</color>
     <color name="colorButton">#ffeeeeee</color>
+    <color name="colorTest">#ff000000</color>
 
 </resources>

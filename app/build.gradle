@@ -1,7 +1,9 @@
 apply plugin: 'com.android.application'
+
 static def releaseTime() {
     return new Date().format("yyyy-MM-dd-HH-mm-ss", TimeZone.getTimeZone("GMT+08:00"))
 }
+
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -53,4 +55,7 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
 }

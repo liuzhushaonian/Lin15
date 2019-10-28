@@ -93,8 +93,8 @@ public class Q_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
                 fullView = (ViewGroup) param.thisObject;
 
-                mBackgroundGradient = (View) XposedHelpers.getObjectField(param.thisObject, "mBackgroundGradient");
-                mStatusBarBackground = (View) XposedHelpers.getObjectField(param.thisObject, "mStatusBarBackground");
+//                mBackgroundGradient = (View) XposedHelpers.getObjectField(param.thisObject, "mBackgroundGradient");
+//                mStatusBarBackground = (View) XposedHelpers.getObjectField(param.thisObject, "mStatusBarBackground");
 
                 TypedValue typedValue = new TypedValue();
                 AndroidAppHelper.currentApplication().getTheme().resolveAttribute(android.R.attr.dialogCornerRadius, typedValue, true);
@@ -563,13 +563,13 @@ public class Q_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL://竖屏图
 
-                file = new File(path + "/" + Conf.N_FULL_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.FULL_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL://横屏图
 
-                file = new File(path + "/" + Conf.N_FULL_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.FULL_HORIZONTAL_FILE);
 
                 break;
         }
@@ -643,13 +643,13 @@ public class Q_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL://竖屏图
 
-                file = new File(path + "/" + Conf.N_HEADER_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL://横屏图
 
-                file = new File(path + "/" + Conf.N_HEADER_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_HORIZONTAL_FILE);
 
                 break;
         }
@@ -799,24 +799,24 @@ public class Q_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             case Conf.VERTICAL:
 
                 try {
-                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_HEADER_VERTICAL_FILE,Context.MODE_PRIVATE);
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.HEADER_VERTICAL_FILE,Context.MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                file = new File(path + "/" + Conf.N_HEADER_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL:
 
                 try {
-                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_HEADER_HORIZONTAL_FILE,Context.MODE_PRIVATE);
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.HEADER_HORIZONTAL_FILE,Context.MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                file = new File(path + "/" + Conf.N_HEADER_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_HORIZONTAL_FILE);
 
                 break;
         }
@@ -1049,13 +1049,13 @@ public class Q_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
         //取9.0
-        if (sdk == Build.VERSION_CODES.P) {
+        if (sdk == Build.VERSION_CODES.Q) {
 
             int alpha = sharedPreferences.getInt(Conf.N_HEADER_ALPHA, 255);
 
             int quality = sharedPreferences.getInt(Conf.N_HEADER_QUALITY, Conf.LOW_QUALITY);
 
-            boolean gao = sharedPreferences.getBoolean(Conf.N_HEADER_GAO, false);
+            int gao = sharedPreferences.getInt(Conf.N_HEADER_GAO, 0);
 
             int gaoValue = sharedPreferences.getInt(Conf.N_HEADER_GAO_VALUE, 25);
 
@@ -1266,7 +1266,7 @@ public class Q_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             shuHeader.setElevation(dp2px(4));
 
-            hideBackView();
+//            hideBackView();
 
         }
 
@@ -1294,7 +1294,7 @@ public class Q_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             hengHeader.setElevation(dp2px(4));
 
-            hideBackView();
+//            hideBackView();
 
         }
 

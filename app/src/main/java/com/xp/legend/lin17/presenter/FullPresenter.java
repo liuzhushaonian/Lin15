@@ -2,7 +2,9 @@ package com.xp.legend.lin17.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import com.xp.legend.lin17.interfaces.IFullFragment;
 import com.xp.legend.lin17.utils.Conf;
@@ -80,9 +82,10 @@ public class FullPresenter {
 
         Intent intent=new Intent(ReceiverAction.SET_N_FULL_VERTICAL_IMAGE);
 
-        intent.putExtra(Conf.N_FULL_VERTICAL_FILE,s);
+        intent.putExtra(Conf.FULL_VERTICAL_FILE,s);
 
         activity.sendBroadcast(intent);
+        Log.d("send---->>>","发送uri");
 
     }
 
@@ -90,7 +93,7 @@ public class FullPresenter {
 
         Intent intent=new Intent(ReceiverAction.SET_N_FULL_HORIZONTAL_IMAGE);
 
-        intent.putExtra(Conf.N_FULL_HORIZONTAL_FILE,s);
+        intent.putExtra(Conf.FULL_HORIZONTAL_FILE,s);
 
         activity.sendBroadcast(intent);
 

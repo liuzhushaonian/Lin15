@@ -3,19 +3,25 @@ package com.xp.legend.lin17.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.xp.legend.lin17.utils.Conf;
+
 public class Result implements Parcelable{
 
-    private int alpha;
+    private int alpha=100;
 
-    private int quality;
+    private int quality= Conf.LOW_QUALITY;
 
-    private boolean gao;
+    private int gao=0;
 
-    private int gaoValue;
+    private int gaoValue=25;
 
-    private boolean isScroll;
-
-    private boolean isSlit;
+    private int id;
+    private String name="新建背景";
+    private String shuFile="";
+    private String shuHeaderFile="";
+    private String hengFile="";
+    private String hengHeaderFile="";
+    private int del=0;//表示未删除
 
     public Result() {
     }
@@ -24,10 +30,15 @@ public class Result implements Parcelable{
     protected Result(Parcel in) {
         alpha = in.readInt();
         quality = in.readInt();
-        gao = in.readByte() != 0;
+        gao = in.readInt();
         gaoValue = in.readInt();
-        isScroll = in.readByte() != 0;
-        isSlit = in.readByte() != 0;
+        id = in.readInt();
+        name = in.readString();
+        shuFile = in.readString();
+        shuHeaderFile = in.readString();
+        hengFile = in.readString();
+        hengHeaderFile = in.readString();
+        del = in.readInt();
     }
 
     public static final Creator<Result> CREATOR = new Creator<Result>() {
@@ -41,6 +52,26 @@ public class Result implements Parcelable{
             return new Result[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(alpha);
+        parcel.writeInt(quality);
+        parcel.writeInt(gao);
+        parcel.writeInt(gaoValue);
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeString(shuFile);
+        parcel.writeString(shuHeaderFile);
+        parcel.writeString(hengFile);
+        parcel.writeString(hengHeaderFile);
+        parcel.writeInt(del);
+    }
 
     public int getAlpha() {
         return alpha;
@@ -58,11 +89,11 @@ public class Result implements Parcelable{
         this.quality = quality;
     }
 
-    public boolean isGao() {
+    public int getGao() {
         return gao;
     }
 
-    public void setGao(boolean gao) {
+    public void setGao(int gao) {
         this.gao = gao;
     }
 
@@ -74,35 +105,59 @@ public class Result implements Parcelable{
         this.gaoValue = gaoValue;
     }
 
-    public boolean isScroll() {
-        return isScroll;
+    public int getId() {
+        return id;
     }
 
-    public void setScroll(boolean scroll) {
-        isScroll = scroll;
+    public void setId(int id) {
+        this.id = id;
     }
 
-
-    public boolean isSlit() {
-        return isSlit;
+    public String getName() {
+        return name;
     }
 
-    public void setSlit(boolean slit) {
-        isSlit = slit;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getShuFile() {
+        return shuFile;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(alpha);
-        dest.writeInt(quality);
-        dest.writeByte((byte) (gao ? 1 : 0));
-        dest.writeInt(gaoValue);
-        dest.writeByte((byte) (isScroll ? 1 : 0));
-        dest.writeByte((byte) (isSlit ? 1 : 0));
+    public void setShuFile(String shuFile) {
+        this.shuFile = shuFile;
+    }
+
+    public String getShuHeaderFile() {
+        return shuHeaderFile;
+    }
+
+    public void setShuHeaderFile(String shuHeaderFile) {
+        this.shuHeaderFile = shuHeaderFile;
+    }
+
+    public String getHengFile() {
+        return hengFile;
+    }
+
+    public void setHengFile(String hengFile) {
+        this.hengFile = hengFile;
+    }
+
+    public String getHengHeaderFile() {
+        return hengHeaderFile;
+    }
+
+    public void setHengHeaderFile(String hengHeaderFile) {
+        this.hengHeaderFile = hengHeaderFile;
+    }
+
+    public int getDel() {
+        return del;
+    }
+
+    public void setDel(int del) {
+        this.del = del;
     }
 }

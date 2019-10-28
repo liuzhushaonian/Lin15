@@ -26,6 +26,7 @@ import com.xp.legend.lin17.bean.Result;
 import com.xp.legend.lin17.interfaces.IFullFragment;
 import com.xp.legend.lin17.presenter.FullPresenter;
 import com.xp.legend.lin17.utils.Conf;
+import com.xp.legend.lin17.utils.LinProvider;
 import com.xp.legend.lin17.utils.ReceiverAction;
 
 import java.util.Objects;
@@ -413,7 +414,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 Uri u=null;
 
                 try {
-                    u=getFileUri(saveAsFile(data.getData()));
+                    u=LinProvider.convertToUri(getContext(),saveAsFile(data.getData()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -425,6 +426,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                     return;
                 }
+
+
 
                 startCropImage(u,shu_width,shu_height,CUT_SHU_IMAGE);
 
@@ -444,7 +447,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 Uri u1=null;
 
                 try {
-                    u1=getFileUri(saveAsFile(data.getData()));
+                    u1= LinProvider.convertToUri(getContext(),saveAsFile(data.getData()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -452,7 +455,6 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 if (u1==null){
 
                     Log.d("u-->>","uri is null");
-
 
                     return;
                 }
@@ -462,7 +464,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 break;
 
 
-            case CUT_SHU_IMAGE:
+            case CUT_SHU_IMAGE://剪切完成后保存到本地
 
                 if (data==null||data.getData()==null){
 
@@ -475,9 +477,21 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                     return;
                 }
 
-                String s=data.getData().toString();
+                saveFile(data.getData(),Conf.FULL_VERTICAL_FILE);
+
+//                Toast.makeText(getContext(), "文件保存成功~", Toast.LENGTH_SHORT).show();
+//                String s=data.getData().toString();
+//
+                Uri uri=LinProvider.convertToUri(getContext(),getFile(Conf.FULL_VERTICAL_FILE));
+
+                String s=uri.toString();
+
+                setPermission(uri);
 
                 presenter.sendShuImage(getActivity(),s);
+
+                getActivity().getContentResolver().delete(data.getData(),null,null);
+
 
                 break;
 
@@ -492,7 +506,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                 String s1=data.getData().toString();
 
-                presenter.sendHengImage(getActivity(),s1);
+                presenter.sendHengImage(Objects.requireNonNull(getActivity()),s1);
 
                 break;
 
@@ -554,13 +568,9 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
 
 
-        switchGao.setChecked(result.isGao());
+        switchGao.setChecked(result.getGao()==1);
         seekBarGao.setProgress(result.getGaoValue());
-        seekBarGao.setEnabled(result.isGao());
-
-        switchScroll.setChecked(result.isScroll());
-
-        slit.setChecked(result.isSlit());
+        seekBarGao.setEnabled(result.getGao()==1);
 
         seekBarAlpha.setProgress(a);
 
@@ -592,10 +602,4 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        cleanUri();
-        Log.d("lin--->>","clean");
-    }
 }
