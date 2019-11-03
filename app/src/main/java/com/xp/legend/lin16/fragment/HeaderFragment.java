@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +26,10 @@ import com.xp.legend.lin16.bean.Result;
 import com.xp.legend.lin16.interfaces.IHeaderFragment;
 import com.xp.legend.lin16.presenter.HeaderPresenter;
 import com.xp.legend.lin16.utils.Conf;
+import com.xp.legend.lin16.utils.LinProvider;
 import com.xp.legend.lin16.utils.ReceiverAction;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -367,7 +367,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                 Uri u=null;
 
                 try {
-                    u=getFileUri(saveAsFile(data.getData()));
+                    u=LinProvider.convertToUri(getActivity(),saveAsFile(data.getData()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -380,7 +380,9 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                     return;
                 }
 
-                startCropImage(u, this.shu_width, this.shu_height, CUT_SHU_IMAGE);
+//                startCropImage(u, this.shu_width, this.shu_height, CUT_SHU_IMAGE);
+
+                cropPicture(shu_width,shu_height,u,Conf.HEADER_VERTICAL_FILE,CUT_SHU_IMAGE,this);
 
                 break;
 
@@ -395,7 +397,7 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                 Uri u1=null;
 
                 try {
-                    u1=getFileUri(saveAsFile(data.getData()));
+                    u1=LinProvider.convertToUri(getActivity(),saveAsFile(data.getData()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -408,41 +410,12 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                     return;
                 }
 
-                startCropImage(u1, this.heng_width, this.heng_height, CUT_HENG_IMAGE);
+//                startCropImage(u1, this.heng_width, this.heng_height, CUT_HENG_IMAGE);
+
+                cropPicture(heng_width,heng_height,u1,Conf.HEADER_HORIZONTAL_FILE,CUT_HENG_IMAGE,this);
 
                 break;
 
-
-            case CUT_SHU_IMAGE:
-
-                if (data == null || data.getData() == null) {
-
-                    cleanUri();
-
-                    return;
-                }
-
-                String s = data.getData().toString();
-
-                presenter.sendShuImage(getActivity(), s);
-
-                break;
-
-
-            case CUT_HENG_IMAGE:
-
-                if (data == null || data.getData() == null) {
-
-                    cleanUri();
-
-                    return;
-                }
-
-                String s1 = data.getData().toString();
-
-                presenter.sendHengImage(getActivity(), s1);
-
-                break;
 
             default:
 
@@ -451,6 +424,37 @@ public class HeaderFragment extends BaseFragment implements IHeaderFragment {
                 break;
 
         }
+
+        switch (resultCode){
+
+
+            case CUT_SHU_IMAGE:
+
+                Uri uri= LinProvider.convertToUri(getContext(),getFile(Conf.HEADER_VERTICAL_FILE));
+
+                String s=uri.toString();
+
+                setPermission(uri);
+
+                presenter.sendShuImage(Objects.requireNonNull(getActivity()),s);
+
+                break;
+
+            case CUT_HENG_IMAGE:
+
+                Uri uri1= LinProvider.convertToUri(getContext(),getFile(Conf.HEADER_HORIZONTAL_FILE));
+
+                String s1=uri1.toString();
+
+                setPermission(uri1);
+
+                presenter.sendHengImage(Objects.requireNonNull(getActivity()),s1);
+
+                break;
+
+        }
+
+
 
     }
 

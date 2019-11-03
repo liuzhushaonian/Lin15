@@ -22,3 +22,4 @@
 
 -keep class * implements de.robv.android.xposed.IXposedHookLoadPackage { *; }
 -keep class * implements android.os.Parcelable { *; }
+-keep class androidx.appcompat.widget.** { *; }
