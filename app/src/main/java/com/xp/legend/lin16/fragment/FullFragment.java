@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +20,15 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.theartofdev.edmodo.cropper.CropImage;
 import com.xp.legend.lin16.R;
 import com.xp.legend.lin16.bean.Full;
 import com.xp.legend.lin16.bean.Result;
 import com.xp.legend.lin16.interfaces.IFullFragment;
 import com.xp.legend.lin16.presenter.FullPresenter;
 import com.xp.legend.lin16.utils.Conf;
+import com.xp.legend.lin16.utils.LinProvider;
 import com.xp.legend.lin16.utils.ReceiverAction;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -57,9 +56,9 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
     private static final int SELECT_HENG_IMAGE = 31;
 
-    private static final int CUT_SHU_IMAGE = 41;
+    public static final int CUT_SHU_IMAGE = 41;
 
-    private static final int CUT_HENG_IMAGE = 51;
+    public static final int CUT_HENG_IMAGE = 51;
 
     private RadioGroup radioGroup;
 
@@ -108,7 +107,8 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
                             shu_height=full.getHeight();
 
-
+                            Log.d("shu_width--->>",shu_width+"");
+                            Log.d("shu_height--->>>",shu_height+"");
 
                             if (shu_width<=0){
 
@@ -415,24 +415,17 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 Uri u=null;
 
                 try {
-                    u=getFileUri(saveAsFile(data.getData()));
+                    u=LinProvider.convertToUri(getActivity(),saveAsFile(data.getData()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 if (u==null){
-
                     Log.d("u-->>","uri is null");
-
-
                     return;
                 }
 
-                startCropImage(u,shu_width,shu_height,CUT_SHU_IMAGE);
-
-
-
-//                getContext().getContentResolver().delete(u,null,null);//删除
+                cropPicture(shu_width,shu_height,u,Conf.FULL_VERTICAL_FILE,CUT_SHU_IMAGE,this);
 
                 break;
 
@@ -446,7 +439,7 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 Uri u1=null;
 
                 try {
-                    u1=getFileUri(saveAsFile(data.getData()));
+                    u1=LinProvider.convertToUri(getActivity(),saveAsFile(data.getData()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -454,50 +447,13 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 if (u1==null){
 
                     Log.d("u-->>","uri is null");
-
-
                     return;
                 }
+//                startCropImage(u1,heng_width,heng_height,CUT_HENG_IMAGE);
 
-                startCropImage(u1,heng_width,heng_height,CUT_HENG_IMAGE);
-
-                break;
-
-
-            case CUT_SHU_IMAGE:
-
-                if (data==null||data.getData()==null){
-
-//                    XposedBridge.log("lin16------>>>>data is null or data.getData is null!!!!");
-
-                    Log.d("lin16------>>>>","data is null or data.getData is null!!!!");
-                    cleanUri();
-
-
-                    return;
-                }
-
-                String s=data.getData().toString();
-
-                presenter.sendShuImage(getActivity(),s);
+                cropPicture(heng_width,heng_height,u1,Conf.FULL_HORIZONTAL_FILE,CUT_HENG_IMAGE,this);
 
                 break;
-
-            case CUT_HENG_IMAGE:
-
-                if (data==null||data.getData()==null){
-
-                    cleanUri();
-
-                    return;
-                }
-
-                String s1=data.getData().toString();
-
-                presenter.sendHengImage(getActivity(),s1);
-
-                break;
-
 
             default:
 
@@ -506,6 +462,35 @@ public class FullFragment extends BaseFragment implements IFullFragment {
                 break;
 
         }
+
+        switch (resultCode){
+
+            case CUT_SHU_IMAGE:
+
+                Uri uri= LinProvider.convertToUri(getContext(),getFile(Conf.FULL_VERTICAL_FILE));
+
+                String s=uri.toString();
+
+                setPermission(uri);
+
+                presenter.sendShuImage(Objects.requireNonNull(getActivity()),s);
+
+                break;
+            case CUT_HENG_IMAGE:
+
+                Uri uri1= LinProvider.convertToUri(getContext(),getFile(Conf.FULL_HORIZONTAL_FILE));
+
+                String s1=uri1.toString();
+
+                setPermission(uri1);
+
+                presenter.sendHengImage(Objects.requireNonNull(getActivity()),s1);
+
+                break;
+
+        }
+
+
 
 
     }
@@ -594,10 +579,4 @@ public class FullFragment extends BaseFragment implements IFullFragment {
 
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        cleanUri();
-        Log.d("lin--->>","clean");
-    }
 }

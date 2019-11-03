@@ -2,27 +2,18 @@ package com.xp.legend.lin16.hooks;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.CardView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 
 
 public class SlitImageView extends AppCompatImageView {
@@ -57,7 +48,7 @@ public class SlitImageView extends AppCompatImageView {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        width = getWidth();
+//        width = getWidth();
         limitHeight = getHeight();//初始化
     }
 
@@ -68,6 +59,7 @@ public class SlitImageView extends AppCompatImageView {
         } else if (radius > 0) {
 
 
+            paint.setAlpha(alpha);
             int sc = canvas.saveLayer(0, 0, width, limitHeight, null);
             //画源图像，为一个圆角矩形
             canvas.drawRoundRect(new RectF(0, 0, width, limitHeight), radius, radius, paint);
@@ -110,8 +102,7 @@ public class SlitImageView extends AppCompatImageView {
         this.bitmap = bitmap;
         this.radius = radius;
 
-        setImageBitmap(bitmap);
-
+        setImageBitmap(this.bitmap);
 
 //        this.bitmap=roundBottomBitmapByShader(bitmap,bitmap.getWidth(),bitmap.getHeight(),radius);
 
@@ -158,5 +149,17 @@ public class SlitImageView extends AppCompatImageView {
     public void setRadius(int radius) {
         this.radius = radius;
         postInvalidate();
+    }
+
+
+    public void setTheAlpha(int alpha) {
+        this.alpha = alpha;
+        postInvalidate();
+    }
+
+
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

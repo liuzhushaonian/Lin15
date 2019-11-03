@@ -2,8 +2,6 @@ package com.xp.legend.lin16.utils;
 
 public class ReceiverAction {
 
-    public static final String SS="lin15_share";
-
     public static final String HEADER_SEND_ALBUM="com.legend.xp.header.hook.open.album";
     public static final String HEADER_SEND_COLOR="com.legend.xp.header.hook.open.color";
     public static final String HEADER_GET_INFO="com.legend.xp.header.hook.open.info";

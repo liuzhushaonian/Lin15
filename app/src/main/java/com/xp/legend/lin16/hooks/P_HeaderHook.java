@@ -6,18 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +29,6 @@ import java.io.FileOutputStream;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -504,7 +496,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             fullView.addView(shuHeader,1);//位置放着全部背景
 
 
-            shuHeader.setImageBitmap(bitmap);
+            shuHeader.setBitmap(bitmap,radius);
 
             setAlpha(shuHeader);
 
@@ -533,7 +525,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
 
             fullView.addView(hengHeader,1);
 
-            hengHeader.setImageBitmap(bitmap);
+            hengHeader.setBitmap(bitmap,radius);
 
             setAlpha(hengHeader);
 
@@ -570,13 +562,13 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL://竖屏图
 
-                file = new File(path + "/" + Conf.N_FULL_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.FULL_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL://横屏图
 
-                file = new File(path + "/" + Conf.N_FULL_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.FULL_HORIZONTAL_FILE);
 
                 break;
         }
@@ -650,13 +642,13 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL://竖屏图
 
-                file = new File(path + "/" + Conf.N_HEADER_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL://横屏图
 
-                file = new File(path + "/" + Conf.N_HEADER_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_HORIZONTAL_FILE);
 
                 break;
         }
@@ -806,24 +798,24 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
             case Conf.VERTICAL:
 
                 try {
-                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_HEADER_VERTICAL_FILE,Context.MODE_PRIVATE);
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.HEADER_VERTICAL_FILE,Context.MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                file = new File(path + "/" + Conf.N_HEADER_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL:
 
                 try {
-                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_HEADER_HORIZONTAL_FILE,Context.MODE_PRIVATE);
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.HEADER_HORIZONTAL_FILE,Context.MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                file = new File(path + "/" + Conf.N_HEADER_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_HORIZONTAL_FILE);
 
                 break;
         }
@@ -1056,7 +1048,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
         //取9.0
-        if (sdk == Build.VERSION_CODES.P) {
+        if (isP()) {
 
             int alpha = sharedPreferences.getInt(Conf.N_HEADER_ALPHA, 255);
 
@@ -1148,6 +1140,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
         shuHeader = new SlitImageView(AndroidAppHelper.currentApplication());
+        shuHeader.setWidth(width);
         ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
 
         shuHeader.setLayoutParams(layoutParams);
@@ -1176,6 +1169,7 @@ public class P_HeaderHook extends BaseHook implements IXposedHookLoadPackage {
         }
 
         hengHeader = new SlitImageView(AndroidAppHelper.currentApplication());
+        hengHeader.setWidth(width);
         ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
         hengHeader.setLayoutParams(layoutParams);
         hengHeader.setRadius(this.radius);//设置上圆角度数

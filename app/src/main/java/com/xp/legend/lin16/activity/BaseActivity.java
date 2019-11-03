@@ -3,14 +3,23 @@ package com.xp.legend.lin16.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -63,4 +72,42 @@ public class BaseActivity extends AppCompatActivity {
 //        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
         startActivityForResult(intent, code);
     }
+
+    protected void saveFile(Bitmap bitmap, String name) {
+
+        File outFile = new File(getExternalFilesDir(null) + "/lin16", name);//临时文件
+
+        if (!outFile.getParentFile().exists()) {
+            outFile.getParentFile().mkdirs();
+        }
+
+        FileOutputStream out = null;
+        try {
+
+            // save bitmap
+            out = new FileOutputStream(outFile);
+
+            if (bitmap != null) {
+
+                Log.d("w---->>>",bitmap.getWidth()+"");
+                Log.d("h---->>>",bitmap.getHeight()+"");
+
+                bitmap.compress(Bitmap.CompressFormat.WEBP, 100, out);
+            }
+            out.flush();
+            if (bitmap != null) {
+                bitmap.recycle();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            try {
+                out.close();
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+
 }

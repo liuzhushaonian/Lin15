@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xp.legend.lin16">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/LinStyle"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.CropActivity"></activity>
+
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
@@ -22,20 +24,32 @@
             android:name="xposedminversion"
             android:value="82" />
 
+        <provider
+            android:name=".utils.LinProvider"
+            android:authorities="com.legend.lin16_provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
 
-        <activity android:name="com.xp.legend.lin16.activity.MainActivity"
-            android:windowSoftInputMode="adjustPan"
+        <activity
+            android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.xp.legend.lin16.activity.BaseActivity">
+        <activity android:name=".activity.BaseActivity">
 
         </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
 </manifest>

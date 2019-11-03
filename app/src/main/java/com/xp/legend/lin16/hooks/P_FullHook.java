@@ -13,10 +13,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +34,6 @@ import java.lang.reflect.Field;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -471,7 +465,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
      */
     private void setFullVerticalImage(Intent intent, Context context) {
 
-        String s = intent.getStringExtra(Conf.N_FULL_VERTICAL_FILE);
+        String s = intent.getStringExtra(Conf.FULL_VERTICAL_FILE);
 
         if (s == null || s.isEmpty()) {
 
@@ -526,7 +520,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
     private void setFullHorizontalImage(Context context, Intent intent) {
 
-        String s = intent.getStringExtra(Conf.N_FULL_HORIZONTAL_FILE);
+        String s = intent.getStringExtra(Conf.FULL_HORIZONTAL_FILE);
 
         if (s == null || s.isEmpty()) {
             return;
@@ -747,13 +741,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL://竖屏图
 
-                file = new File(path + "/" + Conf.N_FULL_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.FULL_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL://横屏图
 
-                file = new File(path + "/" + Conf.N_FULL_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.FULL_HORIZONTAL_FILE);
 
                 break;
         }
@@ -819,13 +813,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         switch (type) {
             case Conf.VERTICAL://竖屏图
 
-                file = new File(path + "/" + Conf.N_HEADER_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL://横屏图
 
-                file = new File(path + "/" + Conf.N_HEADER_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.HEADER_HORIZONTAL_FILE);
 
                 break;
         }
@@ -855,25 +849,25 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             case Conf.VERTICAL:
 
                 try {
-                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_FULL_VERTICAL_FILE,Context.MODE_PRIVATE);
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.FULL_VERTICAL_FILE,Context.MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                file = new File(path + "/" + Conf.N_FULL_VERTICAL_FILE);
+                file = new File(path + "/" + Conf.FULL_VERTICAL_FILE);
 
                 break;
 
             case Conf.HORIZONTAL:
 
                 try {
-                    AndroidAppHelper.currentApplication().openFileOutput(Conf.N_FULL_HORIZONTAL_FILE,Context.MODE_PRIVATE);
+                    AndroidAppHelper.currentApplication().openFileOutput(Conf.FULL_HORIZONTAL_FILE,Context.MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
 
 
-                file = new File(path + "/" + Conf.N_FULL_HORIZONTAL_FILE);
+                file = new File(path + "/" + Conf.FULL_HORIZONTAL_FILE);
 
                 break;
         }
@@ -881,7 +875,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(file,false);
-            bitmap.compress(Bitmap.CompressFormat.WEBP, 100, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
 
             result = 1;
         } catch (FileNotFoundException e) {
@@ -942,13 +936,13 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
         if (shuSlit != null) {
 
-            shuSlit.setImageAlpha(alpha);
+            shuSlit.setTheAlpha(alpha);
 
         }
 
         if (hengSlit != null) {
 
-            hengSlit.setImageAlpha(alpha);
+            hengSlit.setTheAlpha(alpha);
 
         }
 
@@ -1540,6 +1534,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
 
 
             shuSlit = new SlitImageView(AndroidAppHelper.currentApplication());
+            shuSlit.setWidth(width);
 
             ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
 
@@ -1568,6 +1563,7 @@ public class P_FullHook extends BaseHook implements IXposedHookLoadPackage {
             }
 
             hengSlit = new SlitImageView(AndroidAppHelper.currentApplication());
+            hengSlit.setWidth(width);
 
             ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
 
